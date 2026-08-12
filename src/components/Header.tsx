@@ -1,0 +1,282 @@
+import { useState, useEffect, useRef } from 'react'
+import Logo from './Logo'
+import type { Page } from '../App'
+
+interface HeaderProps {
+  currentPage: Page
+  navigate: (page: Page) => void
+}
+
+const homesMegaMenu = [
+  { label: 'View All Homes', page: 'catalogue' as Page },
+  { label: 'Garden Rooms', page: 'catalogue' as Page },
+  { label: 'Bungalows', page: 'catalogue' as Page },
+  { label: '1.5 Storey Houses', page: 'catalogue' as Page },
+  { label: '2 Storey Houses', page: 'catalogue' as Page },
+]
+
+const bespokeDropdown = [
+  { label: 'Bespoke Home Design', page: 'bespoke' as Page },
+  { label: 'Commercial Buildings', page: 'bespoke' as Page },
+  { label: 'Workspaces', page: 'bespoke' as Page },
+  { label: 'Interiors', page: 'bespoke' as Page },
+  { label: 'Sustainable Upgrades', page: 'bespoke' as Page },
+]
+
+const navLinks = [
+  { label: 'Homes', page: 'catalogue' as Page, hasMega: true },
+  { label: 'Bespoke & Commercial', page: 'bespoke' as Page, hasDropdown: true },
+  { label: 'Installation', page: 'installation' as Page },
+  { label: 'Gallery', page: 'gallery' as Page },
+  { label: 'About', page: 'about' as Page },
+  { label: 'Blog', page: 'blog' as Page },
+  { label: 'FAQ', page: 'faq' as Page },
+]
+
+export default function Header({ currentPage, navigate }: HeaderProps) {
+  const [scrolled, setScrolled] = useState(false)
+  const [megaOpen, setMegaOpen] = useState(false)
+  const [bespokeOpen, setBespokeOpen] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const [mobileHomesOpen, setMobileHomesOpen] = useState(false)
+  const [mobileBespokeOpen, setMobileBespokeOpen] = useState(false)
+  const headerRef = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  const handleNav = (page: Page) => {
+    navigate(page)
+    setMegaOpen(false)
+    setBespokeOpen(false)
+    setMobileOpen(false)
+  }
+
+  return (
+    <>
+      {/* Utility bar */}
+      <div className="hidden lg:flex items-center justify-end bg-navy text-white text-xs font-body px-8 py-1.5 gap-6">
+        <a href="tel:+441234567890" className="flex items-center gap-1.5 opacity-80 hover:opacity-100 transition-opacity">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+          01234 567 890
+        </a>
+        <a href="mailto:hello@tridentmodular.com" className="flex items-center gap-1.5 opacity-80 hover:opacity-100 transition-opacity">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          hello@tridentmodular.com
+        </a>
+        <button className="opacity-80 hover:opacity-100 transition-opacity flex items-center gap-1">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11zM8 15.01l1.41 1.41L11 14.84V19h2v-4.16l1.59 1.59L16 15.01 12.01 11 8 15.01z"/></svg>
+          Download Catalogue
+        </button>
+      </div>
+
+      <header
+        ref={headerRef}
+        className={`sticky top-0 z-50 bg-white transition-shadow duration-300 ${scrolled ? 'shadow-md' : 'border-b border-border'}`}
+      >
+        <div className="max-w-[1280px] mx-auto px-6 lg:px-8 flex items-center h-16 gap-8">
+          {/* Logo */}
+          <button onClick={() => handleNav('home')} className="shrink-0 focus:outline-none">
+            <Logo height={34} />
+          </button>
+
+          {/* Desktop Nav */}
+          <nav className="hidden lg:flex items-center gap-1 flex-1 justify-center" onMouseLeave={() => { setMegaOpen(false); setBespokeOpen(false) }}>
+            {navLinks.map((link) => (
+              <div key={link.label} className="relative">
+                <button
+                  onClick={() => handleNav(link.page)}
+                  onMouseEnter={() => {
+                    setMegaOpen(link.hasMega ?? false)
+                    setBespokeOpen(link.hasDropdown ?? false)
+                    if (!link.hasMega) setMegaOpen(false)
+                    if (!link.hasDropdown) setBespokeOpen(false)
+                  }}
+                  className={`flex items-center gap-1 px-3 py-2 text-sm font-medium font-display rounded-lg transition-colors ${currentPage === link.page ? 'text-navy' : 'text-body hover:text-navy'}`}
+                >
+                  {link.label}
+                  {(link.hasMega || link.hasDropdown) && (
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" className="opacity-50 mt-0.5"><path d="M7 10l5 5 5-5z"/></svg>
+                  )}
+                </button>
+
+                {/* Bespoke dropdown */}
+                {link.hasDropdown && bespokeOpen && (
+                  <div className="absolute top-full left-0 mt-1 bg-white border border-border rounded-xl shadow-lg py-2 min-w-48 z-50">
+                    {bespokeDropdown.map((item) => (
+                      <button
+                        key={item.label}
+                        onClick={() => handleNav(item.page)}
+                        className="w-full text-left px-4 py-2 text-sm text-body hover:text-navy hover:bg-light transition-colors"
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+
+            {/* Homes mega menu */}
+            {megaOpen && (
+              <div className="absolute top-full left-0 right-0 bg-white border-t border-border shadow-lg z-40 mt-0"
+                style={{ marginTop: 0 }}
+                onMouseEnter={() => setMegaOpen(true)}
+              >
+                <div className="max-w-[1280px] mx-auto px-8 py-8 grid grid-cols-4 gap-8">
+                  <div className="col-span-1">
+                    <p className="text-xs font-semibold font-display text-muted uppercase tracking-widest mb-4">Homes</p>
+                    <div className="space-y-1">
+                      {homesMegaMenu.map((item) => (
+                        <button
+                          key={item.label}
+                          onClick={() => handleNav(item.page)}
+                          className="block w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-body hover:text-navy hover:bg-light transition-colors"
+                        >
+                          {item.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="col-span-3 grid grid-cols-3 gap-4">
+                    {[
+                      { label: 'Garden Rooms', img: '1697538022262-7eb736179973', desc: 'Year-round spaces from 15m²' },
+                      { label: 'Modular Homes', img: '1605018075968-b014b8d2e487', desc: 'Factory-built, site-ready homes' },
+                      { label: 'Frame Houses', img: '1696846911635-83b97e53fb65', desc: 'Flexible homes assembled on site' },
+                    ].map((cat) => (
+                      <button
+                        key={cat.label}
+                        onClick={() => handleNav('catalogue')}
+                        className="relative overflow-hidden rounded-xl group cursor-pointer text-left"
+                      >
+                        <div className="bg-light h-36 overflow-hidden rounded-xl">
+                          <img
+                            src={`https://images.unsplash.com/photo-${cat.img}?w=400&h=220&fit=crop&auto=format`}
+                            alt={cat.label}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                        </div>
+                        <p className="mt-2 text-sm font-semibold font-display text-navy">{cat.label}</p>
+                        <p className="text-xs text-muted mt-0.5">{cat.desc}</p>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+          </nav>
+
+          {/* Desktop CTA */}
+          <div className="hidden lg:flex items-center gap-3 ml-auto">
+            <button
+              onClick={() => handleNav('contact')}
+              className="text-sm text-muted hover:text-navy transition-colors font-medium"
+            >
+              Contact
+            </button>
+            <button
+              onClick={() => handleNav('contact')}
+              className="bg-gold text-navy text-sm font-semibold font-display px-5 py-2.5 rounded-xl hover:bg-gold-dark transition-colors"
+            >
+              Get a Quote
+            </button>
+          </div>
+
+          {/* Mobile menu button */}
+          <div className="lg:hidden ml-auto flex items-center gap-3">
+            <button
+              onClick={() => handleNav('contact')}
+              className="bg-gold text-navy text-xs font-semibold font-display px-4 py-2 rounded-lg"
+            >
+              Get a Quote
+            </button>
+            <button
+              onClick={() => setMobileOpen(true)}
+              className="p-2 text-navy"
+              aria-label="Open menu"
+            >
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Mobile Drawer */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-[100] flex">
+          <div className="absolute inset-0 bg-navy/60 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
+          <div className="relative ml-auto w-80 max-w-full bg-white h-full flex flex-col shadow-2xl">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-border">
+              <Logo height={28} />
+              <button onClick={() => setMobileOpen(false)} className="p-2 text-navy">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            </div>
+            <nav className="flex-1 overflow-y-auto px-4 py-4 space-y-1">
+              {/* Homes expand */}
+              <div>
+                <button
+                  onClick={() => setMobileHomesOpen(!mobileHomesOpen)}
+                  className="flex items-center justify-between w-full px-3 py-3 rounded-xl text-sm font-semibold font-display text-navy hover:bg-light transition-colors"
+                >
+                  Homes
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className={`transition-transform ${mobileHomesOpen ? 'rotate-180' : ''}`}><path d="M7 10l5 5 5-5z"/></svg>
+                </button>
+                {mobileHomesOpen && (
+                  <div className="pl-4 space-y-1 mt-1">
+                    {homesMegaMenu.map((item) => (
+                      <button key={item.label} onClick={() => handleNav(item.page)} className="block w-full text-left px-3 py-2 rounded-lg text-sm text-body hover:text-navy hover:bg-light transition-colors">
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Bespoke expand */}
+              <div>
+                <button
+                  onClick={() => setMobileBespokeOpen(!mobileBespokeOpen)}
+                  className="flex items-center justify-between w-full px-3 py-3 rounded-xl text-sm font-semibold font-display text-navy hover:bg-light transition-colors"
+                >
+                  Bespoke & Commercial
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className={`transition-transform ${mobileBespokeOpen ? 'rotate-180' : ''}`}><path d="M7 10l5 5 5-5z"/></svg>
+                </button>
+                {mobileBespokeOpen && (
+                  <div className="pl-4 space-y-1 mt-1">
+                    {bespokeDropdown.map((item) => (
+                      <button key={item.label} onClick={() => handleNav(item.page)} className="block w-full text-left px-3 py-2 rounded-lg text-sm text-body hover:text-navy hover:bg-light transition-colors">
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {['installation', 'gallery', 'about', 'blog', 'faq', 'contact'].map((p) => (
+                <button
+                  key={p}
+                  onClick={() => handleNav(p as Page)}
+                  className="block w-full text-left px-3 py-3 rounded-xl text-sm font-semibold font-display text-navy hover:bg-light transition-colors capitalize"
+                >
+                  {p === 'faq' ? 'FAQ' : p.charAt(0).toUpperCase() + p.slice(1)}
+                </button>
+              ))}
+            </nav>
+            <div className="px-4 py-4 border-t border-border">
+              <button
+                onClick={() => handleNav('contact')}
+                className="w-full bg-gold text-navy text-sm font-semibold font-display py-3.5 rounded-xl hover:bg-gold-dark transition-colors"
+              >
+                Get a Quote
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  )
+}

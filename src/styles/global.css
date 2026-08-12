@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --color-navy: #00204A;
+  --color-navy-dark: #001535;
+  --color-navy-mid: #0a3060;
+  --color-gold: #DEB32F;
+  --color-gold-dark: #c49a22;
+  --color-light: #F5F6F8;
+  --color-border: #DCE2E8;
+  --color-muted: #6B7A8E;
+  --color-body: #1a2d45;
+  --font-display: 'Montserrat', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --shadow-card: 0 2px 16px 0 rgba(0,32,74,0.08);
+  --shadow-card-hover: 0 8px 32px 0 rgba(0,32,74,0.14);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-body);
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0,32,74,0.2);
+  border-radius: 9999px;
+}
+
+.card-shadow {
+  box-shadow: var(--shadow-card);
+}
+.card-shadow-hover:hover {
+  box-shadow: var(--shadow-card-hover);
+}
+
+input, select, textarea {
+  font-family: var(--font-body);
+}
+
+button {
+  font-family: var(--font-display);
+}
