@@ -56,8 +56,19 @@ jobs:
             echo "::error::SSH_KEY is missing its -----BEGIN ... PRIVATE KEY----- header line. Copy the whole file, header and footer included."
             exit 1
           fi
-          if ! ssh-keygen -y -f ~/.ssh/deploy_key > /dev/null 2>&1; then
-            echo "::error::SSH_KEY has the right header but will not parse — the body is likely truncated or re-wrapped. Re-copy with: Get-Content \$env:USERPROFILE\\.ssh\\hostinger_deploy -Raw | Set-Clipboard"
+          # -P '' supplies an empty passphrase, so an encrypted key reports
+          # itself rather than hanging. Keep ssh-keygen's own message: it
+          # names the fault far better than a guess can.
+          if ! err=$(ssh-keygen -y -P '' -f ~/.ssh/deploy_key 2>&1 >/dev/null); then
+            echo "ssh-keygen reported: $err"
+            case "$err" in
+              *passphrase*|*decrypt*)
+                echo "::error::SSH_KEY is passphrase-protected. GitHub Actions cannot enter a passphrase. Regenerate the key with an empty one: ssh-keygen -t ed25519 -f \$env:USERPROFILE\\.ssh\\hostinger_deploy  (press Enter at both prompts), re-add the .pub in hPanel, and update the SSH_KEY secret."
+                ;;
+              *)
+                echo "::error::SSH_KEY will not parse. See the ssh-keygen message above."
+                ;;
+            esac
             exit 1
           fi
           echo "Deploy key fingerprint (must match the key listed in hPanel):"
