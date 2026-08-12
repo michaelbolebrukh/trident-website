@@ -40,23 +40,45 @@ jobs:
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/deploy_key
+          # printf, not echo — the key must end with a newline or ssh rejects it.
+          printf '%s\n' "${{ secrets.SSH_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -p "${{ secrets.SSH_PORT }}" -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+
+          if ! ssh-keygen -y -f ~/.ssh/deploy_key > /dev/null 2>&1; then
+            echo "::error::SSH_KEY is not a valid private key. Re-copy it including the BEGIN/END lines."
+            exit 1
+          fi
+          echo "Deploy key fingerprint (must match the key listed in hPanel):"
+          ssh-keygen -lf ~/.ssh/deploy_key
+
+          ssh-keyscan -p "${{ secrets.SSH_PORT }}" -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Verify connection
+        # BatchMode stops ssh falling back to an interactive password prompt,
+        # so an auth failure is reported as one instead of a generic timeout.
+        run: |
+          ssh -i ~/.ssh/deploy_key -p "${{ secrets.SSH_PORT }}" \
+            -o BatchMode=yes -o IdentitiesOnly=yes \
+            "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" true \
+            || {
+              echo "::error::SSH authentication failed. Check that the matching public key is added under hPanel > Advanced > SSH Access, and that SSH_USER and SSH_HOST are correct."
+              exit 1
+            }
 
       - name: Verify remote path
         # Guard against a mistyped SSH_PATH: rsync --delete would otherwise
         # happily empty whatever directory it was pointed at.
         run: |
           ssh -i ~/.ssh/deploy_key -p "${{ secrets.SSH_PORT }}" \
+            -o BatchMode=yes -o IdentitiesOnly=yes \
             "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" \
             "test -d '${{ secrets.SSH_PATH }}'" \
-            || { echo "::error::SSH_PATH does not exist on the server."; exit 1; }
+            || { echo "::error::Connected fine, but SSH_PATH does not exist on the server."; exit 1; }
 
       - name: Deploy
         run: |
           rsync -avz --delete \
-            -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }}" \
+            -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }} -o BatchMode=yes -o IdentitiesOnly=yes" \
             dist/ \
             "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_PATH }}/"
 
