@@ -37,18 +37,28 @@ jobs:
           PUBLIC_NOINDEX: ${{ (inputs.target == 'production') && '0' || '1' }}
         run: npm run build
 
-      - name: Deploy over SSH
-        uses: burnett01/rsync-deployments@7.0.1
-        with:
-          # --delete removes files that no longer exist in the build. It is
-          # scoped to REMOTE_PATH, so point that at the document root only.
-          switches: -avzr --delete
-          path: dist/
-          remote_path: ${{ secrets.SSH_PATH }}
-          remote_host: ${{ secrets.SSH_HOST }}
-          remote_port: ${{ secrets.SSH_PORT }}
-          remote_user: ${{ secrets.SSH_USER }}
-          remote_key: ${{ secrets.SSH_KEY }}
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -p "${{ secrets.SSH_PORT }}" -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Verify remote path
+        # Guard against a mistyped SSH_PATH: rsync --delete would otherwise
+        # happily empty whatever directory it was pointed at.
+        run: |
+          ssh -i ~/.ssh/deploy_key -p "${{ secrets.SSH_PORT }}" \
+            "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" \
+            "test -d '${{ secrets.SSH_PATH }}'" \
+            || { echo "::error::SSH_PATH does not exist on the server."; exit 1; }
+
+      - name: Deploy
+        run: |
+          rsync -avz --delete \
+            -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }}" \
+            dist/ \
+            "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_PATH }}/"
 
       - name: Summary
         run: |
