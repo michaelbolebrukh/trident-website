@@ -1,8 +1,3 @@
-import type { Page } from '../App'
-
-interface BespokePageProps {
-  navigate: (page: Page) => void
-}
 
 const IMGS = {
   hero: 'https://images.unsplash.com/photo-1696846911635-83b97e53fb65?w=1200&h=700&fit=crop&auto=format',
@@ -30,7 +25,7 @@ const sustainableOptions = [
   { label: 'High-Performance Glazing', desc: 'Triple-glazed units with thermally broken frames to minimise heat loss.' },
 ]
 
-export default function BespokePage({ navigate }: BespokePageProps) {
+export default function BespokePage() {
   return (
     <div className="bg-white">
 
@@ -48,12 +43,10 @@ export default function BespokePage({ navigate }: BespokePageProps) {
           <p className="text-white/70 text-lg max-w-lg mb-8">
             Whether you need a one-off residential home, a commercial workspace or a fully bespoke design, Trident Modular can deliver a building that fits precisely.
           </p>
-          <button
-            onClick={() => navigate('contact')}
-            className="bg-gold text-navy font-bold font-display px-7 py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm"
-          >
+          <a href="/contact/"
+            className="bg-gold text-navy font-bold font-display px-7 py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm">
             Discuss Your Project
-          </button>
+          </a>
         </div>
       </section>
 
@@ -96,12 +89,10 @@ export default function BespokePage({ navigate }: BespokePageProps) {
                       </li>
                     ))}
                   </ul>
-                  <button
-                    onClick={() => navigate('contact')}
-                    className="text-sm font-semibold font-display text-navy border border-navy rounded-xl px-5 py-2.5 hover:bg-navy hover:text-white transition-colors"
-                  >
+                  <a href="/contact/"
+                    className="text-sm font-semibold font-display text-navy border border-navy rounded-xl px-5 py-2.5 hover:bg-navy hover:text-white transition-colors">
                     {route.cta}
-                  </button>
+                  </a>
                 </div>
               </div>
             ))}
@@ -174,9 +165,9 @@ export default function BespokePage({ navigate }: BespokePageProps) {
         <div className="max-w-[700px] mx-auto px-6 text-center">
           <h2 className="font-display font-bold text-white text-3xl mb-4">Ready to discuss your project?</h2>
           <p className="text-white/65 mb-8">Tell us about your site, requirements and timeline and we'll come back to you with an initial view.</p>
-          <button onClick={() => navigate('contact')} className="bg-gold text-navy font-bold font-display px-8 py-4 rounded-xl hover:bg-gold-dark transition-colors text-sm">
+          <a href="/contact/" className="bg-gold text-navy font-bold font-display px-8 py-4 rounded-xl hover:bg-gold-dark transition-colors text-sm">
             Start a Conversation
-          </button>
+          </a>
         </div>
       </section>
     </div>

@@ -1,9 +1,6 @@
 import { useState } from 'react'
-import type { Page } from '../App'
-
-interface ProductPageProps {
-  navigate: (page: Page) => void
-}
+import { allHomes, type Home } from '../data/homes'
+import { productPath } from '../lib/routes'
 
 const IMGS = {
   ext1: 'https://images.unsplash.com/photo-1766603636700-e9d80473f40f?w=1100&h=750&fit=crop&auto=format',
@@ -41,13 +38,10 @@ const sustainableCards = [
   { title: 'Green Roofs', desc: 'Living roof systems for biodiversity benefit and insulation.', img: IMGS.ext1 },
 ]
 
-const relatedHomes = [
-  { name: 'Gothic', price: '£155,000', area: '128m²', img: IMGS.exterior },
-  { name: 'Nordic Ridge', price: '£144,500', area: '118m²', img: IMGS.garden },
-  { name: 'Grand Vista', price: '£198,000', area: '165m²', img: IMGS.aerial },
-]
 
-export default function ProductPage({ navigate }: ProductPageProps) {
+export default function ProductPage({ home }: { home: Home }) {
+  const relatedHomes = allHomes.filter((h) => h.slug !== home.slug).slice(0, 3)
+
   const [activeGalleryTab, setActiveGalleryTab] = useState<string>('Exterior')
   const [activeImage, setActiveImage] = useState(0)
   const [activeSpec, setActiveSpec] = useState<string | null>(null)
@@ -62,13 +56,13 @@ export default function ProductPage({ navigate }: ProductPageProps) {
       {/* Breadcrumb */}
       <div className="bg-light border-b border-border py-3">
         <div className="max-w-[1280px] mx-auto px-6 lg:px-8 flex items-center gap-2 text-xs text-muted">
-          <button onClick={() => navigate('home')} className="hover:text-navy transition-colors">Home</button>
+          <a href="/" className="hover:text-navy transition-colors">Home</a>
           <span>/</span>
-          <button onClick={() => navigate('catalogue')} className="hover:text-navy transition-colors">All Homes</button>
+          <a href="/catalogue/" className="hover:text-navy transition-colors">All Homes</a>
           <span>/</span>
-          <button onClick={() => navigate('catalogue')} className="hover:text-navy transition-colors">1.5 Storey</button>
+          <a href="/catalogue/" className="hover:text-navy transition-colors">1.5 Storey</a>
           <span>/</span>
-          <span className="text-navy font-medium">Loft</span>
+          <span className="text-navy font-medium">{home.name}</span>
         </div>
       </div>
 
@@ -99,7 +93,7 @@ export default function ProductPage({ navigate }: ProductPageProps) {
             >
               <img
                 src={images[activeImage]}
-                alt="Loft — exterior view"
+                alt={`${home.name} — exterior view`}
                 className="w-full h-full object-cover transition-opacity duration-300"
               />
               <div className="absolute top-4 right-4 bg-white/80 backdrop-blur-sm rounded-lg px-3 py-1.5 text-xs font-medium font-display text-navy flex items-center gap-1.5">
@@ -127,20 +121,20 @@ export default function ProductPage({ navigate }: ProductPageProps) {
           {/* RIGHT: Details panel */}
           <div className="lg:sticky lg:top-20 lg:self-start">
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-xs font-bold font-display text-gold uppercase tracking-widest">1.5 Storey</span>
+              <span className="text-xs font-bold font-display text-gold uppercase tracking-widest">{home.category}</span>
             </div>
-            <h1 className="font-display font-bold text-navy text-4xl mb-2">Loft</h1>
-            <p className="text-2xl font-bold font-display text-gold mb-4">From £138,000</p>
+            <h1 className="font-display font-bold text-navy text-4xl mb-2">{home.name}</h1>
+            <p className="text-2xl font-bold font-display text-gold mb-4">From {home.kitPrice}</p>
 
             {/* Stats grid */}
             <div className="grid grid-cols-3 gap-3 mb-5 p-4 bg-light rounded-xl">
               {[
-                { label: 'Floor area', value: '112m²' },
-                { label: 'Bedrooms', value: '3' },
+                { label: 'Floor area', value: home.sizeRange },
+                { label: 'Bedrooms', value: String(home.beds) },
                 { label: 'Bathrooms', value: '2' },
-                { label: 'Storeys', value: '1.5' },
-                { label: 'ft²', value: '1,206' },
-                { label: 'Base price', value: 'From £138k' },
+                { label: 'Turnkey', value: home.turnkeyPrice },
+                { label: 'Shell price', value: home.shellPrice },
+                { label: 'Kit price', value: home.kitPrice },
               ].map((s) => (
                 <div key={s.label} className="text-center">
                   <p className="font-bold font-display text-navy text-base">{s.value}</p>
@@ -150,7 +144,7 @@ export default function ProductPage({ navigate }: ProductPageProps) {
             </div>
 
             <p className="text-sm text-muted leading-relaxed mb-5">
-              The Loft is a versatile 1.5 storey design offering generous ground-floor living with private first-floor bedrooms. A large fully glazed gable end floods the open-plan living space with natural light while framing views across the garden.
+              {home.desc}
             </p>
 
             {/* Badges */}
@@ -162,21 +156,17 @@ export default function ProductPage({ navigate }: ProductPageProps) {
 
             {/* CTAs */}
             <div className="space-y-3">
-              <button
-                onClick={() => navigate('contact')}
-                className="w-full bg-gold text-navy font-bold font-display py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm"
-              >
+              <a href="/contact/"
+                className="w-full bg-gold text-navy font-bold font-display py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm">
                 Request a Quote
-              </button>
+              </a>
               <button className="w-full border border-navy text-navy font-semibold font-display py-3.5 rounded-xl hover:bg-light transition-colors text-sm">
                 Download Specification
               </button>
-              <button
-                onClick={() => navigate('bespoke')}
-                className="w-full text-sm font-semibold font-display text-muted hover:text-navy transition-colors underline underline-offset-2 py-1"
-              >
+              <a href="/bespoke/"
+                className="w-full text-sm font-semibold font-display text-muted hover:text-navy transition-colors underline underline-offset-2 py-1">
                 Customise this home
-              </button>
+              </a>
             </div>
           </div>
         </div>
@@ -187,10 +177,10 @@ export default function ProductPage({ navigate }: ProductPageProps) {
         <div className="max-w-[1280px] mx-auto px-6 lg:px-8 max-w-3xl">
           <h2 className="font-display font-bold text-navy text-2xl mb-4">Overview</h2>
           <p className="text-body text-base leading-relaxed mb-3">
-            The Loft pairs an open-plan ground floor — kitchen, dining and living — with a mezzanine-level first storey housing three bedrooms and a family bathroom. The galleried staircase creates a sense of volume without adding unnecessary footprint.
+            The {home.name} is part of our {home.category.toLowerCase()} range, available from {home.sizeRange} of internal floor area. {home.desc}
           </p>
           <p className="text-body text-base leading-relaxed">
-            Available in both Base and Turnkey completion options, the Loft can be specified with a range of external cladding finishes, glazing configurations and sustainable upgrades including air-source heat pumps and roof-integrated solar panels.
+            Available as a kit, weathertight shell or fully finished turnkey build, the {home.name} can be specified with a range of external cladding finishes, glazing configurations and sustainable upgrades including air-source heat pumps and roof-integrated solar panels.
           </p>
         </div>
       </div>
@@ -222,7 +212,7 @@ export default function ProductPage({ navigate }: ProductPageProps) {
       <div className="border-t border-border py-14">
         <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
           <h2 className="font-display font-bold text-navy text-2xl mb-2">Completion options</h2>
-          <p className="text-muted text-sm mb-6">The Loft is available as a Base or Turnkey solution.</p>
+          <p className="text-muted text-sm mb-6">The {home.name} is available as a kit, shell or turnkey solution.</p>
           <div className="flex gap-2 mb-7">
             {(['Base', 'Turnkey'] as const).map((tab) => (
               <button
@@ -262,12 +252,10 @@ export default function ProductPage({ navigate }: ProductPageProps) {
                 </ul>
               </div>
             )}
-            <button
-              onClick={() => navigate('contact')}
-              className="mt-5 text-sm font-semibold font-display text-navy underline underline-offset-2 hover:text-gold transition-colors"
-            >
+            <a href="/contact/"
+              className="mt-5 text-sm font-semibold font-display text-navy underline underline-offset-2 hover:text-gold transition-colors">
               Request the full specification →
-            </button>
+            </a>
           </div>
         </div>
       </div>
@@ -276,7 +264,7 @@ export default function ProductPage({ navigate }: ProductPageProps) {
       <div className="border-t border-border bg-light py-14">
         <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
           <h2 className="font-display font-bold text-navy text-2xl mb-2">Sustainable upgrades</h2>
-          <p className="text-muted text-sm mb-8">Optional upgrades available across the Loft range.</p>
+          <p className="text-muted text-sm mb-8">Optional upgrades available across the {home.name} range.</p>
           <div className="grid sm:grid-cols-3 gap-5 mb-10">
             {sustainableCards.map((c) => (
               <div key={c.title} className="rounded-xl overflow-hidden bg-white card-shadow">
@@ -297,12 +285,10 @@ export default function ProductPage({ navigate }: ProductPageProps) {
               </div>
             ))}
           </div>
-          <button
-            onClick={() => navigate('bespoke')}
-            className="text-sm font-semibold font-display text-navy border border-navy rounded-xl px-6 py-3 hover:bg-navy hover:text-white transition-colors"
-          >
+          <a href="/bespoke/"
+            className="text-sm font-semibold font-display text-navy border border-navy rounded-xl px-6 py-3 hover:bg-navy hover:text-white transition-colors">
             Discuss Bespoke Options
-          </button>
+          </a>
         </div>
       </div>
 
@@ -342,22 +328,20 @@ export default function ProductPage({ navigate }: ProductPageProps) {
           <h2 className="font-display font-bold text-navy text-2xl mb-8">You might also like</h2>
           <div className="grid sm:grid-cols-3 gap-6">
             {relatedHomes.map((h) => (
-              <button
+              <a href={productPath(h.slug)}
                 key={h.name}
-                onClick={() => navigate('product')}
-                className="group bg-white rounded-2xl overflow-hidden card-shadow card-shadow-hover text-left transition-all duration-300 hover:-translate-y-1"
-              >
+                className="group bg-white rounded-2xl overflow-hidden card-shadow card-shadow-hover text-left transition-all duration-300 hover:-translate-y-1">
                 <div className="h-44 overflow-hidden bg-light">
                   <img src={h.img} alt={h.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                 </div>
                 <div className="p-4">
                   <div className="flex items-center justify-between">
                     <p className="font-display font-bold text-navy">{h.name}</p>
-                    <p className="text-sm font-bold text-gold font-display">{h.price}</p>
+                    <p className="text-sm font-bold text-gold font-display">{h.kitPrice}</p>
                   </div>
-                  <p className="text-xs text-muted mt-0.5">{h.area}</p>
+                  <p className="text-xs text-muted mt-0.5">{h.sizeRange}</p>
                 </div>
-              </button>
+              </a>
             ))}
           </div>
         </div>
@@ -366,11 +350,11 @@ export default function ProductPage({ navigate }: ProductPageProps) {
       {/* ─── I: Final CTA ─── */}
       <div className="bg-navy py-16">
         <div className="max-w-[700px] mx-auto px-6 lg:px-8 text-center">
-          <h2 className="font-display font-bold text-white text-3xl mb-3">Interested in the Loft?</h2>
+          <h2 className="font-display font-bold text-white text-3xl mb-3">Interested in the {home.name}?</h2>
           <p className="text-white/65 text-base mb-8">Tell us about your site, delivery area and any modifications you have in mind. We'll come back to you with a tailored quotation.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button onClick={() => navigate('contact')} className="bg-gold text-navy font-bold font-display px-8 py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm">Request a Quote</button>
-            <button onClick={() => navigate('catalogue')} className="border border-white/30 text-white font-semibold font-display px-8 py-3.5 rounded-xl hover:bg-white/10 transition-colors text-sm">Browse all homes</button>
+            <a href="/contact/" className="bg-gold text-navy font-bold font-display px-8 py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm">Request a Quote</a>
+            <a href="/catalogue/" className="border border-white/30 text-white font-semibold font-display px-8 py-3.5 rounded-xl hover:bg-white/10 transition-colors text-sm">Browse all homes</a>
           </div>
         </div>
       </div>
@@ -387,9 +371,9 @@ export default function ProductPage({ navigate }: ProductPageProps) {
 
       {/* Mobile sticky CTA */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-border px-4 py-3 flex gap-3">
-        <button onClick={() => navigate('contact')} className="flex-1 bg-gold text-navy font-bold font-display py-3 rounded-xl text-sm">
+        <a href="/contact/" className="flex-1 bg-gold text-navy font-bold font-display py-3 rounded-xl text-sm">
           Request a Quote
-        </button>
+        </a>
         <button className="flex-1 border border-navy text-navy font-semibold font-display py-3 rounded-xl text-sm">
           Download Spec
         </button>

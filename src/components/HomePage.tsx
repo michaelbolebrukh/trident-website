@@ -1,9 +1,5 @@
 import { useState } from "react"
-import type { Page } from "../App"
-
-interface HomePageProps {
-  navigate: (page: Page) => void
-}
+import { routes } from "../lib/routes"
 
 const IMGS = {
   hero: "https://images.unsplash.com/photo-1766603636700-e9d80473f40f?w=1400&h=900&fit=crop&auto=format",
@@ -193,7 +189,7 @@ const galleryImgs = [
 ]
 
 
-export default function HomePage({ navigate }: HomePageProps) {
+export default function HomePage() {
   const [activeTab, setActiveTab] = useState<HomeTab>("Garden Rooms")
   const [spaceType, setSpaceType] = useState("")
   const [sizeType, setSizeType] = useState("")
@@ -244,18 +240,14 @@ export default function HomePage({ navigate }: HomePageProps) {
               to final installation.
             </p>
             <div className="flex flex-wrap gap-4">
-              <button
-                onClick={() => navigate("catalogue")}
-                className="bg-gold text-navy font-semibold font-display px-7 py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm"
-              >
+              <a href="/catalogue/"
+                className="bg-gold text-navy font-semibold font-display px-7 py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm">
                 Explore Our Homes
-              </button>
-              <button
-                onClick={() => navigate("contact")}
-                className="border border-white/30 text-white font-semibold font-display px-7 py-3.5 rounded-xl hover:bg-white/10 transition-colors text-sm"
-              >
+              </a>
+              <a href="/contact/"
+                className="border border-white/30 text-white font-semibold font-display px-7 py-3.5 rounded-xl hover:bg-white/10 transition-colors text-sm">
                 Start Your Project
-              </button>
+              </a>
             </div>
           </div>
 
@@ -338,12 +330,10 @@ export default function HomePage({ navigate }: HomePageProps) {
                   className="w-full border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold/40 focus:border-gold resize-none"
                 />
               </div>
-              <button
-                onClick={() => navigate("contact")}
-                className="w-full bg-navy text-white font-semibold font-display py-3.5 rounded-xl hover:bg-navy-mid transition-colors text-sm"
-              >
+              <a href="/contact/"
+                className="w-full bg-navy text-white font-semibold font-display py-3.5 rounded-xl hover:bg-navy-mid transition-colors text-sm">
                 Request a Consultation
-              </button>
+              </a>
             </div>
           </div>
         </div>
@@ -410,24 +400,23 @@ export default function HomePage({ navigate }: HomePageProps) {
                 title: "Modular Homes",
                 desc: "Factory-built homes designed for efficient delivery and installation. Available as bungalows, 1.5 and 2 storey designs.",
                 img: IMGS.timber,
-                page: "catalogue" as Page,
+                href: routes.catalogue,
               },
               {
                 title: "Frame Houses",
                 desc: "Flexible, spacious homes assembled on site and tailored to your plot — with a wide range of finishes and layouts.",
                 img: IMGS.frame,
-                page: "catalogue" as Page,
+                href: routes.catalogue,
               },
               {
                 title: "Garden Rooms & Workspaces",
                 desc: "Year-round spaces for work, leisure, guests and independent living. From compact studios to fully fitted annexes.",
                 img: IMGS.garden,
-                page: "catalogue" as Page,
+                href: routes.catalogue,
               },
             ].map((c) => (
-              <button
+              <a href={c.href}
                 key={c.title}
-                onClick={() => navigate(c.page)}
                 className="group relative overflow-hidden rounded-2xl bg-white card-shadow card-shadow-hover text-left transition-all duration-300 hover:-translate-y-1"
               >
                 <div className="h-56 overflow-hidden bg-light">
@@ -456,14 +445,12 @@ export default function HomePage({ navigate }: HomePageProps) {
                     </svg>
                   </span>
                 </div>
-              </button>
+              </a>
             ))}
           </div>
           <div className="mt-6 text-center">
-            <button
-              onClick={() => navigate("bespoke")}
-              className="inline-flex items-center gap-2 text-sm font-semibold font-display text-navy border border-border rounded-xl px-6 py-3 hover:border-navy transition-colors"
-            >
+            <a href="/bespoke/"
+              className="inline-flex items-center gap-2 text-sm font-semibold font-display text-navy border border-border rounded-xl px-6 py-3 hover:border-navy transition-colors">
               Commercial Buildings & Bespoke Projects
               <svg
                 width="16"
@@ -473,7 +460,7 @@ export default function HomePage({ navigate }: HomePageProps) {
               >
                 <path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6z" />
               </svg>
-            </button>
+            </a>
           </div>
         </div>
       </section>
@@ -490,12 +477,10 @@ export default function HomePage({ navigate }: HomePageProps) {
                 Featured homes
               </h2>
             </div>
-            <button
-              onClick={() => navigate("catalogue")}
-              className="shrink-0 text-sm font-semibold font-display text-navy border border-border rounded-xl px-5 py-2.5 hover:border-navy transition-colors"
-            >
+            <a href="/catalogue/"
+              className="shrink-0 text-sm font-semibold font-display text-navy border border-border rounded-xl px-5 py-2.5 hover:border-navy transition-colors">
               View all homes →
-            </button>
+            </a>
           </div>
 
           {/* Tabs */}
@@ -589,12 +574,10 @@ export default function HomePage({ navigate }: HomePageProps) {
                     <span className="text-xs text-muted">
                       + foundation {home.foundation}
                     </span>
-                    <button
-                      onClick={() => navigate("product")}
-                      className="text-xs font-bold font-display text-navy border border-border rounded-lg px-4 py-1.5 hover:border-navy hover:bg-light transition-colors"
-                    >
+                    <a href="/catalogue/garden-premium/"
+                      className="text-xs font-bold font-display text-navy border border-border rounded-lg px-4 py-1.5 hover:border-navy hover:bg-light transition-colors">
                       Open
-                    </button>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -664,12 +647,10 @@ export default function HomePage({ navigate }: HomePageProps) {
                   </li>
                 ))}
               </ul>
-              <button
-                onClick={() => navigate("bespoke")}
-                className="bg-navy text-white font-semibold font-display px-7 py-3.5 rounded-xl hover:bg-navy-mid transition-colors text-sm"
-              >
+              <a href="/bespoke/"
+                className="bg-navy text-white font-semibold font-display px-7 py-3.5 rounded-xl hover:bg-navy-mid transition-colors text-sm">
                 Explore Bespoke Design
-              </button>
+              </a>
             </div>
           </div>
         </div>
@@ -841,7 +822,10 @@ export default function HomePage({ navigate }: HomePageProps) {
             <button
               onClick={() => {
                 if (wizardStep === 1 && spaceType) setWizardStep(2)
-                else if (wizardStep === 2) navigate("contact")
+                else if (wizardStep === 2) {
+                  const params = new URLSearchParams({ space: spaceType, size: sizeType })
+                  window.location.href = `${routes.contact}?${params}`
+                }
               }}
               className="bg-gold text-navy font-bold font-display px-8 py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm disabled:opacity-40"
               disabled={wizardStep === 1 ? !spaceType : !sizeType}
@@ -919,10 +903,8 @@ export default function HomePage({ navigate }: HomePageProps) {
             </div>
           </div>
           <div className="text-center mt-12">
-            <button
-              onClick={() => navigate("installation")}
-              className="inline-flex items-center gap-2 text-sm font-semibold font-display text-navy border border-border rounded-xl px-6 py-3 hover:border-navy transition-colors"
-            >
+            <a href="/installation/"
+              className="inline-flex items-center gap-2 text-sm font-semibold font-display text-navy border border-border rounded-xl px-6 py-3 hover:border-navy transition-colors">
               See our installation process
               <svg
                 width="16"
@@ -932,7 +914,7 @@ export default function HomePage({ navigate }: HomePageProps) {
               >
                 <path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6z" />
               </svg>
-            </button>
+            </a>
           </div>
         </div>
       </section>
@@ -1015,10 +997,8 @@ export default function HomePage({ navigate }: HomePageProps) {
             ))}
           </div>
           <div className="text-center mt-8">
-            <button
-              onClick={() => navigate("installation")}
-              className="inline-flex items-center gap-2 text-sm font-semibold font-display text-navy border border-border rounded-xl px-6 py-3 hover:border-navy transition-colors"
-            >
+            <a href="/installation/"
+              className="inline-flex items-center gap-2 text-sm font-semibold font-display text-navy border border-border rounded-xl px-6 py-3 hover:border-navy transition-colors">
               Compare completion options in detail
               <svg
                 width="16"
@@ -1028,7 +1008,7 @@ export default function HomePage({ navigate }: HomePageProps) {
               >
                 <path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6z" />
               </svg>
-            </button>
+            </a>
           </div>
         </div>
       </section>
@@ -1045,23 +1025,19 @@ export default function HomePage({ navigate }: HomePageProps) {
                 Recent work
               </h2>
             </div>
-            <button
-              onClick={() => navigate("gallery")}
-              className="shrink-0 text-sm font-semibold font-display text-navy border border-border rounded-xl px-5 py-2.5 hover:border-navy transition-colors"
-            >
+            <a href="/gallery/"
+              className="shrink-0 text-sm font-semibold font-display text-navy border border-border rounded-xl px-5 py-2.5 hover:border-navy transition-colors">
               View project gallery →
-            </button>
+            </a>
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
             {galleryImgs.map((g, i) => (
-              <button
+              <a href="/gallery/"
                 key={i}
-                onClick={() => navigate("gallery")}
                 className={`group relative overflow-hidden rounded-xl bg-light ${
                   i === 0 ? "col-span-2 lg:col-span-1 row-span-2" : ""
                 }`}
-                style={{ height: i === 0 ? "460px" : "218px" }}
-              >
+                style={{ height: i === 0 ? "460px" : "218px" }}>
                 <img
                   src={g.img}
                   alt={g.label}
@@ -1074,7 +1050,7 @@ export default function HomePage({ navigate }: HomePageProps) {
                   </p>
                   <p className="text-white/70 text-xs">{g.type}</p>
                 </div>
-              </button>
+              </a>
             ))}
           </div>
         </div>
@@ -1101,22 +1077,18 @@ export default function HomePage({ navigate }: HomePageProps) {
             Tell us about your project and we'll guide you through the next steps.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button
-              onClick={() => navigate("contact")}
-              className="bg-gold text-navy font-bold font-display px-8 py-4 rounded-xl hover:bg-gold-dark transition-colors text-sm"
-            >
+            <a href="/contact/"
+              className="bg-gold text-navy font-bold font-display px-8 py-4 rounded-xl hover:bg-gold-dark transition-colors text-sm">
               Start Your Project
-            </button>
+            </a>
             <button className="border border-white/30 text-white font-semibold font-display px-8 py-4 rounded-xl hover:bg-white/10 transition-colors text-sm">
               Download Catalogue
             </button>
           </div>
-          <button
-            onClick={() => navigate("faq")}
-            className="mt-6 text-sm text-white/50 hover:text-white/80 transition-colors underline underline-offset-2"
-          >
+          <a href="/faq/"
+            className="mt-6 text-sm text-white/50 hover:text-white/80 transition-colors underline underline-offset-2">
             Have questions? Browse our FAQ
-          </button>
+          </a>
         </div>
       </section>
     </div>

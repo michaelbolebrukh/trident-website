@@ -1,33 +1,29 @@
 import Logo from './Logo'
-import type { Page } from '../App'
-
-interface FooterProps {
-  navigate: (page: Page) => void
-}
+import { routes } from '../lib/routes'
 
 const homesLinks = [
-  { label: 'All Homes', page: 'catalogue' as Page },
-  { label: 'Garden Rooms', page: 'catalogue' as Page },
-  { label: 'Bungalows', page: 'catalogue' as Page },
-  { label: '1.5 Storey Houses', page: 'catalogue' as Page },
-  { label: '2 Storey Houses', page: 'catalogue' as Page },
+  { label: 'All Homes', href: routes.catalogue },
+  { label: 'Garden Rooms', href: routes.catalogue },
+  { label: 'Bungalows', href: routes.catalogue },
+  { label: '1.5 Storey Houses', href: routes.catalogue },
+  { label: '2 Storey Houses', href: routes.catalogue },
 ]
 
 const servicesLinks = [
-  { label: 'Bespoke Design', page: 'bespoke' as Page },
-  { label: 'Commercial Buildings', page: 'bespoke' as Page },
-  { label: 'Installation', page: 'installation' as Page },
-  { label: 'Sustainable Upgrades', page: 'bespoke' as Page },
+  { label: 'Bespoke Design', href: routes.bespoke },
+  { label: 'Commercial Buildings', href: routes.bespoke },
+  { label: 'Installation', href: routes.installation },
+  { label: 'Sustainable Upgrades', href: routes.bespoke },
 ]
 
 const infoLinks = [
-  { label: 'About Trident', page: 'about' as Page },
-  { label: 'Project Gallery', page: 'gallery' as Page },
-  { label: 'Blog & Insights', page: 'blog' as Page },
-  { label: 'FAQ', page: 'faq' as Page },
+  { label: 'About Trident', href: routes.about },
+  { label: 'Project Gallery', href: routes.gallery },
+  { label: 'Blog & Insights', href: routes.blog },
+  { label: 'FAQ', href: routes.faq },
 ]
 
-export default function Footer({ navigate }: FooterProps) {
+export default function Footer() {
   return (
     <footer className="bg-navy text-white">
       <div className="max-w-[1280px] mx-auto px-6 lg:px-8 pt-16 pb-8">
@@ -62,9 +58,9 @@ export default function Footer({ navigate }: FooterProps) {
             <ul className="space-y-2.5">
               {homesLinks.map((l) => (
                 <li key={l.label}>
-                  <button onClick={() => navigate(l.page)} className="text-sm hover:text-gold transition-colors" style={{ color: 'rgba(255,255,255,0.7)' }}>
+                  <a href={l.href} className="text-sm hover:text-gold transition-colors" style={{ color: 'rgba(255,255,255,0.7)' }}>
                     {l.label}
-                  </button>
+                  </a>
                 </li>
               ))}
             </ul>
@@ -76,9 +72,9 @@ export default function Footer({ navigate }: FooterProps) {
             <ul className="space-y-2.5">
               {servicesLinks.map((l) => (
                 <li key={l.label}>
-                  <button onClick={() => navigate(l.page)} className="text-sm hover:text-gold transition-colors" style={{ color: 'rgba(255,255,255,0.7)' }}>
+                  <a href={l.href} className="text-sm hover:text-gold transition-colors" style={{ color: 'rgba(255,255,255,0.7)' }}>
                     {l.label}
-                  </button>
+                  </a>
                 </li>
               ))}
             </ul>
@@ -90,9 +86,9 @@ export default function Footer({ navigate }: FooterProps) {
             <ul className="space-y-2.5 mb-6">
               {infoLinks.map((l) => (
                 <li key={l.label}>
-                  <button onClick={() => navigate(l.page)} className="text-sm hover:text-gold transition-colors" style={{ color: 'rgba(255,255,255,0.7)' }}>
+                  <a href={l.href} className="text-sm hover:text-gold transition-colors" style={{ color: 'rgba(255,255,255,0.7)' }}>
                     {l.label}
-                  </button>
+                  </a>
                 </li>
               ))}
             </ul>

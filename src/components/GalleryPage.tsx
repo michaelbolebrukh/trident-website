@@ -1,9 +1,4 @@
 import { useState } from 'react'
-import type { Page } from '../App'
-
-interface GalleryPageProps {
-  navigate: (page: Page) => void
-}
 
 const IMGS = [
   { src: 'https://images.unsplash.com/photo-1766603636700-e9d80473f40f?w=900&h=700&fit=crop&auto=format', label: 'Modern Loft', type: 'Residential Homes', location: 'Shropshire' },
@@ -19,7 +14,7 @@ const IMGS = [
 
 const filterOptions = ['All', 'Garden Rooms', 'Residential Homes', 'Interiors', 'Commercial', 'Installation', 'Bespoke Features']
 
-export default function GalleryPage({ navigate }: GalleryPageProps) {
+export default function GalleryPage() {
   const [activeFilter, setActiveFilter] = useState('All')
   const [lightbox, setLightbox] = useState<number | null>(null)
 
@@ -97,9 +92,9 @@ export default function GalleryPage({ navigate }: GalleryPageProps) {
             <p className="font-display font-bold text-navy text-xl mb-1">Interested in any of these projects?</p>
             <p className="text-muted text-sm">Tell us about your own site and we'll discuss the right solution.</p>
           </div>
-          <button onClick={() => navigate('contact')} className="shrink-0 bg-navy text-white font-semibold font-display px-7 py-3.5 rounded-xl hover:bg-navy-mid transition-colors text-sm">
+          <a href="/contact/" className="shrink-0 bg-navy text-white font-semibold font-display px-7 py-3.5 rounded-xl hover:bg-navy-mid transition-colors text-sm">
             Start Your Project
-          </button>
+          </a>
         </div>
       </div>
 

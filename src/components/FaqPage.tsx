@@ -1,9 +1,4 @@
 import { useState, useMemo } from 'react'
-import type { Page } from '../App'
-
-interface FaqPageProps {
-  navigate: (page: Page) => void
-}
 
 const categories = ['All', 'Choosing a Home', 'Pricing & Quotes', 'Design & Customisation', 'Planning & Permissions', 'Installation', 'Base & Turnkey', 'Technical', 'Delivery', 'Sustainability']
 
@@ -29,7 +24,7 @@ const faqs = [
   { q: 'Are your buildings energy efficient?', a: 'Yes. All buildings are designed to meet or exceed current Part L requirements. We offer a range of sustainable upgrades including air-source heat pumps, solar panels, green roofs, MVHR ventilation and underfloor heating.', cat: 'Sustainability' },
 ]
 
-export default function FaqPage({ navigate }: FaqPageProps) {
+export default function FaqPage() {
   const [search, setSearch] = useState('')
   const [activeCategory, setActiveCategory] = useState('All')
   const [openQuestion, setOpenQuestion] = useState<string | null>(null)
@@ -86,7 +81,7 @@ export default function FaqPage({ navigate }: FaqPageProps) {
           <div className="text-center py-16">
             <p className="font-display font-bold text-navy text-xl mb-2">No matching questions found.</p>
             <p className="text-muted text-sm mb-4">Try another keyword or contact our team.</p>
-            <button onClick={() => navigate('contact')} className="text-sm font-semibold font-display text-gold underline">Contact us</button>
+            <a href="/contact/" className="text-sm font-semibold font-display text-gold underline">Contact us</a>
           </div>
         ) : (
           <div className="space-y-2 max-w-3xl">
@@ -120,12 +115,10 @@ export default function FaqPage({ navigate }: FaqPageProps) {
         <div className="mt-14 max-w-2xl bg-light rounded-2xl p-8 border border-border">
           <h3 className="font-display font-bold text-navy text-xl mb-2">Still need help?</h3>
           <p className="text-muted text-sm mb-5">Send us your question and our team will respond within one working day.</p>
-          <button
-            onClick={() => navigate('contact')}
-            className="bg-navy text-white font-semibold font-display px-7 py-3 rounded-xl hover:bg-navy-mid transition-colors text-sm"
-          >
+          <a href="/contact/"
+            className="bg-navy text-white font-semibold font-display px-7 py-3 rounded-xl hover:bg-navy-mid transition-colors text-sm">
             Send us a question
-          </button>
+          </a>
         </div>
       </div>
     </div>

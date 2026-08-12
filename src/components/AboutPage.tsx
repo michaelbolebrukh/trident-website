@@ -1,8 +1,3 @@
-import type { Page } from '../App'
-
-interface AboutPageProps {
-  navigate: (page: Page) => void
-}
 
 const IMGS = {
   hero: 'https://images.unsplash.com/photo-1766603636700-e9d80473f40f?w=1200&h=700&fit=crop&auto=format',
@@ -11,7 +6,7 @@ const IMGS = {
   aerial: 'https://images.unsplash.com/photo-1505060872009-ed2866c37da6?w=900&h=600&fit=crop&auto=format',
 }
 
-export default function AboutPage({ navigate }: AboutPageProps) {
+export default function AboutPage() {
   return (
     <div className="bg-white">
 
@@ -88,12 +83,10 @@ export default function AboutPage({ navigate }: AboutPageProps) {
             <p className="text-muted text-base leading-relaxed mb-6">
               We work with clients who value clear information, realistic timelines and a team that takes responsibility. We don't make promises we can't keep, and we don't overclaim on performance figures.
             </p>
-            <button
-              onClick={() => navigate('contact')}
-              className="bg-navy text-white font-semibold font-display px-7 py-3.5 rounded-xl hover:bg-navy-mid transition-colors text-sm"
-            >
+            <a href="/contact/"
+              className="bg-navy text-white font-semibold font-display px-7 py-3.5 rounded-xl hover:bg-navy-mid transition-colors text-sm">
               Talk to our team
-            </button>
+            </a>
           </div>
         </div>
       </section>
@@ -104,8 +97,8 @@ export default function AboutPage({ navigate }: AboutPageProps) {
           <h2 className="font-display font-bold text-white text-3xl mb-4">Ready to start a conversation?</h2>
           <p className="text-white/65 mb-8">Tell us about your project and our team will help identify the most suitable next step.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button onClick={() => navigate('contact')} className="bg-gold text-navy font-bold font-display px-8 py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm">Start Your Project</button>
-            <button onClick={() => navigate('catalogue')} className="border border-white/30 text-white font-semibold font-display px-8 py-3.5 rounded-xl hover:bg-white/10 transition-colors text-sm">Browse our homes</button>
+            <a href="/contact/" className="bg-gold text-navy font-bold font-display px-8 py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm">Start Your Project</a>
+            <a href="/catalogue/" className="border border-white/30 text-white font-semibold font-display px-8 py-3.5 rounded-xl hover:bg-white/10 transition-colors text-sm">Browse our homes</a>
           </div>
         </div>
       </section>

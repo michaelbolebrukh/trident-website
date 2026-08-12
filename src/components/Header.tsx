@@ -1,39 +1,54 @@
 import { useState, useEffect, useRef } from 'react'
 import Logo from './Logo'
-import type { Page } from '../App'
+import { routes } from '../lib/routes'
 
 interface HeaderProps {
-  currentPage: Page
-  navigate: (page: Page) => void
+  /** Pathname of the page being rendered, used for the active nav state. */
+  currentPath: string
 }
 
 const homesMegaMenu = [
-  { label: 'View All Homes', page: 'catalogue' as Page },
-  { label: 'Garden Rooms', page: 'catalogue' as Page },
-  { label: 'Bungalows', page: 'catalogue' as Page },
-  { label: '1.5 Storey Houses', page: 'catalogue' as Page },
-  { label: '2 Storey Houses', page: 'catalogue' as Page },
+  { label: 'View All Homes', href: routes.catalogue },
+  { label: 'Garden Rooms', href: routes.catalogue },
+  { label: 'Bungalows', href: routes.catalogue },
+  { label: '1.5 Storey Houses', href: routes.catalogue },
+  { label: '2 Storey Houses', href: routes.catalogue },
 ]
 
 const bespokeDropdown = [
-  { label: 'Bespoke Home Design', page: 'bespoke' as Page },
-  { label: 'Commercial Buildings', page: 'bespoke' as Page },
-  { label: 'Workspaces', page: 'bespoke' as Page },
-  { label: 'Interiors', page: 'bespoke' as Page },
-  { label: 'Sustainable Upgrades', page: 'bespoke' as Page },
+  { label: 'Bespoke Home Design', href: routes.bespoke },
+  { label: 'Commercial Buildings', href: routes.bespoke },
+  { label: 'Workspaces', href: routes.bespoke },
+  { label: 'Interiors', href: routes.bespoke },
+  { label: 'Sustainable Upgrades', href: routes.bespoke },
 ]
 
 const navLinks = [
-  { label: 'Homes', page: 'catalogue' as Page, hasMega: true },
-  { label: 'Bespoke & Commercial', page: 'bespoke' as Page, hasDropdown: true },
-  { label: 'Installation', page: 'installation' as Page },
-  { label: 'Gallery', page: 'gallery' as Page },
-  { label: 'About', page: 'about' as Page },
-  { label: 'Blog', page: 'blog' as Page },
-  { label: 'FAQ', page: 'faq' as Page },
+  { label: 'Homes', href: routes.catalogue, hasMega: true },
+  { label: 'Bespoke & Commercial', href: routes.bespoke, hasDropdown: true },
+  { label: 'Installation', href: routes.installation },
+  { label: 'Gallery', href: routes.gallery },
+  { label: 'About', href: routes.about },
+  { label: 'Blog', href: routes.blog },
+  { label: 'FAQ', href: routes.faq },
 ]
 
-export default function Header({ currentPage, navigate }: HeaderProps) {
+const mobileLinks = [
+  { label: 'Installation', href: routes.installation },
+  { label: 'Gallery', href: routes.gallery },
+  { label: 'About', href: routes.about },
+  { label: 'Blog', href: routes.blog },
+  { label: 'FAQ', href: routes.faq },
+  { label: 'Contact', href: routes.contact },
+]
+
+const megaCategories = [
+  { label: 'Garden Rooms', img: '1697538022262-7eb736179973', desc: 'Year-round spaces from 15m²' },
+  { label: 'Modular Homes', img: '1605018075968-b014b8d2e487', desc: 'Factory-built, site-ready homes' },
+  { label: 'Frame Houses', img: '1696846911635-83b97e53fb65', desc: 'Flexible homes assembled on site' },
+]
+
+export default function Header({ currentPath }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false)
   const [megaOpen, setMegaOpen] = useState(false)
   const [bespokeOpen, setBespokeOpen] = useState(false)
@@ -48,12 +63,26 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const handleNav = (page: Page) => {
-    navigate(page)
-    setMegaOpen(false)
-    setBespokeOpen(false)
-    setMobileOpen(false)
-  }
+  // Lock background scrolling while the mobile drawer is open.
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? 'hidden' : ''
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [mobileOpen])
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return
+      setMobileOpen(false)
+      setMegaOpen(false)
+      setBespokeOpen(false)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
+  const isActive = (href: string) => currentPath === href
 
   return (
     <>
@@ -79,41 +108,44 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
       >
         <div className="max-w-[1280px] mx-auto px-6 lg:px-8 flex items-center h-16 gap-8">
           {/* Logo */}
-          <button onClick={() => handleNav('home')} className="shrink-0 focus:outline-none">
+          <a href={routes.home} className="shrink-0 focus:outline-none" aria-label="Trident Modular — home">
             <Logo height={34} />
-          </button>
+          </a>
 
           {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-1 flex-1 justify-center" onMouseLeave={() => { setMegaOpen(false); setBespokeOpen(false) }}>
             {navLinks.map((link) => (
               <div key={link.label} className="relative">
-                <button
-                  onClick={() => handleNav(link.page)}
+                <a
+                  href={link.href}
                   onMouseEnter={() => {
                     setMegaOpen(link.hasMega ?? false)
                     setBespokeOpen(link.hasDropdown ?? false)
-                    if (!link.hasMega) setMegaOpen(false)
-                    if (!link.hasDropdown) setBespokeOpen(false)
                   }}
-                  className={`flex items-center gap-1 px-3 py-2 text-sm font-medium font-display rounded-lg transition-colors ${currentPage === link.page ? 'text-navy' : 'text-body hover:text-navy'}`}
+                  onFocus={() => {
+                    setMegaOpen(link.hasMega ?? false)
+                    setBespokeOpen(link.hasDropdown ?? false)
+                  }}
+                  aria-current={isActive(link.href) ? 'page' : undefined}
+                  className={`flex items-center gap-1 px-3 py-2 text-sm font-medium font-display rounded-lg transition-colors ${isActive(link.href) ? 'text-navy' : 'text-body hover:text-navy'}`}
                 >
                   {link.label}
                   {(link.hasMega || link.hasDropdown) && (
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" className="opacity-50 mt-0.5"><path d="M7 10l5 5 5-5z"/></svg>
                   )}
-                </button>
+                </a>
 
                 {/* Bespoke dropdown */}
                 {link.hasDropdown && bespokeOpen && (
                   <div className="absolute top-full left-0 mt-1 bg-white border border-border rounded-xl shadow-lg py-2 min-w-48 z-50">
                     {bespokeDropdown.map((item) => (
-                      <button
+                      <a
                         key={item.label}
-                        onClick={() => handleNav(item.page)}
-                        className="w-full text-left px-4 py-2 text-sm text-body hover:text-navy hover:bg-light transition-colors"
+                        href={item.href}
+                        className="block w-full text-left px-4 py-2 text-sm text-body hover:text-navy hover:bg-light transition-colors"
                       >
                         {item.label}
-                      </button>
+                      </a>
                     ))}
                   </div>
                 )}
@@ -131,37 +163,34 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
                     <p className="text-xs font-semibold font-display text-muted uppercase tracking-widest mb-4">Homes</p>
                     <div className="space-y-1">
                       {homesMegaMenu.map((item) => (
-                        <button
+                        <a
                           key={item.label}
-                          onClick={() => handleNav(item.page)}
+                          href={item.href}
                           className="block w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-body hover:text-navy hover:bg-light transition-colors"
                         >
                           {item.label}
-                        </button>
+                        </a>
                       ))}
                     </div>
                   </div>
                   <div className="col-span-3 grid grid-cols-3 gap-4">
-                    {[
-                      { label: 'Garden Rooms', img: '1697538022262-7eb736179973', desc: 'Year-round spaces from 15m²' },
-                      { label: 'Modular Homes', img: '1605018075968-b014b8d2e487', desc: 'Factory-built, site-ready homes' },
-                      { label: 'Frame Houses', img: '1696846911635-83b97e53fb65', desc: 'Flexible homes assembled on site' },
-                    ].map((cat) => (
-                      <button
+                    {megaCategories.map((cat) => (
+                      <a
                         key={cat.label}
-                        onClick={() => handleNav('catalogue')}
+                        href={routes.catalogue}
                         className="relative overflow-hidden rounded-xl group cursor-pointer text-left"
                       >
                         <div className="bg-light h-36 overflow-hidden rounded-xl">
                           <img
                             src={`https://images.unsplash.com/photo-${cat.img}?w=400&h=220&fit=crop&auto=format`}
                             alt={cat.label}
+                            loading="lazy"
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                           />
                         </div>
                         <p className="mt-2 text-sm font-semibold font-display text-navy">{cat.label}</p>
                         <p className="text-xs text-muted mt-0.5">{cat.desc}</p>
-                      </button>
+                      </a>
                     ))}
                   </div>
                 </div>
@@ -171,32 +200,33 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
 
           {/* Desktop CTA */}
           <div className="hidden lg:flex items-center gap-3 ml-auto">
-            <button
-              onClick={() => handleNav('contact')}
+            <a
+              href={routes.contact}
               className="text-sm text-muted hover:text-navy transition-colors font-medium"
             >
               Contact
-            </button>
-            <button
-              onClick={() => handleNav('contact')}
+            </a>
+            <a
+              href={routes.contact}
               className="bg-gold text-navy text-sm font-semibold font-display px-5 py-2.5 rounded-xl hover:bg-gold-dark transition-colors"
             >
               Get a Quote
-            </button>
+            </a>
           </div>
 
           {/* Mobile menu button */}
           <div className="lg:hidden ml-auto flex items-center gap-3">
-            <button
-              onClick={() => handleNav('contact')}
+            <a
+              href={routes.contact}
               className="bg-gold text-navy text-xs font-semibold font-display px-4 py-2 rounded-lg"
             >
               Get a Quote
-            </button>
+            </a>
             <button
               onClick={() => setMobileOpen(true)}
               className="p-2 text-navy"
               aria-label="Open menu"
+              aria-expanded={mobileOpen}
             >
               <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
             </button>
@@ -211,7 +241,7 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
           <div className="relative ml-auto w-80 max-w-full bg-white h-full flex flex-col shadow-2xl">
             <div className="flex items-center justify-between px-6 py-4 border-b border-border">
               <Logo height={28} />
-              <button onClick={() => setMobileOpen(false)} className="p-2 text-navy">
+              <button onClick={() => setMobileOpen(false)} className="p-2 text-navy" aria-label="Close menu">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
               </button>
             </div>
@@ -220,6 +250,7 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
               <div>
                 <button
                   onClick={() => setMobileHomesOpen(!mobileHomesOpen)}
+                  aria-expanded={mobileHomesOpen}
                   className="flex items-center justify-between w-full px-3 py-3 rounded-xl text-sm font-semibold font-display text-navy hover:bg-light transition-colors"
                 >
                   Homes
@@ -228,9 +259,9 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
                 {mobileHomesOpen && (
                   <div className="pl-4 space-y-1 mt-1">
                     {homesMegaMenu.map((item) => (
-                      <button key={item.label} onClick={() => handleNav(item.page)} className="block w-full text-left px-3 py-2 rounded-lg text-sm text-body hover:text-navy hover:bg-light transition-colors">
+                      <a key={item.label} href={item.href} className="block w-full text-left px-3 py-2 rounded-lg text-sm text-body hover:text-navy hover:bg-light transition-colors">
                         {item.label}
-                      </button>
+                      </a>
                     ))}
                   </div>
                 )}
@@ -240,6 +271,7 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
               <div>
                 <button
                   onClick={() => setMobileBespokeOpen(!mobileBespokeOpen)}
+                  aria-expanded={mobileBespokeOpen}
                   className="flex items-center justify-between w-full px-3 py-3 rounded-xl text-sm font-semibold font-display text-navy hover:bg-light transition-colors"
                 >
                   Bespoke & Commercial
@@ -248,31 +280,32 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
                 {mobileBespokeOpen && (
                   <div className="pl-4 space-y-1 mt-1">
                     {bespokeDropdown.map((item) => (
-                      <button key={item.label} onClick={() => handleNav(item.page)} className="block w-full text-left px-3 py-2 rounded-lg text-sm text-body hover:text-navy hover:bg-light transition-colors">
+                      <a key={item.label} href={item.href} className="block w-full text-left px-3 py-2 rounded-lg text-sm text-body hover:text-navy hover:bg-light transition-colors">
                         {item.label}
-                      </button>
+                      </a>
                     ))}
                   </div>
                 )}
               </div>
 
-              {['installation', 'gallery', 'about', 'blog', 'faq', 'contact'].map((p) => (
-                <button
-                  key={p}
-                  onClick={() => handleNav(p as Page)}
-                  className="block w-full text-left px-3 py-3 rounded-xl text-sm font-semibold font-display text-navy hover:bg-light transition-colors capitalize"
+              {mobileLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  aria-current={isActive(link.href) ? 'page' : undefined}
+                  className="block w-full text-left px-3 py-3 rounded-xl text-sm font-semibold font-display text-navy hover:bg-light transition-colors"
                 >
-                  {p === 'faq' ? 'FAQ' : p.charAt(0).toUpperCase() + p.slice(1)}
-                </button>
+                  {link.label}
+                </a>
               ))}
             </nav>
             <div className="px-4 py-4 border-t border-border">
-              <button
-                onClick={() => handleNav('contact')}
-                className="w-full bg-gold text-navy text-sm font-semibold font-display py-3.5 rounded-xl hover:bg-gold-dark transition-colors"
+              <a
+                href={routes.contact}
+                className="block text-center w-full bg-gold text-navy text-sm font-semibold font-display py-3.5 rounded-xl hover:bg-gold-dark transition-colors"
               >
                 Get a Quote
-              </button>
+              </a>
             </div>
           </div>
         </div>

@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css'
+import Header from '../components/Header'
+import Footer from '../components/Footer'
 
 interface Props {
   title: string
@@ -49,11 +51,13 @@ const blockIndexing = noindex || import.meta.env.PUBLIC_NOINDEX === '1'
       Skip to content
     </a>
     <div class="min-h-screen flex flex-col">
-      <slot name="header" />
+      {/* Interactive: sticky-scroll state, mega menu, mobile drawer. */}
+      <Header currentPath={Astro.url.pathname} client:load />
       <main id="main" class="flex-1">
         <slot />
       </main>
-      <slot name="footer" />
+      {/* Static markup — ships no JavaScript. */}
+      <Footer />
     </div>
   </body>
 </html>

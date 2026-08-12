@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import ProductPage from '../../components/ProductPage'
+import { allHomes } from '../../data/homes'
+
+export function getStaticPaths() {
+  return allHomes.map((home) => ({
+    params: { slug: home.slug },
+    props: { home },
+  }))
+}
+
+const { home } = Astro.props
+---
+
+<BaseLayout
+  title={`${home.name} — ${home.category} | Trident Modular`}
+  description={`${home.desc} ${home.sizeRange} internal floor area. Available as a kit, weathertight shell or fully finished turnkey build.`}
+>
+  <ProductPage home={home} client:load />
+</BaseLayout>

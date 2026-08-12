@@ -1,13 +1,8 @@
 import { useState } from 'react'
-import type { Page } from '../App'
-
-interface ContactPageProps {
-  navigate: (page: Page) => void
-}
 
 const projectTypes = ['Garden room or office', 'Annexe or guest space', 'Permanent home', 'Commercial building', 'Bespoke project', 'Other']
 
-export default function ContactPage({ navigate }: ContactPageProps) {
+export default function ContactPage() {
   const [form, setForm] = useState({
     name: '', email: '', phone: '', postcode: '', projectType: '',
     size: '', message: '', consent: false,
@@ -41,9 +36,9 @@ export default function ContactPage({ navigate }: ContactPageProps) {
           </div>
           <h2 className="font-display font-bold text-navy text-3xl mb-3">Thank you, {form.name.split(' ')[0]}.</h2>
           <p className="text-muted text-base mb-6">We've received your enquiry and will be in touch within one working day.</p>
-          <button onClick={() => navigate('home')} className="bg-navy text-white font-semibold font-display px-7 py-3.5 rounded-xl hover:bg-navy-mid transition-colors text-sm">
+          <a href="/" className="bg-navy text-white font-semibold font-display px-7 py-3.5 rounded-xl hover:bg-navy-mid transition-colors text-sm">
             Return to homepage
-          </button>
+          </a>
         </div>
       </div>
     )

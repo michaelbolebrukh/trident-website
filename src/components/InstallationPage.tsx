@@ -1,11 +1,6 @@
 import { useState, useRef, useCallback } from 'react'
-import type { Page } from '../App'
-import baseImg from '../imports/image-11.png'
-import turnkeyImg from '../imports/image-10.png'
-
-interface InstallationPageProps {
-  navigate: (page: Page) => void
-}
+import baseImg from '../assets/image-11.webp'
+import turnkeyImg from '../assets/image-10.webp'
 
 const IMGS = {
   hero:     'https://images.unsplash.com/photo-1766603636700-e9d80473f40f?w=1200&h=700&fit=crop&auto=format',
@@ -39,7 +34,7 @@ const hotspots = [
   { x: 88, y: 38, side: 'turnkey', label: 'Internal finishes throughout',           desc: 'Plastering, painting, flooring and joinery throughout all rooms.' },
 ]
 
-function ComparisonSlider({ navigate }: { navigate: (p: Page) => void }) {
+function ComparisonSlider() {
   const [sliderPos, setSliderPos] = useState(45)
   const [dragging, setDragging] = useState(false)
   const [activeHotspot, setActiveHotspot] = useState<number | null>(null)
@@ -74,7 +69,7 @@ function ComparisonSlider({ navigate }: { navigate: (p: Page) => void }) {
       >
         {/* BASE — same room, pre-plastering: exposed timber frame, foil insulation, OSB floor */}
         <img
-          src={baseImg}
+          src={baseImg.src}
           alt="Base solution — exposed timber frame, insulation fitted, pre-plastering"
           className="absolute inset-0 w-full h-full object-cover"
           draggable={false}
@@ -86,7 +81,7 @@ function ComparisonSlider({ navigate }: { navigate: (p: Page) => void }) {
           style={{ clipPath: `inset(0 0 0 ${sliderPos}%)` }}
         >
           <img
-            src={turnkeyImg}
+            src={turnkeyImg.src}
             alt="Turnkey solution — plastered, furnished and ready to move in"
             className="absolute inset-0 w-full h-full object-cover"
             draggable={false}
@@ -221,24 +216,20 @@ function ComparisonSlider({ navigate }: { navigate: (p: Page) => void }) {
       </div>
 
       <div className="flex flex-col sm:flex-row gap-3">
-        <button
-          onClick={() => navigate('contact')}
-          className="bg-gold text-navy font-bold font-display px-7 py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm"
-        >
+        <a href="/contact/"
+          className="bg-gold text-navy font-bold font-display px-7 py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm">
           Discuss your completion option
-        </button>
-        <button
-          onClick={() => navigate('contact')}
-          className="border border-border text-navy font-semibold font-display px-7 py-3.5 rounded-xl hover:border-navy transition-colors text-sm"
-        >
+        </a>
+        <a href="/contact/"
+          className="border border-border text-navy font-semibold font-display px-7 py-3.5 rounded-xl hover:border-navy transition-colors text-sm">
           Request a specification
-        </button>
+        </a>
       </div>
     </div>
   )
 }
 
-export default function InstallationPage({ navigate }: InstallationPageProps) {
+export default function InstallationPage() {
   const [activeStep, setActiveStep] = useState(0)
 
   return (
@@ -258,12 +249,10 @@ export default function InstallationPage({ navigate }: InstallationPageProps) {
           <p className="text-white/70 text-lg max-w-xl mb-8">
             Choose the level of completion that suits your project and see how Trident manages delivery, assembly and finishing.
           </p>
-          <button
-            onClick={() => navigate('contact')}
-            className="bg-gold text-navy font-bold font-display px-7 py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm"
-          >
+          <a href="/contact/"
+            className="bg-gold text-navy font-bold font-display px-7 py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm">
             Discuss Your Installation
-          </button>
+          </a>
         </div>
       </section>
 
@@ -277,7 +266,7 @@ export default function InstallationPage({ navigate }: InstallationPageProps) {
               Drag the slider to compare both options. Hover the <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-gold text-navy mx-0.5 translate-y-px" style={{ fontSize: '11px', fontFamily: 'serif', fontStyle: 'italic', fontWeight: 'bold' }}>i</span> markers to see what's included at each stage.
             </p>
           </div>
-          <ComparisonSlider navigate={navigate} />
+          <ComparisonSlider />
         </div>
       </section>
 
@@ -402,18 +391,14 @@ export default function InstallationPage({ navigate }: InstallationPageProps) {
             ))}
           </div>
           <div className="mt-10 flex flex-col sm:flex-row gap-3">
-            <button
-              onClick={() => navigate('contact')}
-              className="bg-navy text-white font-semibold font-display px-7 py-3.5 rounded-xl hover:bg-navy-mid transition-colors text-sm"
-            >
+            <a href="/contact/"
+              className="bg-navy text-white font-semibold font-display px-7 py-3.5 rounded-xl hover:bg-navy-mid transition-colors text-sm">
               Discuss your installation
-            </button>
-            <button
-              onClick={() => navigate('faq')}
-              className="border border-border text-navy font-semibold font-display px-7 py-3.5 rounded-xl hover:border-navy transition-colors text-sm"
-            >
+            </a>
+            <a href="/faq/"
+              className="border border-border text-navy font-semibold font-display px-7 py-3.5 rounded-xl hover:border-navy transition-colors text-sm">
               Browse installation FAQs
-            </button>
+            </a>
           </div>
         </div>
       </section>

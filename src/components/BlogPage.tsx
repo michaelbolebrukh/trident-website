@@ -1,9 +1,4 @@
 import { useState } from 'react'
-import type { Page } from '../App'
-
-interface BlogPageProps {
-  navigate: (page: Page) => void
-}
 
 const IMGS = {
   a: 'https://images.unsplash.com/photo-1766603636700-e9d80473f40f?w=700&h=500&fit=crop&auto=format',
@@ -25,7 +20,7 @@ const articles = [
 
 const categories = ['All', 'Modular Homes', 'Garden Rooms', 'Design', 'Installation', 'Sustainability', 'Planning', 'Case Studies']
 
-export default function BlogPage({ navigate }: BlogPageProps) {
+export default function BlogPage() {
   const [search, setSearch] = useState('')
   const [activeCategory, setActiveCategory] = useState('All')
 
