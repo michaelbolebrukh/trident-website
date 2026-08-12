@@ -1,0 +1,56 @@
+name: Deploy to Hostinger
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Where to deploy
+        type: choice
+        options: [staging, production]
+        default: staging
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    # Pushes to main go to staging; production is a deliberate manual run.
+    environment: ${{ inputs.target || 'staging' }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build
+        env:
+          # Staging must never be indexed — it would compete with the live domain.
+          PUBLIC_NOINDEX: ${{ (inputs.target == 'production') && '0' || '1' }}
+        run: npm run build
+
+      - name: Deploy over SSH
+        uses: burnett01/rsync-deployments@7.0.1
+        with:
+          # --delete removes files that no longer exist in the build. It is
+          # scoped to REMOTE_PATH, so point that at the document root only.
+          switches: -avzr --delete
+          path: dist/
+          remote_path: ${{ secrets.SSH_PATH }}
+          remote_host: ${{ secrets.SSH_HOST }}
+          remote_port: ${{ secrets.SSH_PORT }}
+          remote_user: ${{ secrets.SSH_USER }}
+          remote_key: ${{ secrets.SSH_KEY }}
+
+      - name: Summary
+        run: |
+          echo "Deployed to ${{ inputs.target || 'staging' }}" >> $GITHUB_STEP_SUMMARY
+          echo "Commit: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const projectTypes = ['Garden room or office', 'Annexe or guest space', 'Permanent home', 'Commercial building', 'Bespoke project', 'Other']
 
@@ -6,9 +6,21 @@ export default function ContactPage() {
   const [form, setForm] = useState({
     name: '', email: '', phone: '', postcode: '', projectType: '',
     size: '', message: '', consent: false,
+    company: '', // honeypot — hidden from users, filled only by bots
   })
   const [submitted, setSubmitted] = useState(false)
+  const [sending, setSending] = useState(false)
+  const [submitError, setSubmitError] = useState('')
   const [errors, setErrors] = useState<Record<string, string>>({})
+
+  // The homepage wizard hands off its answers through the query string.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const space = params.get('space')
+    const size = params.get('size')
+    if (!space && !size) return
+    setForm((f) => ({ ...f, size: size ?? f.size, message: space ? `Interested in: ${space}` : f.message }))
+  }, [])
 
   const validate = () => {
     const e: Record<string, string> = {}
@@ -20,11 +32,33 @@ export default function ContactPage() {
     return e
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     const errs = validate()
     if (Object.keys(errs).length) { setErrors(errs); return }
-    setSubmitted(true)
+
+    setSending(true)
+    setSubmitError('')
+    try {
+      const res = await fetch('/api/contact.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...form, page: window.location.pathname }),
+      })
+      const body = await res.json().catch(() => ({}))
+
+      if (!res.ok) {
+        // The server revalidates; surface its field errors if it sent any.
+        if (body.errors) setErrors(body.errors)
+        setSubmitError(body.error ?? 'Something went wrong. Please try again or call us.')
+        return
+      }
+      setSubmitted(true)
+    } catch {
+      setSubmitError('We could not reach the server. Please check your connection or call us.')
+    } finally {
+      setSending(false)
+    }
   }
 
   if (submitted) {
@@ -208,11 +242,32 @@ export default function ContactPage() {
                 {errors.consent && <p className="text-red-500 text-xs mt-1">{errors.consent}</p>}
               </div>
 
+              {/* Honeypot: off-screen and skipped by tab order, so only bots fill it. */}
+              <div aria-hidden="true" className="absolute left-[-9999px] w-px h-px overflow-hidden">
+                <label htmlFor="company">Company (leave blank)</label>
+                <input
+                  id="company"
+                  name="company"
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={form.company}
+                  onChange={(e) => setForm({ ...form, company: e.target.value })}
+                />
+              </div>
+
+              {submitError && (
+                <p role="alert" className="text-red-600 text-sm bg-red-50 border border-red-200 rounded-lg px-4 py-3">
+                  {submitError}
+                </p>
+              )}
+
               <button
                 type="submit"
-                className="bg-gold text-navy font-bold font-display px-8 py-4 rounded-xl hover:bg-gold-dark transition-colors text-sm"
+                disabled={sending}
+                className="bg-gold text-navy font-bold font-display px-8 py-4 rounded-xl hover:bg-gold-dark transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Send Enquiry
+                {sending ? 'Sending…' : 'Send Enquiry'}
               </button>
 
               <p className="text-xs text-muted">
