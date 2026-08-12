@@ -41,11 +41,23 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           # printf, not echo — the key must end with a newline or ssh rejects it.
-          printf '%s\n' "${{ secrets.SSH_KEY }}" > ~/.ssh/deploy_key
+          # tr strips CR: a key copied on Windows carries CRLF, which OpenSSH
+          # refuses to parse.
+          printf '%s\n' "${{ secrets.SSH_KEY }}" | tr -d '\r' > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
 
+          echo "Key file: $(wc -l < ~/.ssh/deploy_key) lines"
+
+          if head -n1 ~/.ssh/deploy_key | grep -q '^ssh-'; then
+            echo "::error::SSH_KEY holds a PUBLIC key. It needs the private one — the file WITHOUT the .pub extension."
+            exit 1
+          fi
+          if ! grep -q 'BEGIN .*PRIVATE KEY' ~/.ssh/deploy_key; then
+            echo "::error::SSH_KEY is missing its -----BEGIN ... PRIVATE KEY----- header line. Copy the whole file, header and footer included."
+            exit 1
+          fi
           if ! ssh-keygen -y -f ~/.ssh/deploy_key > /dev/null 2>&1; then
-            echo "::error::SSH_KEY is not a valid private key. Re-copy it including the BEGIN/END lines."
+            echo "::error::SSH_KEY has the right header but will not parse — the body is likely truncated or re-wrapped. Re-copy with: Get-Content \$env:USERPROFILE\\.ssh\\hostinger_deploy -Raw | Set-Clipboard"
             exit 1
           fi
           echo "Deploy key fingerprint (must match the key listed in hPanel):"
