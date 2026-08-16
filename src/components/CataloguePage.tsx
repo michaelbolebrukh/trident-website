@@ -176,7 +176,7 @@ export default function CataloguePage() {
                       {/* Price */}
                       <div className="rounded-xl overflow-hidden border border-border mt-auto">
                         <div className="flex items-center justify-between px-4 py-3 bg-navy">
-                          <span className="text-[10px] font-bold font-display text-white tracking-[0.15em] uppercase">From</span>
+                          <span className="text-[10px] font-bold font-display text-white tracking-[0.15em] uppercase">From · ex VAT</span>
                           <span className="text-sm font-bold font-display text-white">£{home.price.toLocaleString('en-GB')}</span>
                         </div>
                       </div>

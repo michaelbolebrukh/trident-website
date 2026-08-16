@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { media } from '../data/media'
 import { allHomes, houseImage, type Home } from '../data/homes'
 import { productPath } from '../lib/routes'
+import { detailFor, PRICE_NOTE } from '../data/model-details'
 
 const IMGS = {
   ext1: media.heroExterior,
@@ -36,6 +37,7 @@ const sustainableCards = [
 
 export default function ProductPage({ home }: { home: Home }) {
   const relatedHomes = allHomes.filter((h) => h.slug !== home.slug).slice(0, 3)
+  const detail = detailFor(home.slug)
 
   const [activeImage, setActiveImage] = useState(0)
   const [activeSpec, setActiveSpec] = useState<string | null>(null)
@@ -103,7 +105,8 @@ export default function ProductPage({ home }: { home: Home }) {
               <span className="text-xs font-bold font-display text-gold uppercase tracking-widest">{home.category}</span>
             </div>
             <h1 className="font-display font-bold text-navy text-4xl mb-2">{home.name}</h1>
-            <p className="text-2xl font-bold font-display text-gold mb-4">From £{home.price.toLocaleString('en-GB')}</p>
+            <p className="text-2xl font-bold font-display text-gold mb-1">From £{home.price.toLocaleString('en-GB')}</p>
+            <p className="text-xs text-muted mb-4">ex VAT · foundations quoted separately</p>
 
             {/* Stats grid */}
             <div className="grid grid-cols-3 gap-3 mb-5 p-4 bg-light rounded-xl">
@@ -123,7 +126,7 @@ export default function ProductPage({ home }: { home: Home }) {
             </div>
 
             <p className="text-sm text-muted leading-relaxed mb-5">
-              {home.desc}
+              {detail?.tagline ?? home.desc}
             </p>
 
             {/* Badges */}
@@ -186,6 +189,79 @@ export default function ProductPage({ home }: { home: Home }) {
           </div>
         </div>
       </div>
+
+      {/* ─── C2: Sizes and packages (from the 2026 price guide) ─── */}
+      {detail && (
+        <div className="border-t border-border bg-light py-14">
+          <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
+            <h2 className="font-display font-bold text-navy text-2xl mb-2">Sizes and pricing</h2>
+            <p className="text-muted text-sm mb-6">{detail.tagline}</p>
+
+            <div className="overflow-x-auto rounded-xl border border-border bg-white">
+              <table className="w-full text-sm min-w-[640px]">
+                <thead>
+                  <tr className="bg-navy text-white text-left">
+                    <th className="px-4 py-3 font-display font-semibold">Size</th>
+                    <th className="px-4 py-3 font-display font-semibold">Dimensions (mm)</th>
+                    <th className="px-4 py-3 font-display font-semibold">Internal area</th>
+                    {detail.packages.map((pkg) => (
+                      <th key={pkg.n} className="px-4 py-3 font-display font-semibold whitespace-nowrap">
+                        {pkg.n} {pkg.name}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {detail.variants.map((v) => (
+                    <tr key={v.name} className="border-t border-border">
+                      <td className="px-4 py-3 font-display font-bold text-navy whitespace-nowrap">{v.name}</td>
+                      <td className="px-4 py-3 text-muted whitespace-nowrap">{v.dimensions}</td>
+                      <td className="px-4 py-3 text-muted whitespace-nowrap">{v.area} m²</td>
+                      <td className="px-4 py-3 font-medium text-navy whitespace-nowrap">from £{v.kit.toLocaleString('en-GB')}</td>
+                      <td className="px-4 py-3 font-medium text-navy whitespace-nowrap">from £{v.shell.toLocaleString('en-GB')}</td>
+                      <td className="px-4 py-3 font-bold text-navy whitespace-nowrap">from £{v.turnkey.toLocaleString('en-GB')}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <p className="text-xs text-muted mt-3">{PRICE_NOTE}</p>
+
+            <div className="grid md:grid-cols-3 gap-5 mt-8">
+              {detail.packages.map((pkg) => (
+                <div key={pkg.n} className="bg-white rounded-xl border border-border p-5">
+                  <p className="text-xs font-bold font-display text-gold tracking-[0.15em] uppercase mb-2">
+                    Package {pkg.n}
+                  </p>
+                  <p className="font-display font-bold text-navy text-base mb-2">{pkg.name}</p>
+                  <p className="text-xs text-muted leading-relaxed">{pkg.desc}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex flex-wrap gap-x-8 gap-y-3 mt-8 pt-6 border-t border-border text-xs">
+              <span className="text-muted">
+                U-value walls <span className="font-bold font-display text-navy">{detail.uValueWalls}</span>
+              </span>
+              <span className="text-muted">
+                U-value roof <span className="font-bold font-display text-navy">{detail.uValueRoof}</span>
+              </span>
+              {detail.foundationFrom && (
+                <span className="text-muted">
+                  Ground screw foundation{' '}
+                  <span className="font-bold font-display text-navy">
+                    from £{detail.foundationFrom.toLocaleString('en-GB')}
+                  </span>
+                </span>
+              )}
+              {detail.accreditations.map((a) => (
+                <span key={a} className="font-bold font-display text-navy">{a}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ─── D: Completion options ─── */}
       <div className="border-t border-border py-14">
