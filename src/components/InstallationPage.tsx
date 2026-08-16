@@ -1,16 +1,17 @@
 import { useState, useRef, useCallback } from 'react'
+import { media } from '../data/media'
 import baseImg from '../assets/image-11.webp'
 import turnkeyImg from '../assets/image-10.webp'
 
 const IMGS = {
-  hero:     'https://images.unsplash.com/photo-1766603636700-e9d80473f40f?w=1200&h=700&fit=crop&auto=format',
-  base:     'https://images.unsplash.com/photo-1711296168555-ea2526321306?w=1200&h=800&fit=crop&auto=format',
-  turnkey:  'https://images.unsplash.com/photo-1649083048337-4aeb6dda80bb?w=1200&h=800&fit=crop&auto=format',
-  site:     'https://images.unsplash.com/photo-1505060872009-ed2866c37da6?w=700&h=500&fit=crop&auto=format',
-  delivery: 'https://images.unsplash.com/photo-1697538022262-7eb736179973?w=700&h=500&fit=crop&auto=format',
-  assembly: 'https://images.unsplash.com/photo-1696846911635-83b97e53fb65?w=700&h=500&fit=crop&auto=format',
-  finishing:'https://images.unsplash.com/photo-1597031751096-9acc728067ad?w=700&h=500&fit=crop&auto=format',
-  handover: 'https://images.unsplash.com/photo-1748764720733-3bb4c52ab6f9?w=700&h=500&fit=crop&auto=format',
+  hero:     media.heroExterior,
+  base:     media.forestSetting,
+  turnkey:  media.interiorDetail,
+  site:     media.siteAerial,
+  delivery: media.gardenRoom,
+  assembly: media.chaletExterior,
+  finishing:media.interiorLiving,
+  handover: media.interiorKitchen,
 }
 
 const steps = [

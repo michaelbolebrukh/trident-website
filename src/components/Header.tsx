@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { media } from '../data/media'
 import Logo from './Logo'
 import { routes } from '../lib/routes'
 
@@ -56,6 +57,28 @@ export default function Header({ currentPath }: HeaderProps) {
   const [mobileHomesOpen, setMobileHomesOpen] = useState(false)
   const [mobileBespokeOpen, setMobileBespokeOpen] = useState(false)
   const headerRef = useRef<HTMLElement>(null)
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // The mega panel renders at the foot of the header, below the nav's own box,
+  // so travelling to it briefly leaves nav. Close on a delay and cancel that
+  // as soon as the pointer lands on the panel, otherwise the menu vanishes
+  // before it can be clicked.
+  const cancelClose = () => {
+    if (closeTimer.current) {
+      clearTimeout(closeTimer.current)
+      closeTimer.current = null
+    }
+  }
+
+  const scheduleClose = () => {
+    cancelClose()
+    closeTimer.current = setTimeout(() => {
+      setMegaOpen(false)
+      setBespokeOpen(false)
+    }, 200)
+  }
+
+  useEffect(() => cancelClose, [])
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24)
@@ -113,16 +136,22 @@ export default function Header({ currentPath }: HeaderProps) {
           </a>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-1 flex-1 justify-center" onMouseLeave={() => { setMegaOpen(false); setBespokeOpen(false) }}>
+          <nav
+            className="hidden lg:flex items-center gap-1 flex-1 justify-center"
+            onMouseEnter={cancelClose}
+            onMouseLeave={scheduleClose}
+          >
             {navLinks.map((link) => (
               <div key={link.label} className="relative">
                 <a
                   href={link.href}
                   onMouseEnter={() => {
+                    cancelClose()
                     setMegaOpen(link.hasMega ?? false)
                     setBespokeOpen(link.hasDropdown ?? false)
                   }}
                   onFocus={() => {
+                    cancelClose()
                     setMegaOpen(link.hasMega ?? false)
                     setBespokeOpen(link.hasDropdown ?? false)
                   }}
@@ -137,7 +166,11 @@ export default function Header({ currentPath }: HeaderProps) {
 
                 {/* Bespoke dropdown */}
                 {link.hasDropdown && bespokeOpen && (
-                  <div className="absolute top-full left-0 mt-1 bg-white border border-border rounded-xl shadow-lg py-2 min-w-48 z-50">
+                  <div
+                    className="absolute top-full left-0 pt-1 bg-white border border-border rounded-xl shadow-lg py-2 min-w-48 z-50"
+                    onMouseEnter={cancelClose}
+                    onMouseLeave={scheduleClose}
+                  >
                     {bespokeDropdown.map((item) => (
                       <a
                         key={item.label}
@@ -156,7 +189,8 @@ export default function Header({ currentPath }: HeaderProps) {
             {megaOpen && (
               <div className="absolute top-full left-0 right-0 bg-white border-t border-border shadow-lg z-40 mt-0"
                 style={{ marginTop: 0 }}
-                onMouseEnter={() => setMegaOpen(true)}
+                onMouseEnter={cancelClose}
+                onMouseLeave={scheduleClose}
               >
                 <div className="max-w-[1280px] mx-auto px-8 py-8 grid grid-cols-4 gap-8">
                   <div className="col-span-1">
@@ -182,7 +216,7 @@ export default function Header({ currentPath }: HeaderProps) {
                       >
                         <div className="bg-light h-36 overflow-hidden rounded-xl">
                           <img
-                            src={`https://images.unsplash.com/photo-${cat.img}?w=400&h=220&fit=crop&auto=format`}
+                            src={cat.img}
                             alt={cat.label}
                             loading="lazy"
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"

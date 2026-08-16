@@ -1,168 +1,51 @@
 import { useState } from "react"
-import { routes } from "../lib/routes"
+import { media } from "../data/media"
+import { routes, productPath } from "../lib/routes"
+import { allHomes, categories, houseImage, type Home } from "../data/homes"
 
 const IMGS = {
-  hero: "https://images.unsplash.com/photo-1766603636700-e9d80473f40f?w=1400&h=900&fit=crop&auto=format",
+  hero: media.heroExterior,
   timber:
-    "https://images.unsplash.com/photo-1605018075968-b014b8d2e487?w=900&h=700&fit=crop&auto=format",
+    media.residenceExterior,
   garden:
-    "https://images.unsplash.com/photo-1697538022262-7eb736179973?w=900&h=700&fit=crop&auto=format",
+    media.gardenRoom,
   frame:
-    "https://images.unsplash.com/photo-1696846911635-83b97e53fb65?w=900&h=700&fit=crop&auto=format",
+    media.chaletExterior,
   interior:
-    "https://images.unsplash.com/photo-1597031751096-9acc728067ad?w=900&h=600&fit=crop&auto=format",
+    media.interiorLiving,
   interior2:
-    "https://images.unsplash.com/photo-1748764720733-3bb4c52ab6f9?w=600&h=600&fit=crop&auto=format",
+    media.interiorKitchen,
   aerial:
-    "https://images.unsplash.com/photo-1505060872009-ed2866c37da6?w=1200&h=700&fit=crop&auto=format",
+    media.siteAerial,
   exterior2:
-    "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?w=900&h=700&fit=crop&auto=format",
+    media.commercial,
 }
 
-const homes = {
-  "Garden Rooms": [
-    {
-      name: "Garden Premium",
-      sizeRange: "20–35 m²",
-      desc: "Versatile garden room with full insulation and glazed elevation.",
-      tags: ["3 sizes", "Office", "Studio", "Annexe"],
-      kitPrice: "£16,800",
-      shellPrice: "£22,500",
-      turnkeyPrice: "£34,000",
-      foundation: "£1,400",
-      img: IMGS.garden,
-    },
-    {
-      name: "Garden Base",
-      sizeRange: "15–25 m²",
-      desc: "Entry-level garden room. Compact footprint, full insulation.",
-      tags: ["4 sizes", "Office", "Studio", "Storage"],
-      kitPrice: "£11,200",
-      shellPrice: "£15,900",
-      turnkeyPrice: "£24,500",
-      foundation: "£1,200",
-      img: IMGS.timber,
-    },
-    {
-      name: "Studio Max",
-      sizeRange: "28–42 m²",
-      desc: "Larger garden studio with sleeping area and en-suite option.",
-      tags: ["2 sizes", "Guest space", "Studio", "Home gym"],
-      kitPrice: "£19,500",
-      shellPrice: "£26,000",
-      turnkeyPrice: "£40,000",
-      foundation: "£1,600",
-      img: IMGS.frame,
-    },
-  ],
-  Bungalows: [
-    {
-      name: "Match Point",
-      sizeRange: "68–76 m²",
-      desc: "Efficient single-storey home with open-plan living.",
-      tags: ["2 beds", "1 bath", "Single storey"],
-      kitPrice: "£52,000",
-      shellPrice: "£68,000",
-      turnkeyPrice: "£102,000",
-      foundation: "£3,500",
-      img: IMGS.exterior2,
-    },
-    {
-      name: "Square of Harmony",
-      sizeRange: "84–96 m²",
-      desc: "Spacious bungalow with well-proportioned rooms and garden aspect.",
-      tags: ["3 beds", "2 baths", "Single storey"],
-      kitPrice: "£64,000",
-      shellPrice: "£83,000",
-      turnkeyPrice: "£124,000",
-      foundation: "£4,000",
-      img: IMGS.timber,
-    },
-    {
-      name: "The Loch",
-      sizeRange: "76–86 m²",
-      desc: "Contemporary bungalow with full-height glazing to the rear.",
-      tags: ["2 beds", "2 baths", "Single storey"],
-      kitPrice: "£58,000",
-      shellPrice: "£76,000",
-      turnkeyPrice: "£114,000",
-      foundation: "£3,800",
-      img: IMGS.frame,
-    },
-  ],
-  "1.5 Storey": [
-    {
-      name: "Loft",
-      sizeRange: "112–128 m²",
-      desc: "Open-plan ground floor with galleried mezzanine bedrooms above.",
-      tags: ["3 beds", "2 baths", "Mezzanine level"],
-      kitPrice: "£85,000",
-      shellPrice: "£110,000",
-      turnkeyPrice: "£165,000",
-      foundation: "£5,500",
-      img: IMGS.aerial,
-    },
-    {
-      name: "Gothic",
-      sizeRange: "128–145 m²",
-      desc: "Distinctive roofline with large glazed gable and generous living.",
-      tags: ["4 beds", "2 baths", "Mezzanine level"],
-      kitPrice: "£98,000",
-      shellPrice: "£125,000",
-      turnkeyPrice: "£188,000",
-      foundation: "£6,000",
-      img: IMGS.timber,
-    },
-    {
-      name: "Nordic Ridge",
-      sizeRange: "118–136 m²",
-      desc: "Pitched roof with clean lines and timber cladding as standard.",
-      tags: ["3 beds", "2 baths", "Mezzanine level"],
-      kitPrice: "£90,000",
-      shellPrice: "£115,000",
-      turnkeyPrice: "£175,000",
-      foundation: "£5,800",
-      img: IMGS.garden,
-    },
-  ],
-  "2 Storey": [
-    {
-      name: "Grand Vista",
-      sizeRange: "165–185 m²",
-      desc: "Two full floors with generous room sizes and large glazed sections.",
-      tags: ["4 beds", "3 baths", "Two storey"],
-      kitPrice: "£128,000",
-      shellPrice: "£162,000",
-      turnkeyPrice: "£244,000",
-      foundation: "£7,500",
-      img: IMGS.exterior2,
-    },
-    {
-      name: "Birchwood",
-      sizeRange: "182–205 m²",
-      desc: "Substantial family home with five bedrooms and separate utility.",
-      tags: ["5 beds", "3 baths", "Two storey"],
-      kitPrice: "£140,000",
-      shellPrice: "£178,000",
-      turnkeyPrice: "£268,000",
-      foundation: "£8,000",
-      img: IMGS.frame,
-    },
-    {
-      name: "Horizon",
-      sizeRange: "172–195 m²",
-      desc: "Wide frontage and panoramic glazing for maximum light.",
-      tags: ["4 beds", "3 baths", "Two storey"],
-      kitPrice: "£132,000",
-      shellPrice: "£168,000",
-      turnkeyPrice: "£252,000",
-      foundation: "£7,800",
-      img: IMGS.aerial,
-    },
-  ],
-}
+// Featured homes are drawn from the real catalogue, grouped by category and
+// showing the three cheapest models in each so the block stays a teaser.
+// Commercial order — entry-level garden rooms first, working up. Anything not
+// listed (new categories added later) falls in after these.
+const CATEGORY_ORDER = [
+  'Garden Rooms',
+  'Bungalows',
+  '1.5 Storey Houses',
+  '2 Storey Houses',
+  'Log Houses',
+  'Tiny Homes & Pod Homes',
+]
 
-type HomeTab = keyof typeof homes
+const orderedCategories = [
+  ...CATEGORY_ORDER.filter((c) => categories.includes(c)),
+  ...categories.filter((c) => !CATEGORY_ORDER.includes(c)),
+]
+
+const featuredByCategory = orderedCategories.reduce<Record<string, Home[]>>((acc, cat) => {
+  const models = allHomes.filter((h) => h.categories.includes(cat)).slice(0, 3)
+  if (models.length) acc[cat] = models
+  return acc
+}, {})
+
+type HomeTab = string
 
 const spaceTypes = [
   "Garden room or office",
@@ -190,7 +73,7 @@ const galleryImgs = [
 
 
 export default function HomePage() {
-  const [activeTab, setActiveTab] = useState<HomeTab>("Garden Rooms")
+  const [activeTab, setActiveTab] = useState<HomeTab>(Object.keys(featuredByCategory)[0] ?? "")
   const [spaceType, setSpaceType] = useState("")
   const [sizeType, setSizeType] = useState("")
   const [wizardStep, setWizardStep] = useState(1)
@@ -485,7 +368,7 @@ export default function HomePage() {
 
           {/* Tabs */}
           <div className="flex gap-2 mb-8 overflow-x-auto pb-1">
-            {(Object.keys(homes) as HomeTab[]).map((tab) => (
+            {Object.keys(featuredByCategory).map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -502,7 +385,7 @@ export default function HomePage() {
 
           {/* Cards */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {homes[activeTab].map((home) => (
+            {(featuredByCategory[activeTab] ?? []).map((home) => (
               <div
                 key={home.name}
                 className="group bg-white rounded-2xl overflow-hidden card-shadow card-shadow-hover transition-all duration-300 hover:-translate-y-1 flex flex-col"
@@ -510,7 +393,7 @@ export default function HomePage() {
                 {/* Image */}
                 <div className="h-52 overflow-hidden bg-light relative shrink-0">
                   <img
-                    src={home.img}
+                    src={home.thumb ? houseImage(home.thumb) : undefined}
                     alt={home.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
@@ -529,7 +412,7 @@ export default function HomePage() {
                       {home.name}
                     </h4>
                     <span className="text-muted text-xs font-medium shrink-0">
-                      {home.sizeRange}
+                      {home.area} m²
                     </span>
                   </div>
                   {/* Description */}
@@ -538,33 +421,17 @@ export default function HomePage() {
                   </p>
                   {/* Tags */}
                   <p className="text-xs text-muted mb-4">
-                    {home.tags.join(" · ")}
+                    {`${home.floors} storey · ${home.dimensions} m · ${home.areaFt} ft²`}
                   </p>
 
-                  {/* Tier pricing */}
+                  {/* Price */}
                   <div className="rounded-xl overflow-hidden border border-border mt-auto">
-                    <div className="flex items-center justify-between px-4 py-2.5 bg-light">
-                      <span className="text-[10px] font-bold font-display text-muted tracking-[0.15em] uppercase">
-                        01 DIY
-                      </span>
-                      <span className="text-sm font-bold font-display text-navy">
-                        {home.kitPrice}
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between px-4 py-2.5 bg-light border-t border-border">
-                      <span className="text-[10px] font-bold font-display text-muted tracking-[0.15em] uppercase">
-                        02 Shell
-                      </span>
-                      <span className="text-sm font-bold font-display text-navy">
-                        {home.shellPrice}
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between px-4 py-2.5 bg-navy">
+                    <div className="flex items-center justify-between px-4 py-3 bg-navy">
                       <span className="text-[10px] font-bold font-display text-white tracking-[0.15em] uppercase">
-                        03 Turnkey
+                        From
                       </span>
                       <span className="text-sm font-bold font-display text-white">
-                        {home.turnkeyPrice}
+                        £{home.price.toLocaleString("en-GB")}
                       </span>
                     </div>
                   </div>
@@ -572,9 +439,9 @@ export default function HomePage() {
                   {/* Footer */}
                   <div className="mt-3 flex items-center justify-between">
                     <span className="text-xs text-muted">
-                      + foundation {home.foundation}
+                      {home.bedrooms ? `${home.bedrooms} bed` : `${home.area} m²`}
                     </span>
-                    <a href="/catalogue/garden-premium/"
+                    <a href={productPath(home.slug)}
                       className="text-xs font-bold font-display text-navy border border-border rounded-lg px-4 py-1.5 hover:border-navy hover:bg-light transition-colors">
                       Open
                     </a>

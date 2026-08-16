@@ -1,17 +1,18 @@
 import { useState } from 'react'
+import { media } from '../data/media'
 import { allHomes, houseImage, type Home } from '../data/homes'
 import { productPath } from '../lib/routes'
 
 const IMGS = {
-  ext1: 'https://images.unsplash.com/photo-1766603636700-e9d80473f40f?w=1100&h=750&fit=crop&auto=format',
-  ext2: 'https://images.unsplash.com/photo-1696846911635-83b97e53fb65?w=1100&h=750&fit=crop&auto=format',
-  ext3: 'https://images.unsplash.com/photo-1605018075968-b014b8d2e487?w=1100&h=750&fit=crop&auto=format',
-  int1: 'https://images.unsplash.com/photo-1597031751096-9acc728067ad?w=1100&h=750&fit=crop&auto=format',
-  int2: 'https://images.unsplash.com/photo-1748764720733-3bb4c52ab6f9?w=1100&h=750&fit=crop&auto=format',
-  int3: 'https://images.unsplash.com/photo-1778172884832-78a5de5ec3d2?w=1100&h=750&fit=crop&auto=format',
-  garden: 'https://images.unsplash.com/photo-1697538022262-7eb736179973?w=700&h=500&fit=crop&auto=format',
-  aerial: 'https://images.unsplash.com/photo-1505060872009-ed2866c37da6?w=700&h=500&fit=crop&auto=format',
-  exterior: 'https://images.unsplash.com/photo-1513584684374-8bab748fbf90?w=700&h=500&fit=crop&auto=format',
+  ext1: media.heroExterior,
+  ext2: media.chaletExterior,
+  ext3: media.residenceExterior,
+  int1: media.interiorLiving,
+  int2: media.interiorKitchen,
+  int3: media.interiorBedroom,
+  garden: media.gardenRoom,
+  aerial: media.siteAerial,
+  exterior: media.commercial,
 }
 
 

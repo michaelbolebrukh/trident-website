@@ -1,12 +1,13 @@
 import { useState } from 'react'
+import { media } from '../data/media'
 
 const IMGS = {
-  a: 'https://images.unsplash.com/photo-1766603636700-e9d80473f40f?w=700&h=500&fit=crop&auto=format',
-  b: 'https://images.unsplash.com/photo-1697538022262-7eb736179973?w=700&h=500&fit=crop&auto=format',
-  c: 'https://images.unsplash.com/photo-1597031751096-9acc728067ad?w=700&h=500&fit=crop&auto=format',
-  d: 'https://images.unsplash.com/photo-1505060872009-ed2866c37da6?w=700&h=500&fit=crop&auto=format',
-  e: 'https://images.unsplash.com/photo-1696846911635-83b97e53fb65?w=700&h=500&fit=crop&auto=format',
-  f: 'https://images.unsplash.com/photo-1605018075968-b014b8d2e487?w=700&h=500&fit=crop&auto=format',
+  a: media.heroExterior,
+  b: media.gardenRoom,
+  c: media.interiorLiving,
+  d: media.siteAerial,
+  e: media.chaletExterior,
+  f: media.residenceExterior,
 }
 
 const articles = [

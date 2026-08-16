@@ -1,9 +1,10 @@
+import { media } from '../data/media'
 
 const IMGS = {
-  hero: 'https://images.unsplash.com/photo-1766603636700-e9d80473f40f?w=1200&h=700&fit=crop&auto=format',
-  build: 'https://images.unsplash.com/photo-1696846911635-83b97e53fb65?w=900&h=600&fit=crop&auto=format',
-  interior: 'https://images.unsplash.com/photo-1597031751096-9acc728067ad?w=900&h=600&fit=crop&auto=format',
-  aerial: 'https://images.unsplash.com/photo-1505060872009-ed2866c37da6?w=900&h=600&fit=crop&auto=format',
+  hero: media.heroExterior,
+  build: media.chaletExterior,
+  interior: media.interiorLiving,
+  aerial: media.siteAerial,
 }
 
 export default function AboutPage() {

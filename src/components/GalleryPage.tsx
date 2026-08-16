@@ -1,15 +1,16 @@
 import { useState } from 'react'
+import { media } from '../data/media'
 
 const IMGS = [
-  { src: 'https://images.unsplash.com/photo-1766603636700-e9d80473f40f?w=900&h=700&fit=crop&auto=format', label: 'Modern Loft', type: 'Residential Homes', location: 'Shropshire' },
-  { src: 'https://images.unsplash.com/photo-1697538022262-7eb736179973?w=700&h=700&fit=crop&auto=format', label: 'Garden Premium Studio', type: 'Garden Rooms', location: 'Cheshire' },
-  { src: 'https://images.unsplash.com/photo-1597031751096-9acc728067ad?w=900&h=600&fit=crop&auto=format', label: 'Open Plan Living', type: 'Interiors', location: '' },
-  { src: 'https://images.unsplash.com/photo-1696846911635-83b97e53fb65?w=900&h=700&fit=crop&auto=format', label: 'Frame House — Garden Level', type: 'Residential Homes', location: 'Worcestershire' },
-  { src: 'https://images.unsplash.com/photo-1605018075968-b014b8d2e487?w=700&h=700&fit=crop&auto=format', label: 'Timber Cladding Detail', type: 'Bespoke Features', location: '' },
-  { src: 'https://images.unsplash.com/photo-1748764720733-3bb4c52ab6f9?w=900&h=700&fit=crop&auto=format', label: 'Contemporary Interior', type: 'Interiors', location: '' },
-  { src: 'https://images.unsplash.com/photo-1505060872009-ed2866c37da6?w=1200&h=700&fit=crop&auto=format', label: 'Aerial View — Plot', type: 'Installation', location: 'Herefordshire' },
-  { src: 'https://images.unsplash.com/photo-1513584684374-8bab748fbf90?w=900&h=700&fit=crop&auto=format', label: 'Gothic 1.5 Storey', type: 'Residential Homes', location: 'Staffordshire' },
-  { src: 'https://images.unsplash.com/photo-1778172884832-78a5de5ec3d2?w=700&h=900&fit=crop&auto=format', label: 'Hallway & Stair', type: 'Interiors', location: '' },
+  { src: media.heroExterior, label: 'Modern Loft', type: 'Residential Homes', location: 'Shropshire' },
+  { src: media.gardenRoom, label: 'Garden Premium Studio', type: 'Garden Rooms', location: 'Cheshire' },
+  { src: media.interiorLiving, label: 'Open Plan Living', type: 'Interiors', location: '' },
+  { src: media.chaletExterior, label: 'Frame House — Garden Level', type: 'Residential Homes', location: 'Worcestershire' },
+  { src: media.residenceExterior, label: 'Timber Cladding Detail', type: 'Bespoke Features', location: '' },
+  { src: media.interiorKitchen, label: 'Contemporary Interior', type: 'Interiors', location: '' },
+  { src: media.siteAerial, label: 'Aerial View — Plot', type: 'Installation', location: 'Herefordshire' },
+  { src: media.commercial, label: 'Gothic 1.5 Storey', type: 'Residential Homes', location: 'Staffordshire' },
+  { src: media.interiorBedroom, label: 'Hallway & Stair', type: 'Interiors', location: '' },
 ]
 
 const filterOptions = ['All', 'Garden Rooms', 'Residential Homes', 'Interiors', 'Commercial', 'Installation', 'Bespoke Features']

@@ -1,11 +1,12 @@
+import { media } from '../data/media'
 
 const IMGS = {
-  hero: 'https://images.unsplash.com/photo-1696846911635-83b97e53fb65?w=1200&h=700&fit=crop&auto=format',
-  resi: 'https://images.unsplash.com/photo-1766603636700-e9d80473f40f?w=700&h=500&fit=crop&auto=format',
-  commercial: 'https://images.unsplash.com/photo-1513584684374-8bab748fbf90?w=700&h=500&fit=crop&auto=format',
-  heat: 'https://images.unsplash.com/photo-1697538022262-7eb736179973?w=600&h=450&fit=crop&auto=format',
-  solar: 'https://images.unsplash.com/photo-1505060872009-ed2866c37da6?w=600&h=450&fit=crop&auto=format',
-  green: 'https://images.unsplash.com/photo-1605018075968-b014b8d2e487?w=600&h=450&fit=crop&auto=format',
+  hero: media.chaletExterior,
+  resi: media.heroExterior,
+  commercial: media.commercial,
+  heat: media.gardenRoom,
+  solar: media.siteAerial,
+  green: media.residenceExterior,
 }
 
 const processSteps = [
