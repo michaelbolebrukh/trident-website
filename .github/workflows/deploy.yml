@@ -99,11 +99,31 @@ jobs:
             || { echo "::error::Connected fine, but SSH_PATH does not exist on the server."; exit 1; }
 
       - name: Deploy
+        # --delay-updates stages every changed file remotely and renames them
+        # into place at the end, and --delete-after removes stale files only
+        # once the transfer succeeds. Without these, rsync deletes first and
+        # writes progressively, so visitors mid-deploy can hit a missing or
+        # half-written index.html — which the CDN then caches.
         run: |
-          rsync -avz --delete \
+          rsync -avz --delete-after --delay-updates \
             -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }} -o BatchMode=yes -o IdentitiesOnly=yes" \
             dist/ \
             "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_PATH }}/"
+
+      - name: Verify the deployed site responds
+        run: |
+          url="${{ vars.SITE_URL || 'https://moccasin-quail-582986.hostingersite.com' }}"
+          for attempt in 1 2 3 4 5; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 "$url/" || echo 000)
+            if [ "$code" = "200" ]; then
+              echo "$url returned 200"
+              exit 0
+            fi
+            echo "attempt $attempt: HTTP $code, retrying..."
+            sleep 5
+          done
+          echo "::error::Site did not return 200 after deploy (last status $code)."
+          exit 1
 
       - name: Summary
         run: |
