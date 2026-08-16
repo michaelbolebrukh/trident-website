@@ -94,8 +94,8 @@ export default function Footer() {
             </ul>
             <p className="text-xs font-semibold font-display uppercase tracking-widest mb-3" style={{ color: 'rgba(255,255,255,0.45)' }}>Contact</p>
             <ul className="space-y-2" style={{ color: 'rgba(255,255,255,0.7)' }}>
-              <li className="text-sm">01234 567 890</li>
-              <li className="text-sm">hello@tridentmodular.com</li>
+              <li className="text-sm">+44 7443 285068</li>
+              <li className="text-sm">contact@tridentmodular.com</li>
               <li className="text-sm leading-snug">Mon–Fri 8.30am–5.30pm</li>
             </ul>
           </div>

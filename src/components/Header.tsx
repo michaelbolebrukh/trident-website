@@ -88,13 +88,13 @@ export default function Header({ currentPath }: HeaderProps) {
     <>
       {/* Utility bar */}
       <div className="hidden lg:flex items-center justify-end bg-navy text-white text-xs font-body px-8 py-1.5 gap-6">
-        <a href="tel:+441234567890" className="flex items-center gap-1.5 opacity-80 hover:opacity-100 transition-opacity">
+        <a href="tel:+447443285068" className="flex items-center gap-1.5 opacity-80 hover:opacity-100 transition-opacity">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
-          01234 567 890
+          +44 7443 285068
         </a>
-        <a href="mailto:hello@tridentmodular.com" className="flex items-center gap-1.5 opacity-80 hover:opacity-100 transition-opacity">
+        <a href="mailto:contact@tridentmodular.com" className="flex items-center gap-1.5 opacity-80 hover:opacity-100 transition-opacity">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
-          hello@tridentmodular.com
+          contact@tridentmodular.com
         </a>
         <button className="opacity-80 hover:opacity-100 transition-opacity flex items-center gap-1">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11zM8 15.01l1.41 1.41L11 14.84V19h2v-4.16l1.59 1.59L16 15.01 12.01 11 8 15.01z"/></svg>

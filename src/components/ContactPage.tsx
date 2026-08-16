@@ -101,10 +101,10 @@ export default function ContactPage() {
 
             <div className="space-y-5">
               {[
-                { icon: 'phone', label: 'Telephone', value: '01234 567 890', href: 'tel:+441234567890' },
-                { icon: 'email', label: 'Email', value: 'hello@tridentmodular.com', href: 'mailto:hello@tridentmodular.com' },
-                { icon: 'location', label: 'Address', value: 'Trident Modular Ltd\n14 Industrial Estate\nShrewsbury, SY1 2AB', href: undefined },
-                { icon: 'clock', label: 'Hours', value: 'Monday to Friday\n8.30am – 5.30pm', href: undefined },
+                { icon: 'phone', label: 'Telephone', value: '+44 7443 285068', href: 'tel:+447443285068' },
+                { icon: 'email', label: 'Email', value: 'contact@tridentmodular.com', href: 'mailto:contact@tridentmodular.com' },
+                { icon: 'location', label: 'Registered office', value: 'Tallis House\n2 Tallis Street\nLondon, EC4Y 0AB', href: undefined },
+                
               ].map((c) => (
                 <div key={c.label} className="flex gap-4">
                   <div className="w-9 h-9 rounded-lg bg-light border border-border flex items-center justify-center shrink-0">
@@ -272,7 +272,7 @@ export default function ContactPage() {
 
               <p className="text-xs text-muted">
                 Prefer to speak with someone?{' '}
-                <a href="tel:+441234567890" className="text-navy font-medium hover:text-gold transition-colors">Call 01234 567 890</a>
+                <a href="tel:+447443285068" className="text-navy font-medium hover:text-gold transition-colors">Call +44 7443 285068</a>
               </p>
             </form>
           </div>

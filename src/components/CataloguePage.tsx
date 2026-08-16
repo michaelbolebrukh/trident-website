@@ -1,38 +1,37 @@
 import { useState, useMemo } from 'react'
-import { allHomes } from '../data/homes'
+import { allHomes, houseImage, categories } from '../data/homes'
 import { productPath } from '../lib/routes'
 
 
 
-const catChips = ['All Homes', 'Garden Rooms', 'Bungalows', '1.5 Storey', '2 Storey']
+const catChips = ['All Homes', ...categories]
 
 
 export default function CataloguePage() {
   const [activeCategory, setActiveCategory] = useState('All Homes')
   const [minArea, setMinArea] = useState(0)
-  const [maxArea, setMaxArea] = useState(250)
+  const [maxArea, setMaxArea] = useState(350)
   const [minBeds, setMinBeds] = useState(0)
   const [sortBy, setSortBy] = useState('Recommended')
   const [showFilters, setShowFilters] = useState(false)
 
   const filtered = useMemo(() => {
     let results = allHomes.filter((h) => {
-      if (activeCategory !== 'All Homes' && h.category !== activeCategory) return false
-      if (h.maxArea < minArea || h.minArea > maxArea) return false
-      if (h.beds < minBeds) return false
+      if (activeCategory !== 'All Homes' && !h.categories.includes(activeCategory)) return false
+      if (h.area < minArea || h.area > maxArea) return false
+      if (minBeds > 0 && (h.bedrooms ?? 0) < minBeds) return false
       return true
     })
-    const parsePrice = (p: string) => parseInt(p.replace(/[^0-9]/g, ''), 10)
-    if (sortBy === 'Price: low to high') results = [...results].sort((a, b) => parsePrice(a.kitPrice) - parsePrice(b.kitPrice))
-    if (sortBy === 'Price: high to low') results = [...results].sort((a, b) => parsePrice(b.kitPrice) - parsePrice(a.kitPrice))
-    if (sortBy === 'Floor area') results = [...results].sort((a, b) => b.maxArea - a.maxArea)
+    if (sortBy === 'Price: low to high') results = [...results].sort((a, b) => a.price - b.price)
+    if (sortBy === 'Price: high to low') results = [...results].sort((a, b) => b.price - a.price)
+    if (sortBy === 'Floor area') results = [...results].sort((a, b) => b.area - a.area)
     return results
   }, [activeCategory, minArea, maxArea, minBeds, sortBy])
 
   const clearFilters = () => {
     setActiveCategory('All Homes')
     setMinArea(0)
-    setMaxArea(250)
+    setMaxArea(350)
     setMinBeds(0)
     setSortBy('Recommended')
   }
@@ -150,15 +149,15 @@ export default function CataloguePage() {
               <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
                 {filtered.map((home) => (
                   <div
-                    key={home.id}
+                    key={home.slug}
                     className="group bg-white rounded-2xl overflow-hidden card-shadow card-shadow-hover transition-all duration-300 hover:-translate-y-1 flex flex-col"
                   >
                     {/* Image */}
                     <div className="h-48 overflow-hidden bg-light relative shrink-0">
-                      <img src={home.img} alt={home.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                      <img src={home.thumb ? houseImage(home.thumb) : undefined} alt={home.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                       <div className="absolute top-3 left-3 flex gap-2">
                         <span className="bg-navy text-white text-[10px] font-bold font-display px-2.5 py-1 rounded uppercase tracking-widest">{home.category}</span>
-                        {home.tag && <span className="bg-gold text-navy text-[10px] font-bold font-display px-2.5 py-1 rounded uppercase tracking-widest">{home.tag}</span>}
+                        
                       </div>
                     </div>
 
@@ -167,32 +166,24 @@ export default function CataloguePage() {
                       {/* Name + size range */}
                       <div className="flex items-baseline justify-between gap-2 mb-1">
                         <h3 className="font-display font-bold text-navy text-base leading-snug">{home.name}</h3>
-                        <span className="text-muted text-xs font-medium shrink-0">{home.sizeRange}</span>
+                        <span className="text-muted text-xs font-medium shrink-0">{home.area} m²</span>
                       </div>
                       {/* Description */}
                       <p className="text-xs text-muted leading-snug mb-2">{home.desc}</p>
                       {/* Tags */}
-                      <p className="text-xs text-muted mb-4">{home.tags.join(' · ')}</p>
+                      <p className="text-xs text-muted mb-4">{[`${home.floors} storey`, `${home.dimensions} m`, `${home.areaFt} ft²`].join(' · ')}</p>
 
-                      {/* Tier pricing */}
+                      {/* Price */}
                       <div className="rounded-xl overflow-hidden border border-border mt-auto">
-                        <div className="flex items-center justify-between px-4 py-2.5 bg-light">
-                          <span className="text-[10px] font-bold font-display text-muted tracking-[0.15em] uppercase">01 DIY</span>
-                          <span className="text-sm font-bold font-display text-navy">{home.kitPrice}</span>
-                        </div>
-                        <div className="flex items-center justify-between px-4 py-2.5 bg-light border-t border-border">
-                          <span className="text-[10px] font-bold font-display text-muted tracking-[0.15em] uppercase">02 Shell</span>
-                          <span className="text-sm font-bold font-display text-navy">{home.shellPrice}</span>
-                        </div>
-                        <div className="flex items-center justify-between px-4 py-2.5 bg-navy">
-                          <span className="text-[10px] font-bold font-display text-white tracking-[0.15em] uppercase">03 Turnkey</span>
-                          <span className="text-sm font-bold font-display text-white">{home.turnkeyPrice}</span>
+                        <div className="flex items-center justify-between px-4 py-3 bg-navy">
+                          <span className="text-[10px] font-bold font-display text-white tracking-[0.15em] uppercase">From</span>
+                          <span className="text-sm font-bold font-display text-white">£{home.price.toLocaleString('en-GB')}</span>
                         </div>
                       </div>
 
                       {/* Footer */}
                       <div className="mt-3 flex items-center justify-between">
-                        <span className="text-xs text-muted">+ foundation {home.foundation}</span>
+                        <span className="text-xs text-muted">{home.bedrooms ? `${home.bedrooms} bed` : `${home.area} m²`}</span>
                         <a href={productPath(home.slug)}
                           className="text-xs font-bold font-display text-navy border border-border rounded-lg px-4 py-1.5 hover:border-navy hover:bg-light transition-colors">
                           Open

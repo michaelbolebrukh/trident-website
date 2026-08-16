@@ -15,7 +15,7 @@ const { home } = Astro.props
 
 <BaseLayout
   title={`${home.name} — ${home.category} | Trident Modular`}
-  description={`${home.desc} ${home.sizeRange} internal floor area. Available as a kit, weathertight shell or fully finished turnkey build.`}
+  description={`${home.desc} ${home.area} m² internal floor area. Available as a kit, weathertight shell or fully finished turnkey build.`}
 >
   <ProductPage home={home} client:load />
 </BaseLayout>

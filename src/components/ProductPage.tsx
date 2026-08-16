@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { allHomes, type Home } from '../data/homes'
+import { allHomes, houseImage, type Home } from '../data/homes'
 import { productPath } from '../lib/routes'
 
 const IMGS = {
@@ -14,12 +14,6 @@ const IMGS = {
   exterior: 'https://images.unsplash.com/photo-1513584684374-8bab748fbf90?w=700&h=500&fit=crop&auto=format',
 }
 
-const galleryTabs = ['Exterior', 'Interior', 'Floor Plan']
-const galleryImages = {
-  Exterior: [IMGS.ext1, IMGS.ext2, IMGS.ext3],
-  Interior: [IMGS.int1, IMGS.int2, IMGS.int3],
-  'Floor Plan': [IMGS.ext1],
-}
 
 const specs = [
   { label: 'Wall Structure', content: 'Structural insulated panels (SIPs) with timber frame. 140mm cavity with mineral wool insulation. Rendered or timber-clad external finish.' },
@@ -42,13 +36,12 @@ const sustainableCards = [
 export default function ProductPage({ home }: { home: Home }) {
   const relatedHomes = allHomes.filter((h) => h.slug !== home.slug).slice(0, 3)
 
-  const [activeGalleryTab, setActiveGalleryTab] = useState<string>('Exterior')
   const [activeImage, setActiveImage] = useState(0)
   const [activeSpec, setActiveSpec] = useState<string | null>(null)
   const [completionTab, setCompletionTab] = useState<'Base' | 'Turnkey'>('Base')
   const [lightboxOpen, setLightboxOpen] = useState(false)
 
-  const images = galleryImages[activeGalleryTab as keyof typeof galleryImages] ?? []
+  const images = home.gallery.map(houseImage)
 
   return (
     <div className="bg-white">
@@ -60,8 +53,6 @@ export default function ProductPage({ home }: { home: Home }) {
           <span>/</span>
           <a href="/catalogue/" className="hover:text-navy transition-colors">All Homes</a>
           <span>/</span>
-          <a href="/catalogue/" className="hover:text-navy transition-colors">1.5 Storey</a>
-          <span>/</span>
           <span className="text-navy font-medium">{home.name}</span>
         </div>
       </div>
@@ -72,19 +63,6 @@ export default function ProductPage({ home }: { home: Home }) {
 
           {/* LEFT: Gallery */}
           <div>
-            {/* Gallery tabs */}
-            <div className="flex gap-2 mb-4">
-              {galleryTabs.map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => { setActiveGalleryTab(tab); setActiveImage(0) }}
-                  className={`px-4 py-2 rounded-lg text-sm font-semibold font-display transition-colors ${activeGalleryTab === tab ? 'bg-navy text-white' : 'bg-light text-body hover:bg-border'}`}
-                >
-                  {tab}
-                </button>
-              ))}
-            </div>
-
             {/* Main image */}
             <div
               className="relative rounded-2xl overflow-hidden cursor-zoom-in bg-light"
@@ -124,17 +102,17 @@ export default function ProductPage({ home }: { home: Home }) {
               <span className="text-xs font-bold font-display text-gold uppercase tracking-widest">{home.category}</span>
             </div>
             <h1 className="font-display font-bold text-navy text-4xl mb-2">{home.name}</h1>
-            <p className="text-2xl font-bold font-display text-gold mb-4">From {home.kitPrice}</p>
+            <p className="text-2xl font-bold font-display text-gold mb-4">From £{home.price.toLocaleString('en-GB')}</p>
 
             {/* Stats grid */}
             <div className="grid grid-cols-3 gap-3 mb-5 p-4 bg-light rounded-xl">
               {[
-                { label: 'Floor area', value: home.sizeRange },
-                { label: 'Bedrooms', value: String(home.beds) },
-                { label: 'Bathrooms', value: '2' },
-                { label: 'Turnkey', value: home.turnkeyPrice },
-                { label: 'Shell price', value: home.shellPrice },
-                { label: 'Kit price', value: home.kitPrice },
+                { label: 'Floor area', value: `${home.area} m²` },
+                { label: 'Bedrooms', value: home.bedrooms ? String(home.bedrooms) : '—' },
+                { label: 'Bathrooms', value: home.bathrooms ? String(home.bathrooms) : '—' },
+                { label: 'Storeys', value: String(home.floors) },
+                { label: 'Floor area', value: `${home.areaFt} ft²` },
+                { label: 'Dimensions', value: `${home.dimensions} m` },
               ].map((s) => (
                 <div key={s.label} className="text-center">
                   <p className="font-bold font-display text-navy text-base">{s.value}</p>
@@ -177,7 +155,7 @@ export default function ProductPage({ home }: { home: Home }) {
         <div className="max-w-[1280px] mx-auto px-6 lg:px-8 max-w-3xl">
           <h2 className="font-display font-bold text-navy text-2xl mb-4">Overview</h2>
           <p className="text-body text-base leading-relaxed mb-3">
-            The {home.name} is part of our {home.category.toLowerCase()} range, available from {home.sizeRange} of internal floor area. {home.desc}
+            The {home.name} is part of our {home.category.toLowerCase()} range, available from {home.area} m² of internal floor area. {home.desc}
           </p>
           <p className="text-body text-base leading-relaxed">
             Available as a kit, weathertight shell or fully finished turnkey build, the {home.name} can be specified with a range of external cladding finishes, glazing configurations and sustainable upgrades including air-source heat pumps and roof-integrated solar panels.
@@ -332,14 +310,14 @@ export default function ProductPage({ home }: { home: Home }) {
                 key={h.name}
                 className="group bg-white rounded-2xl overflow-hidden card-shadow card-shadow-hover text-left transition-all duration-300 hover:-translate-y-1">
                 <div className="h-44 overflow-hidden bg-light">
-                  <img src={h.img} alt={h.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <img src={h.thumb ? houseImage(h.thumb) : undefined} alt={h.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                 </div>
                 <div className="p-4">
                   <div className="flex items-center justify-between">
                     <p className="font-display font-bold text-navy">{h.name}</p>
-                    <p className="text-sm font-bold text-gold font-display">{h.kitPrice}</p>
+                    <p className="text-sm font-bold text-gold font-display">£{h.price.toLocaleString('en-GB')}</p>
                   </div>
-                  <p className="text-xs text-muted mt-0.5">{h.sizeRange}</p>
+                  <p className="text-xs text-muted mt-0.5">{h.area} m²</p>
                 </div>
               </a>
             ))}
