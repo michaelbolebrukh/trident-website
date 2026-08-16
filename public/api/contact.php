@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-const MAIL_TO      = 'hello@tridentmodular.com';
+const MAIL_TO      = 'contact@tridentmodular.com';
 // Must be a mailbox on the sending domain — shared hosts reject or spam-bin
 // mail claiming to be from an address they do not host.
 const MAIL_FROM    = 'website@tridentmodular.com';
