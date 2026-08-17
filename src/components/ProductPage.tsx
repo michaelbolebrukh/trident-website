@@ -39,6 +39,29 @@ export default function ProductPage({ home }: { home: Home }) {
   const relatedHomes = allHomes.filter((h) => h.slug !== home.slug).slice(0, 3)
   const detail = detailFor(home.slug)
 
+  const areas = detail?.variants.map((v) => v.area) ?? []
+  const stats = [
+    {
+      label: 'Floor area',
+      value: areas.length
+        ? areas.length > 1
+          ? `${Math.min(...areas)}–${Math.max(...areas)} m²`
+          : `${areas[0]} m²`
+        : `${home.area} m²`,
+    },
+    { label: 'Bedrooms', value: home.bedrooms ? String(home.bedrooms) : '—' },
+    { label: 'Bathrooms', value: home.bathrooms ? String(home.bathrooms) : '—' },
+    { label: 'Storeys', value: String(home.floors) },
+    {
+      label: detail ? 'Sizes' : 'Floor area',
+      value: detail ? `${detail.variants.length} available` : `${home.areaFt} ft²`,
+    },
+    {
+      label: 'Dimensions',
+      value: detail ? `${detail.variants[0].dimensions} mm` : `${home.dimensions} m`,
+    },
+  ]
+
   const [activeImage, setActiveImage] = useState(0)
   const [activeSpec, setActiveSpec] = useState<string | null>(null)
   const [completionTab, setCompletionTab] = useState<'Base' | 'Turnkey'>('Base')
@@ -62,7 +85,7 @@ export default function ProductPage({ home }: { home: Home }) {
 
       {/* Main product section */}
       <div className="max-w-[1280px] mx-auto px-6 lg:px-8 py-10">
-        <div className="grid lg:grid-cols-[1fr_380px] gap-10 lg:gap-14">
+        <div className="grid lg:grid-cols-[minmax(0,1fr)_380px] gap-10 lg:gap-14">
 
           {/* LEFT: Gallery */}
           <div>
@@ -85,12 +108,12 @@ export default function ProductPage({ home }: { home: Home }) {
 
             {/* Thumbnails */}
             {images.length > 1 && (
-              <div className="flex gap-3 mt-3">
+              <div className="flex gap-3 mt-3 overflow-x-auto pb-1">
                 {images.map((img, i) => (
                   <button
                     key={i}
                     onClick={() => setActiveImage(i)}
-                    className={`w-20 h-14 rounded-lg overflow-hidden border-2 transition-all ${i === activeImage ? 'border-gold' : 'border-transparent opacity-60 hover:opacity-100'}`}
+                    className={`w-20 h-14 shrink-0 rounded-lg overflow-hidden border-2 transition-all ${i === activeImage ? 'border-gold' : 'border-transparent opacity-60 hover:opacity-100'}`}
                   >
                     <img src={img} alt="" className="w-full h-full object-cover" />
                   </button>
@@ -110,14 +133,7 @@ export default function ProductPage({ home }: { home: Home }) {
 
             {/* Stats grid */}
             <div className="grid grid-cols-3 gap-3 mb-5 p-4 bg-light rounded-xl">
-              {[
-                { label: 'Floor area', value: `${home.area} m²` },
-                { label: 'Bedrooms', value: home.bedrooms ? String(home.bedrooms) : '—' },
-                { label: 'Bathrooms', value: home.bathrooms ? String(home.bathrooms) : '—' },
-                { label: 'Storeys', value: String(home.floors) },
-                { label: 'Floor area', value: `${home.areaFt} ft²` },
-                { label: 'Dimensions', value: `${home.dimensions} m` },
-              ].map((s) => (
+              {stats.map((s) => (
                 <div key={s.label} className="text-center">
                   <p className="font-bold font-display text-navy text-base">{s.value}</p>
                   <p className="text-xs text-muted mt-0.5">{s.label}</p>
@@ -139,14 +155,14 @@ export default function ProductPage({ home }: { home: Home }) {
             {/* CTAs */}
             <div className="space-y-3">
               <a href="/contact/"
-                className="w-full bg-gold text-navy font-bold font-display py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm">
+                className="block w-full text-center bg-gold text-navy font-bold font-display py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm">
                 Request a Quote
               </a>
               <button className="w-full border border-navy text-navy font-semibold font-display py-3.5 rounded-xl hover:bg-light transition-colors text-sm">
                 Download Specification
               </button>
               <a href="/bespoke/"
-                className="w-full text-sm font-semibold font-display text-muted hover:text-navy transition-colors underline underline-offset-2 py-1">
+                className="block w-full text-center text-sm font-semibold font-display text-muted hover:text-navy transition-colors underline underline-offset-2 py-1">
                 Customise this home
               </a>
             </div>
@@ -159,7 +175,7 @@ export default function ProductPage({ home }: { home: Home }) {
         <div className="max-w-[1280px] mx-auto px-6 lg:px-8 max-w-3xl">
           <h2 className="font-display font-bold text-navy text-2xl mb-4">Overview</h2>
           <p className="text-body text-base leading-relaxed mb-3">
-            The {home.name} is part of our {home.category.toLowerCase()} range, available from {home.area} m² of internal floor area. {home.desc}
+            {detail?.intro ?? `The ${home.name} is part of our ${home.category.toLowerCase()} range, available from ${home.area} m² of internal floor area. ${home.desc}`}
           </p>
           <p className="text-body text-base leading-relaxed">
             Available as a kit, weathertight shell or fully finished turnkey build, the {home.name} can be specified with a range of external cladding finishes, glazing configurations and sustainable upgrades including air-source heat pumps and roof-integrated solar panels.

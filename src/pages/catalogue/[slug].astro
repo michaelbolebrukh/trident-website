@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import ProductPage from '../../components/ProductPage'
 import { allHomes } from '../../data/homes'
+import { detailFor } from '../../data/model-details'
 
 export function getStaticPaths() {
   return allHomes.map((home) => ({
@@ -11,11 +12,25 @@ export function getStaticPaths() {
 }
 
 const { home } = Astro.props
+
+// The export's area field disagrees with the price guides, so prefer the
+// guide's range wherever we have one.
+const detail = detailFor(home.slug)
+const areas = detail?.variants.map((v) => v.area) ?? []
+const areaText = areas.length
+  ? areas.length > 1
+    ? `${Math.min(...areas)}–${Math.max(...areas)} m²`
+    : `${areas[0]} m²`
+  : `${home.area} m²`
+
+const description =
+  `${detail?.tagline ?? home.desc} ${areaText} internal floor area. ` +
+  'Available as a kit, weathertight shell or fully finished turnkey build.'
 ---
 
 <BaseLayout
   title={`${home.name} — ${home.category} | Trident Modular`}
-  description={`${home.desc} ${home.area} m² internal floor area. Available as a kit, weathertight shell or fully finished turnkey build.`}
+  description={description}
 >
   <ProductPage home={home} client:load />
 </BaseLayout>

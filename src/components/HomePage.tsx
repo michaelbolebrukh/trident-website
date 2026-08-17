@@ -214,7 +214,7 @@ export default function HomePage() {
                 />
               </div>
               <a href="/contact/"
-                className="w-full bg-navy text-white font-semibold font-display py-3.5 rounded-xl hover:bg-navy-mid transition-colors text-sm">
+                className="block w-full text-center bg-navy text-white font-semibold font-display py-3.5 rounded-xl hover:bg-navy-mid transition-colors text-sm">
                 Request a Consultation
               </a>
             </div>
