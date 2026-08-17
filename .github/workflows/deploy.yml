@@ -74,14 +74,24 @@ jobs:
           echo "Deploy key fingerprint (must match the key listed in hPanel):"
           ssh-keygen -lf ~/.ssh/deploy_key
 
-          ssh-keyscan -p "${{ secrets.SSH_PORT }}" -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
+          # Best-effort: pre-seed the host key so the first connection is not a
+          # blind trust-on-first-use. A flaky keyscan must not fail the deploy,
+          # so retry a few times and fall through to accept-new either way.
+          for attempt in 1 2 3; do
+            if ssh-keyscan -T 10 -p "${{ secrets.SSH_PORT }}" -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null; then
+              echo "host key recorded"
+              break
+            fi
+            echo "ssh-keyscan attempt $attempt failed"
+            sleep 5
+          done
 
       - name: Verify connection
         # BatchMode stops ssh falling back to an interactive password prompt,
         # so an auth failure is reported as one instead of a generic timeout.
         run: |
           ssh -i ~/.ssh/deploy_key -p "${{ secrets.SSH_PORT }}" \
-            -o BatchMode=yes -o IdentitiesOnly=yes \
+            -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new \
             "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" true \
             || {
               echo "::error::SSH authentication failed. Check that the matching public key is added under hPanel > Advanced > SSH Access, and that SSH_USER and SSH_HOST are correct."
@@ -93,7 +103,7 @@ jobs:
         # happily empty whatever directory it was pointed at.
         run: |
           ssh -i ~/.ssh/deploy_key -p "${{ secrets.SSH_PORT }}" \
-            -o BatchMode=yes -o IdentitiesOnly=yes \
+            -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new \
             "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" \
             "test -d '${{ secrets.SSH_PATH }}'" \
             || { echo "::error::Connected fine, but SSH_PATH does not exist on the server."; exit 1; }
@@ -106,7 +116,7 @@ jobs:
         # half-written index.html — which the CDN then caches.
         run: |
           rsync -avz --delete-after --delay-updates \
-            -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }} -o BatchMode=yes -o IdentitiesOnly=yes" \
+            -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }} -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new" \
             dist/ \
             "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_PATH }}/"
 
