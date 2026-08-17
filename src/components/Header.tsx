@@ -44,9 +44,9 @@ const mobileLinks = [
 ]
 
 const megaCategories = [
-  { label: 'Garden Rooms', img: '1697538022262-7eb736179973', desc: 'Year-round spaces from 15m²' },
-  { label: 'Modular Homes', img: '1605018075968-b014b8d2e487', desc: 'Factory-built, site-ready homes' },
-  { label: 'Frame Houses', img: '1696846911635-83b97e53fb65', desc: 'Flexible homes assembled on site' },
+  { label: 'Garden Rooms', img: media.gardenRoom, desc: 'Year-round spaces from 4.4 m²' },
+  { label: 'Modular Homes', img: media.familyHome, desc: 'Factory-built, site-ready homes' },
+  { label: 'Frame Houses', img: media.chaletExterior, desc: 'Flexible homes assembled on site' },
 ]
 
 export default function Header({ currentPath }: HeaderProps) {
