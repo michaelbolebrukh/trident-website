@@ -68,22 +68,22 @@ function ComparisonSlider() {
         onTouchMove={onTouchMove}
         onTouchEnd={() => setDragging(false)}
       >
-        {/* BASE — same room, pre-plastering: exposed timber frame, foil insulation, OSB floor */}
+        {/* BASE, same room, pre-plastering: exposed timber frame, foil insulation, OSB floor */}
         <img
           src={baseImg.src}
-          alt="Base solution — exposed timber frame, insulation fitted, pre-plastering"
+          alt="Base solution, exposed timber frame, insulation fitted, pre-plastering"
           className="absolute inset-0 w-full h-full object-cover"
           draggable={false}
         />
 
-        {/* TURNKEY — same room fully finished: plastered, oak floor, furnished */}
+        {/* TURNKEY, same room fully finished: plastered, oak floor, furnished */}
         <div
           className="absolute inset-0"
           style={{ clipPath: `inset(0 0 0 ${sliderPos}%)` }}
         >
           <img
             src={turnkeyImg.src}
-            alt="Turnkey solution — plastered, furnished and ready to move in"
+            alt="Turnkey solution, plastered, furnished and ready to move in"
             className="absolute inset-0 w-full h-full object-cover"
             draggable={false}
           />
@@ -120,7 +120,7 @@ function ComparisonSlider() {
           </span>
         </div>
 
-        {/* Drag hint — fades after first interaction */}
+        {/* Drag hint, fades after first interaction */}
         {sliderPos === 45 && (
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 pointer-events-none">
             <span className="bg-black/50 backdrop-blur-sm text-white text-xs font-medium font-display px-4 py-2 rounded-full flex items-center gap-2">

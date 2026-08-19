@@ -17,11 +17,10 @@ const homesMegaMenu = [
 ]
 
 const bespokeDropdown = [
-  { label: 'Bespoke Home Design', href: routes.bespoke },
-  { label: 'Commercial Buildings', href: routes.bespoke },
-  { label: 'Workspaces', href: routes.bespoke },
-  { label: 'Interiors', href: routes.bespoke },
-  { label: 'Sustainable Upgrades', href: routes.bespoke },
+  { label: 'Bespoke Home Design', href: `${routes.bespoke}#design` },
+  { label: 'The Bespoke Process', href: `${routes.bespoke}#process` },
+  { label: 'Commercial & Workspaces', href: `${routes.bespoke}#support` },
+  { label: 'Sustainable Upgrades', href: `${routes.bespoke}#sustainable` },
 ]
 
 const navLinks = [
@@ -131,7 +130,7 @@ export default function Header({ currentPath }: HeaderProps) {
       >
         <div className="max-w-[1280px] mx-auto px-6 lg:px-8 flex items-center h-16 gap-8">
           {/* Logo */}
-          <a href={routes.home} className="shrink-0 focus:outline-none" aria-label="Trident Modular — home">
+          <a href={routes.home} className="shrink-0 focus:outline-none" aria-label="Trident Modular, home">
             <Logo height={34} />
           </a>
 

@@ -23,7 +23,7 @@ const IMGS = {
 
 // Featured homes are drawn from the real catalogue, grouped by category and
 // showing the three cheapest models in each so the block stays a teaser.
-// Commercial order — entry-level garden rooms first, working up. Anything not
+// Commercial order, entry-level garden rooms first, working up. Anything not
 // listed (new categories added later) falls in after these.
 const CATEGORY_ORDER = [
   'Garden Rooms',
@@ -119,7 +119,7 @@ export default function HomePage() {
             </h1>
             <p className="text-white/70 text-lg leading-relaxed mb-8 max-w-lg">
               Energy-efficient homes, garden rooms and commercial spaces
-              designed around your site, goals and budget — from first concept
+              designed around your site, goals and budget, from first concept
               to final installation.
             </p>
             <div className="flex flex-wrap gap-4">
@@ -287,7 +287,7 @@ export default function HomePage() {
               },
               {
                 title: "Frame Houses",
-                desc: "Flexible, spacious homes assembled on site and tailored to your plot — with a wide range of finishes and layouts.",
+                desc: "Flexible, spacious homes assembled on site and tailored to your plot, with a wide range of finishes and layouts.",
                 img: IMGS.frame,
                 href: routes.catalogue,
               },
@@ -386,9 +386,10 @@ export default function HomePage() {
           {/* Cards */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {(featuredByCategory[activeTab] ?? []).map((home) => (
-              <div
+              <a
                 key={home.name}
-                className="group bg-white rounded-2xl overflow-hidden card-shadow card-shadow-hover transition-all duration-300 hover:-translate-y-1 flex flex-col"
+                href={productPath(home.slug)}
+                className="group bg-white rounded-2xl overflow-hidden card-shadow card-shadow-hover transition-all duration-300 hover:-translate-y-1 flex flex-col focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
               >
                 {/* Image */}
                 <div className="h-52 overflow-hidden bg-light relative shrink-0">
@@ -428,7 +429,7 @@ export default function HomePage() {
                   <div className="rounded-xl overflow-hidden border border-border mt-auto">
                     <div className="flex items-center justify-between px-4 py-3 bg-navy">
                       <span className="text-[10px] font-bold font-display text-white tracking-[0.15em] uppercase">
-                        From · ex VAT
+                        From · excl. VAT
                       </span>
                       <span className="text-sm font-bold font-display text-white">
                         £{home.price.toLocaleString("en-GB")}
@@ -441,13 +442,12 @@ export default function HomePage() {
                     <span className="text-xs text-muted">
                       {home.bedrooms ? `${home.bedrooms} bed` : `${home.area} m²`}
                     </span>
-                    <a href={productPath(home.slug)}
-                      className="text-xs font-bold font-display text-navy border border-border rounded-lg px-4 py-1.5 hover:border-navy hover:bg-light transition-colors">
+                    <span className="text-xs font-bold font-display text-navy border border-border rounded-lg px-4 py-1.5 group-hover:border-navy group-hover:bg-light transition-colors">
                       Open
-                    </a>
+                    </span>
                   </div>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         </div>
@@ -802,7 +802,7 @@ export default function HomePage() {
               {
                 tag: "Base",
                 tagColor: "bg-navy text-white",
-                title: "Building supply to specification",
+                title: "Manufactured to your specification",
                 desc: "Your selected building supplied and installed to the agreed specification. Suitable for clients who wish to manage site preparation, groundworks or internal completion works themselves, or who have their own contractors.",
                 features: [
                   "Building manufactured to spec",

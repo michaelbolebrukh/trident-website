@@ -20,7 +20,7 @@ export default function AboutPage() {
         <div className="relative max-w-[1280px] mx-auto px-6 lg:px-8 pb-16 pt-24">
           <p className="text-xs font-semibold font-display uppercase tracking-[0.2em] text-gold mb-4">About Trident Modular</p>
           <h1 className="font-display font-bold text-white leading-tight" style={{ fontSize: 'clamp(36px, 5vw, 58px)', maxWidth: '700px' }}>
-            A considered approach to modern construction
+            Built around you.
           </h1>
         </div>
       </section>
@@ -35,7 +35,7 @@ export default function AboutPage() {
               Trident Modular designs and delivers a range of modular and frame-built homes, garden rooms and commercial buildings. We offer both standard catalogue models and fully bespoke designs, with a managed service from initial concept through to completed installation.
             </p>
             <p className="text-muted text-base leading-relaxed">
-              Our approach combines factory-controlled manufacture — which reduces waste, improves quality and shortens on-site programmes — with an experienced project team that works closely with each client from the first site visit to final handover.
+              Our approach combines factory-controlled manufacture to reduce waste, improve quality and shorten on-site programmes, with an experienced project team that works closely with each client from the first site visit to final handover.
             </p>
           </div>
           <div className="rounded-2xl overflow-hidden h-80 bg-light">
@@ -58,7 +58,7 @@ export default function AboutPage() {
               { title: 'Controlled manufacture', desc: 'Factory production reduces weather dependency, improves material quality and gives a more predictable build programme.' },
               { title: 'Energy performance', desc: 'High-performance insulation, air-source heat pumps and sustainable upgrades are available across our full range.' },
               { title: 'Residential and commercial', desc: 'We work on private homes, garden rooms, annexes, commercial offices, hospitality buildings and investment schemes.' },
-              { title: 'Transparent process', desc: 'Clear quotations, defined specifications and a named project contact throughout your build.' },
+              { title: 'Straightforward process', desc: 'Clear quotations, defined specifications and a named project contact throughout your build.' },
             ].map((d) => (
               <div key={d.title} className="bg-white rounded-xl p-6 border border-border">
                 <h4 className="font-display font-bold text-navy text-base mb-2">{d.title}</h4>
@@ -79,10 +79,10 @@ export default function AboutPage() {
             <p className="text-xs font-semibold font-display uppercase tracking-[0.2em] text-gold mb-4">Our Values</p>
             <h2 className="font-display font-bold text-navy text-4xl mb-6 leading-tight">Quality, clarity and long-term thinking</h2>
             <p className="text-body text-base leading-relaxed mb-4">
-              We build homes that are designed to last and engineered to perform. Quality control happens in the factory, not on site — which means fewer surprises, more predictable outcomes and a better end result for our clients.
+              We build homes that are designed to last and engineered to perform. Quality control happens in the factory rather than on site to ensure predicted outcomes and a better end result for our clients.
             </p>
             <p className="text-muted text-base leading-relaxed mb-6">
-              We work with clients who value clear information, realistic timelines and a team that takes responsibility. We don't make promises we can't keep, and we don't overclaim on performance figures.
+              We focus on clear communication, realistic expectations and accountable project delivery.
             </p>
             <a href="/contact/"
               className="bg-navy text-white font-semibold font-display px-7 py-3.5 rounded-xl hover:bg-navy-mid transition-colors text-sm">

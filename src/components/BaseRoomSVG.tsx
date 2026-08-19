@@ -55,7 +55,7 @@ export default function BaseRoomSVG() {
       {/* Ambient background */}
       <rect width="800" height="500" fill="#9AADB8" />
 
-      {/* ─── FLOOR — raw concrete screed ─── */}
+      {/* ─── FLOOR, raw concrete screed ─── */}
       <polygon points="60,460 740,460 600,290 200,290" fill="url(#b-floor)" />
       {/* Expansion joint grid */}
       {[310, 330, 350, 370, 390, 410, 430, 450].map((y) => {
@@ -81,7 +81,7 @@ export default function BaseRoomSVG() {
         <circle key={i} cx={x} cy={y} r="2" fill="#70706A" opacity="0.35" />
       ))}
 
-      {/* ─── BACK WALL — bare plasterboard ─── */}
+      {/* ─── BACK WALL, bare plasterboard ─── */}
       <polygon points="200,80 600,80 600,290 200,290" fill="#C2BEB6" />
       {/* Vertical stud joints */}
       {studs.map((x) => (
@@ -110,7 +110,7 @@ export default function BaseRoomSVG() {
       {/* Reveal depth bottom */}
       <polygon points="249,218 479,218 479,221 249,221" fill="#B8B4AC" />
 
-      {/* ─── CEILING — exposed timber structure ─── */}
+      {/* ─── CEILING, exposed timber structure ─── */}
       <polygon points="60,180 740,180 600,80 200,80" fill="url(#b-ceil)" />
       {/* Timber joists front-to-back */}
       {joists.map(([fx, bx], i) => (
@@ -148,7 +148,7 @@ export default function BaseRoomSVG() {
         )
       })}
 
-      {/* ─── LEFT WALL — plasterboard ─── */}
+      {/* ─── LEFT WALL, plasterboard ─── */}
       <polygon points="60,180 200,80 200,290 60,460" fill="#B0ACA4" />
       {/* Stud lines (perspective) */}
       {[0.25, 0.5, 0.75].map((t, i) => {
@@ -165,7 +165,7 @@ export default function BaseRoomSVG() {
       {/* Shadow overlay */}
       <polygon points="60,180 200,80 200,290 60,460" fill="rgba(0,0,0,0.08)" />
 
-      {/* ─── RIGHT WALL — plasterboard ─── */}
+      {/* ─── RIGHT WALL, plasterboard ─── */}
       <polygon points="740,180 600,80 600,290 740,460" fill="#BCBAAE" />
       <polygon points="740,180 600,80 600,290 740,460" fill="rgba(0,0,0,0.06)" />
 

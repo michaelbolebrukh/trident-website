@@ -47,7 +47,7 @@ export default function TurnkeyRoomSVG() {
       {/* Distant garden trees */}
       <rect x="0" y="0" width="800" height="200" fill="#5A9870" opacity="0.4" />
 
-      {/* ─── FLOOR — oak laminate ─── */}
+      {/* ─── FLOOR, oak laminate ─── */}
       <polygon points="60,460 740,460 600,290 200,290" fill="#C09A58" />
       {/* Wood plank horizontal lines */}
       {[300, 312, 325, 338, 352, 366, 381, 397, 414, 432, 450].map((y) => {
@@ -77,10 +77,10 @@ export default function TurnkeyRoomSVG() {
       {/* Floor sheen */}
       <polygon points="60,460 740,460 600,290 200,290" fill="rgba(255,255,200,0.06)" />
 
-      {/* ─── BACK WALL — white painted ─── */}
+      {/* ─── BACK WALL, white painted ─── */}
       <polygon points="200,80 600,80 600,290 200,290" fill="url(#t-back)" />
 
-      {/* ─── WINDOW — white PVC frame with glazing ─── */}
+      {/* ─── WINDOW, white PVC frame with glazing ─── */}
       {/* Frame */}
       <rect x="252" y="102" width="224" height="116" rx="2" fill="#E8E6E2" />
       {/* Glazing */}
@@ -98,7 +98,7 @@ export default function TurnkeyRoomSVG() {
       {/* Reflection on glass */}
       <rect x="260" y="110" width="50" height="80" fill="rgba(255,255,255,0.12)" rx="1" />
 
-      {/* ─── KITCHEN — left side of back wall ─── */}
+      {/* ─── KITCHEN, left side of back wall ─── */}
       {/* Upper cabinets */}
       <rect x="203" y="115" width="52" height="68" rx="1" fill="#DEDAD4" />
       <rect x="205" y="117" width="48" height="64" rx="1" fill="#D4D0CA" />
@@ -118,7 +118,7 @@ export default function TurnkeyRoomSVG() {
       <rect x="203" y="185" width="52" height="58" fill="#E0DCD4" />
       <rect x="203" y="185" width="52" height="58" fill="rgba(255,255,255,0.3)" />
 
-      {/* ─── KITCHEN — right side of back wall ─── */}
+      {/* ─── KITCHEN, right side of back wall ─── */}
       {/* Upper cabinets */}
       <rect x="494" y="115" width="104" height="68" rx="1" fill="#DEDAD4" />
       <rect x="496" y="117" width="100" height="64" rx="1" fill="#D4D0CA" />
@@ -137,7 +137,7 @@ export default function TurnkeyRoomSVG() {
       <rect x="494" y="185" width="104" height="58" fill="#E0DCD4" />
       <rect x="494" y="185" width="104" height="58" fill="rgba(255,255,255,0.3)" />
 
-      {/* ─── LEFT WALL — white painted ─── */}
+      {/* ─── LEFT WALL, white painted ─── */}
       <polygon points="60,180 200,80 200,290 60,460" fill="#EAE6DE" />
       {/* Subtle shadow */}
       <polygon points="60,180 200,80 200,290 60,460" fill="rgba(0,0,0,0.06)" />
@@ -145,7 +145,7 @@ export default function TurnkeyRoomSVG() {
       <rect x="70" y="360" width="18" height="13" rx="1" fill="#DEDAD2" stroke="#C8C4BC" strokeWidth="1" />
       <circle cx="79" cy="366" r="2" fill="#C8C4BC" />
 
-      {/* ─── RIGHT WALL — white painted ─── */}
+      {/* ─── RIGHT WALL, white painted ─── */}
       <polygon points="740,180 600,80 600,290 740,460" fill="#EDEAE4" />
       <polygon points="740,180 600,80 600,290 740,460" fill="rgba(0,0,0,0.04)" />
 
@@ -154,9 +154,9 @@ export default function TurnkeyRoomSVG() {
       <polygon points="60,457 200,287 200,292 62,460" fill="#ECEAE4" />
       <polygon points="740,457 600,287 600,292 738,460" fill="#EDEAE6" />
 
-      {/* ─── CEILING — smooth white with downlights ─── */}
+      {/* ─── CEILING, smooth white with downlights ─── */}
       <polygon points="60,180 740,180 600,80 200,80" fill="url(#t-ceil)" />
-      {/* Downlights — 3 recessed */}
+      {/* Downlights, 3 recessed */}
       {[250, 400, 550].map((fx, i) => {
         // back-x perspective: 200 + (fx-60)/(680)*400
         const bx = 200 + ((fx - 60) / 680) * 400

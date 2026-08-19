@@ -129,7 +129,7 @@ export default function ProductPage({ home }: { home: Home }) {
             </div>
             <h1 className="font-display font-bold text-navy text-4xl mb-2">{home.name}</h1>
             <p className="text-2xl font-bold font-display text-gold mb-1">From £{home.price.toLocaleString('en-GB')}</p>
-            <p className="text-xs text-muted mb-4">ex VAT · foundations quoted separately</p>
+            <p className="text-xs text-muted mb-4">excl. VAT · foundations quoted separately</p>
 
             {/* Stats grid */}
             <div className="grid grid-cols-3 gap-3 mb-5 p-4 bg-light rounded-xl">
@@ -298,7 +298,7 @@ export default function ProductPage({ home }: { home: Home }) {
           <div className="max-w-2xl bg-light rounded-2xl p-7 border border-border">
             {completionTab === 'Base' ? (
               <div>
-                <p className="font-display font-bold text-navy mb-2">Base — building supply to specification</p>
+                <p className="font-display font-bold text-navy mb-2">Base, building supply to specification</p>
                 <p className="text-sm text-muted leading-relaxed mb-4">Your building is manufactured and delivered to the agreed specification. Suitable for clients managing their own groundworks, internal finishing or who have existing contractors in place.</p>
                 <ul className="space-y-2">
                   {['Building manufactured to agreed spec', 'Delivery and crane placement', 'Structural assembly and weather-tight close', 'Standard external finishes included'].map((i) => (
@@ -311,7 +311,7 @@ export default function ProductPage({ home }: { home: Home }) {
               </div>
             ) : (
               <div>
-                <p className="font-display font-bold text-navy mb-2">Turnkey — fully managed, ready to move in</p>
+                <p className="font-display font-bold text-navy mb-2">Turnkey, We manage every stage, from site preparation and foundations to internal finishing, heating, kitchen and bathroom installation.</p>
                 <p className="text-sm text-muted leading-relaxed mb-4">A complete managed solution covering all works from site preparation through to final handover. One contract, one team.</p>
                 <ul className="space-y-2">
                   {['Foundation and groundworks (as agreed)', 'Full structural assembly', 'Electrical installation and plumbing', 'Internal finishes, kitchen and bathrooms', 'Heating and ventilation commissioning', 'Final inspection and handover'].map((i) => (

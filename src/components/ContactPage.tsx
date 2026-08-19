@@ -6,7 +6,7 @@ export default function ContactPage() {
   const [form, setForm] = useState({
     name: '', email: '', phone: '', postcode: '', projectType: '',
     size: '', message: '', consent: false,
-    company: '', // honeypot — hidden from users, filled only by bots
+    company: '', // honeypot, hidden from users, filled only by bots
   })
   const [submitted, setSubmitted] = useState(false)
   const [sending, setSending] = useState(false)
@@ -96,7 +96,7 @@ export default function ContactPage() {
           <div>
             <h2 className="font-display font-bold text-navy text-xl mb-5">Talk to our team</h2>
             <p className="text-muted text-sm leading-relaxed mb-7">
-              Whether you have a site in mind, a question about a model, or simply want to explore your options, we're happy to have an initial conversation with no obligation.
+              Whether you already have a site, are considering one of our models, or simply want to explore what's possible, we're happy to have an initial conversation with no obligation.
             </p>
 
             <div className="space-y-5">

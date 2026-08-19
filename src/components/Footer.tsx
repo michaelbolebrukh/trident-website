@@ -32,7 +32,7 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <Logo height={32} variant="white" />
             <p className="mt-5 text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.65)', maxWidth: '300px' }}>
-              Trident Modular designs and delivers modern modular and frame-built homes, garden rooms and commercial spaces across the UK — from first concept to final installation.
+              Trident Modular designs and delivers modern modular and frame-built homes, garden rooms and commercial spaces across the UK, from first concept to final installation.
             </p>
             <div className="mt-6 flex gap-3">
               {['facebook', 'instagram', 'linkedin', 'youtube'].map((s) => (

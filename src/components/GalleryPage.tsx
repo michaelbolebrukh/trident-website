@@ -5,10 +5,10 @@ const IMGS = [
   { src: media.heroExterior, label: 'Modern Loft', type: 'Residential Homes', location: 'Shropshire' },
   { src: media.gardenRoom, label: 'Garden Premium Studio', type: 'Garden Rooms', location: 'Cheshire' },
   { src: media.interiorLiving, label: 'Open Plan Living', type: 'Interiors', location: '' },
-  { src: media.chaletExterior, label: 'Frame House — Garden Level', type: 'Residential Homes', location: 'Worcestershire' },
+  { src: media.chaletExterior, label: 'Frame House, Garden Level', type: 'Residential Homes', location: 'Worcestershire' },
   { src: media.residenceExterior, label: 'Timber Cladding Detail', type: 'Bespoke Features', location: '' },
   { src: media.interiorKitchen, label: 'Contemporary Interior', type: 'Interiors', location: '' },
-  { src: media.siteAerial, label: 'Aerial View — Plot', type: 'Installation', location: 'Herefordshire' },
+  { src: media.siteAerial, label: 'Aerial View, Plot', type: 'Installation', location: 'Herefordshire' },
   { src: media.commercial, label: 'Gothic 1.5 Storey', type: 'Residential Homes', location: 'Staffordshire' },
   { src: media.interiorBedroom, label: 'Hallway & Stair', type: 'Interiors', location: '' },
 ]

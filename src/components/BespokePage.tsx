@@ -52,24 +52,24 @@ export default function BespokePage() {
       </section>
 
       {/* Two routes */}
-      <section className="py-20 lg:py-28">
+      <section id="design" className="py-20 lg:py-28 scroll-mt-24">
         <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
           <div className="text-center mb-12">
             <p className="text-xs font-semibold font-display uppercase tracking-[0.2em] text-gold mb-3">Our Services</p>
-            <h2 className="font-display font-bold text-navy text-4xl lg:text-5xl">Two routes — one team</h2>
+            <h2 className="font-display font-bold text-navy text-4xl lg:text-5xl">Two routes, one team</h2>
           </div>
           <div className="grid lg:grid-cols-2 gap-8">
             {[
               {
                 title: 'Bespoke Residential',
-                desc: 'For clients who need more than a catalogue design can offer. We work from your brief, site and aspirations to develop a home designed specifically for your plot. The result uses the same factory manufacturing process — with the flexibility of a fully bespoke design.',
+                desc: 'For clients who need more than a catalogue design can offer. We work from your brief, site and aspirations to develop a home designed specifically for your plot. The result uses the same factory manufacturing process, with the flexibility of a fully bespoke design.',
                 features: ['Architect-led design process', 'Planning permission support', 'Structural engineering', 'Any size, layout or specification', 'Full or partial completion available'],
                 img: IMGS.resi,
                 cta: 'Enquire about bespoke residential',
               },
               {
                 title: 'Commercial & Investment Projects',
-                desc: 'Trident Modular works with developers, landowners and commercial clients on a wide range of building types — from offices and workspaces to hospitality buildings, glamping lodges and rental units. Modular construction is particularly well suited to multi-unit and phased commercial schemes.',
+                desc: 'Trident Modular works with developers, landowners and commercial clients on a wide range of building types, from offices and workspaces to hospitality buildings, glamping lodges and rental units. Modular construction is particularly well suited to multi-unit and phased commercial schemes.',
                 features: ['Offices and workspaces', 'Hospitality and leisure', 'Rental and investment units', 'Glamping and tourism', 'Phased or multi-unit schemes'],
                 img: IMGS.commercial,
                 cta: 'Enquire about commercial projects',
@@ -102,7 +102,7 @@ export default function BespokePage() {
       </section>
 
       {/* Bespoke process */}
-      <section className="bg-light py-20 lg:py-28">
+      <section id="process" className="bg-light py-20 lg:py-28 scroll-mt-24">
         <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
           <div className="text-center mb-14">
             <p className="text-xs font-semibold font-display uppercase tracking-[0.2em] text-gold mb-3">How It Works</p>
@@ -126,12 +126,12 @@ export default function BespokePage() {
       </section>
 
       {/* Sustainable upgrades */}
-      <section className="py-20 lg:py-28">
+      <section id="sustainable" className="py-20 lg:py-28 scroll-mt-24">
         <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
           <div className="mb-12">
             <p className="text-xs font-semibold font-display uppercase tracking-[0.2em] text-gold mb-3">Green Options</p>
             <h2 className="font-display font-bold text-navy text-4xl">Sustainable upgrades</h2>
-            <p className="text-muted text-base mt-3 max-w-xl">Available across our bespoke and standard ranges — we can specify sustainable technologies from the outset or integrate them into an existing design.</p>
+            <p className="text-muted text-base mt-3 max-w-xl">Available across our bespoke and standard ranges, we can specify sustainable technologies from the outset or integrate them into an existing design.</p>
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-5">
             {sustainableOptions.map((opt) => (
@@ -146,7 +146,7 @@ export default function BespokePage() {
       </section>
 
       {/* Support services */}
-      <section className="bg-light py-20 lg:py-28">
+      <section id="support" className="bg-light py-20 lg:py-28 scroll-mt-24">
         <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
           <h2 className="font-display font-bold text-navy text-3xl mb-8">Professional support services</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -165,7 +165,7 @@ export default function BespokePage() {
       <section className="bg-navy py-16">
         <div className="max-w-[700px] mx-auto px-6 text-center">
           <h2 className="font-display font-bold text-white text-3xl mb-4">Ready to discuss your project?</h2>
-          <p className="text-white/65 mb-8">Tell us about your site, requirements and timeline and we'll come back to you with an initial view.</p>
+          <p className="text-white/65 mb-8">Tell us about your site, requirements and timeline and we'll get back to you with our initial thoughts.</p>
           <a href="/contact/" className="bg-gold text-navy font-bold font-display px-8 py-4 rounded-xl hover:bg-gold-dark transition-colors text-sm">
             Start a Conversation
           </a>

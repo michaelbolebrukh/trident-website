@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Regenerates src/data/homes.ts from a WordPress export of tridentmodular.com.
+Regenerates src/data/homes.generated.ts from a WordPress export.
 
     python3 scripts/import-houses.py path/to/export.xml
 
@@ -19,7 +19,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 NS = {'wp': 'http://wordpress.org/export/1.2/'}
-OUT = Path(__file__).resolve().parent.parent / 'src' / 'data' / 'homes.ts'
+OUT = Path(__file__).resolve().parent.parent / 'src' / 'data' / 'homes.generated.ts'
 
 
 def clean(text):
@@ -94,10 +94,11 @@ def parse(xml_path):
 
 
 HEADER = """/**
- * Trident's real product range, generated from the WordPress export of
- * tridentmodular.com. Prices, areas and dimensions are the live figures.
+ * GENERATED FILE — do not hand-edit.
+ * Re-run: python3 scripts/import-houses.py <export.xml>
  *
- * Do not hand-edit — re-run: python3 scripts/import-houses.py <export.xml>
+ * Editorial corrections live in src/data/overrides.ts and are merged on top
+ * of this by src/data/homes.ts, so they survive a re-import.
  *
  * IMAGE_BASE still points at the old WordPress host so the staging site can be
  * reviewed with real photography. It MUST be switched to local assets before
@@ -127,12 +128,9 @@ export interface Home {
   gallery: string[]
 }
 
-export const allHomes: Home[] = ["""
+export const generatedHomes: Home[] = ["""
 
 FOOTER = """]
-
-export const homeBySlug = (slug: string) => allHomes.find((h) => h.slug === slug)
-export const categories = [...new Set(allHomes.flatMap((h) => h.categories))].sort()
 """
 
 

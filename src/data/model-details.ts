@@ -3,14 +3,14 @@
  *
  * These carry what the WordPress export could not: the size variants and the
  * three-package pricing ladder (Kit / Shell / Turnkey). Keyed by the model's
- * catalogue slug — a model without an entry here simply falls back to the
+ * catalogue slug. A model without an entry here simply falls back to the
  * single "from" price in homes.ts.
  *
- * ALL PRICES ARE EX VAT and are "from" prices. Anything rendering them must
+ * ALL PRICES ARE EXCL. VAT and are "from" prices. Anything rendering them must
  * say so; see PRICE_NOTE.
  */
 
-export const PRICE_NOTE = 'All prices from, ex VAT. Foundations quoted separately.'
+export const PRICE_NOTE = 'All prices from, excl. VAT. Foundations quoted separately.'
 
 export interface Variant {
   name: string
@@ -98,7 +98,7 @@ export const modelDetails: Record<string, ModelDetail> = {
     tagline:
       'Full-comfort studio with insulated shell, ensuite shower room and turnkey finishing. Live, work or host from your garden.',
     intro:
-      'Garden Studio Comfort is our premium tier: an insulated timber-frame studio you can actually live in. Turnkey includes an ensuite shower room, water heater and full electrics. Add a terrace, kitchenette or premium ecosystem — air source heat pump, green roof, Sonos — as options.',
+      'Garden Studio Comfort is our premium tier: an insulated timber-frame studio you can actually live in. Turnkey includes an ensuite shower room, water heater and full electrics. Add a terrace, kitchenette or premium ecosystem (air source heat pump, green roof, Sonos) as options.',
     variants: [
       { name: 'Studio 19', dimensions: '5600 × 3370', area: 15.6, kit: 12970, shell: 17420, turnkey: 37233 },
       { name: 'Studio 19 T', dimensions: '5600 × 4180', area: 15.6, kit: 15150, shell: 20200, turnkey: 40013 },
@@ -122,7 +122,7 @@ export const modelDetails: Record<string, ModelDetail> = {
   'a-frame': {
     tagline: 'Two bedroom timber frame house, 71.62 m² internal. Buy the kit, the erected shell, or a finished home.',
     intro:
-      'Same building, same factory, same specification — the only difference is where our work stops and yours begins. Building on a concrete slab? The kit without floor cassettes is from £78,900, a saving of £8,100.',
+      'Same building, same factory, same specification. The only difference is where our work stops and yours begins. Building on a concrete slab? The kit without floor cassettes is from £78,900, a saving of £8,100.',
     variants: [
       { name: 'A-Frame', dimensions: '71.62 m² internal', area: 71.62, kit: 87000, shell: 109150, turnkey: 190670 },
     ],
@@ -135,7 +135,7 @@ export const modelDetails: Record<string, ModelDetail> = {
       {
         n: '02',
         name: 'Shell and assembly',
-        desc: 'Everything in the kit, plus road delivery, mobile crane and offload, and erection by our own crew — sealed and weathertight on handover, typically 10 to 12 days on site. £1,524/m².',
+        desc: 'Everything in the kit, plus road delivery, mobile crane and offload, and erection by our own crew, sealed and weathertight on handover, typically 10 to 12 days on site. £1,524/m².',
       },
       {
         n: '03',

@@ -148,9 +148,10 @@ export default function CataloguePage() {
             ) : (
               <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
                 {filtered.map((home) => (
-                  <div
+                  <a
                     key={home.slug}
-                    className="group bg-white rounded-2xl overflow-hidden card-shadow card-shadow-hover transition-all duration-300 hover:-translate-y-1 flex flex-col"
+                    href={productPath(home.slug)}
+                    className="group bg-white rounded-2xl overflow-hidden card-shadow card-shadow-hover transition-all duration-300 hover:-translate-y-1 flex flex-col focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
                   >
                     {/* Image */}
                     <div className="h-48 overflow-hidden bg-light relative shrink-0">
@@ -176,7 +177,7 @@ export default function CataloguePage() {
                       {/* Price */}
                       <div className="rounded-xl overflow-hidden border border-border mt-auto">
                         <div className="flex items-center justify-between px-4 py-3 bg-navy">
-                          <span className="text-[10px] font-bold font-display text-white tracking-[0.15em] uppercase">From · ex VAT</span>
+                          <span className="text-[10px] font-bold font-display text-white tracking-[0.15em] uppercase">From · excl. VAT</span>
                           <span className="text-sm font-bold font-display text-white">£{home.price.toLocaleString('en-GB')}</span>
                         </div>
                       </div>
@@ -184,13 +185,12 @@ export default function CataloguePage() {
                       {/* Footer */}
                       <div className="mt-3 flex items-center justify-between">
                         <span className="text-xs text-muted">{home.bedrooms ? `${home.bedrooms} bed` : `${home.area} m²`}</span>
-                        <a href={productPath(home.slug)}
-                          className="text-xs font-bold font-display text-navy border border-border rounded-lg px-4 py-1.5 hover:border-navy hover:bg-light transition-colors">
+                        <span className="text-xs font-bold font-display text-navy border border-border rounded-lg px-4 py-1.5 group-hover:border-navy group-hover:bg-light transition-colors">
                           Open
-                        </a>
+                        </span>
                       </div>
                     </div>
-                  </div>
+                  </a>
                 ))}
               </div>
             )}
