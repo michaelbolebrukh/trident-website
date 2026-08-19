@@ -1,34 +1,35 @@
 import { useState } from 'react'
-import { media } from '../data/media'
+import postsData from '../data/posts.json'
 
-const IMGS = {
-  a: media.heroExterior,
-  b: media.gardenRoom,
-  c: media.interiorLiving,
-  d: media.siteAerial,
-  e: media.chaletExterior,
-  f: media.residenceExterior,
+interface Post {
+  slug: string
+  title: string
+  date: string
+  excerpt: string
+  image: string | null
+  words: number
 }
 
-const articles = [
-  { title: 'Modular vs frame-built: which is right for your plot?', cat: 'Modular Homes', date: '14 July 2025', readTime: '6 min', img: IMGS.a, excerpt: 'Understanding the practical differences between modular and frame-built construction helps you choose the most suitable approach for your site, budget and timescale.' },
-  { title: 'How to plan a garden room that works year-round', cat: 'Garden Rooms', date: '2 July 2025', readTime: '5 min', img: IMGS.b, excerpt: 'Insulation, heating, ventilation and glazing all affect how comfortable a garden room is in winter. Here\'s what to consider before you specify.' },
-  { title: 'What does \'turnkey\' actually mean?', cat: 'Installation', date: '20 June 2025', readTime: '4 min', img: IMGS.c, excerpt: 'The term \'turnkey\' is used differently across the construction industry. We explain exactly what is included in a Trident Modular turnkey contract.' },
-  { title: 'Do I need planning permission for a modular home?', cat: 'Planning', date: '5 June 2025', readTime: '7 min', img: IMGS.d, excerpt: 'Planning requirements depend on the type of building, its size, your plot and its location. A practical guide to the questions you should ask before you proceed.' },
-  { title: 'Energy efficiency in modular construction', cat: 'Sustainability', date: '22 May 2025', readTime: '5 min', img: IMGS.e, excerpt: 'Factory manufacture allows tighter quality control over insulation and airtightness than traditional site-built methods. Here\'s how that translates into real energy performance.' },
-  { title: 'Choosing external cladding for a modern home', cat: 'Design', date: '8 May 2025', readTime: '6 min', img: IMGS.f, excerpt: 'Timber, render, fibre cement or metal: different cladding types have different maintenance requirements, aesthetics and price points. A guide to making the right choice.' },
-]
+/** Roughly 200 words a minute, rounded up, as a reading estimate. */
+const readTime = (words: number) => `${Math.max(1, Math.round(words / 200))} min`
 
-const categories = ['All', 'Modular Homes', 'Garden Rooms', 'Design', 'Installation', 'Sustainability', 'Planning', 'Case Studies']
+const articles = (postsData as Post[]).map((p) => ({
+  slug: p.slug,
+  title: p.title,
+  excerpt: p.excerpt,
+  img: p.image ?? undefined,
+  date: new Date(p.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }),
+  readTime: readTime(p.words),
+}))
+
 
 export default function BlogPage() {
   const [search, setSearch] = useState('')
-  const [activeCategory, setActiveCategory] = useState('All')
 
   const filtered = articles.filter((a) => {
-    if (activeCategory !== 'All' && a.cat !== activeCategory) return false
-    if (search && !a.title.toLowerCase().includes(search.toLowerCase()) && !a.excerpt.toLowerCase().includes(search.toLowerCase())) return false
-    return true
+    if (!search) return true
+    const q = search.toLowerCase()
+    return a.title.toLowerCase().includes(q) || a.excerpt.toLowerCase().includes(q)
   })
 
   const featured = articles[0]
@@ -59,30 +60,20 @@ export default function BlogPage() {
       </div>
 
       <div className="max-w-[1280px] mx-auto px-6 lg:px-8 py-10">
-        {/* Categories */}
-        <div className="flex gap-2 flex-wrap mb-10">
-          {categories.map((c) => (
-            <button
-              key={c}
-              onClick={() => setActiveCategory(c)}
-              className={`px-4 py-2 rounded-full text-xs font-semibold font-display transition-colors ${activeCategory === c ? 'bg-navy text-white' : 'bg-light text-body hover:bg-border'}`}
-            >
-              {c}
-            </button>
-          ))}
-        </div>
-
         {/* Featured article */}
-        {activeCategory === 'All' && !search && (
+        {!search && (
           <div className="mb-12">
-            <button className="group w-full bg-white rounded-2xl overflow-hidden card-shadow card-shadow-hover text-left transition-all duration-300 hover:-translate-y-1 grid lg:grid-cols-2">
+            <a
+              href={`/blog/${featured.slug}/`}
+              className="group w-full bg-white rounded-2xl overflow-hidden card-shadow card-shadow-hover text-left transition-all duration-300 hover:-translate-y-1 grid lg:grid-cols-2"
+            >
               <div className="h-60 lg:h-auto overflow-hidden bg-light">
                 <img src={featured.img} alt={featured.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
               </div>
               <div className="p-8 flex flex-col justify-center">
                 <div className="flex items-center gap-3 mb-4">
                   <span className="text-xs font-bold font-display text-gold uppercase tracking-widest">Featured</span>
-                  <span className="text-xs font-semibold font-display bg-light text-muted px-3 py-1 rounded-full">{featured.cat}</span>
+                  <span className="text-xs font-semibold font-display bg-light text-muted px-3 py-1 rounded-full">Insights</span>
                 </div>
                 <h2 className="font-display font-bold text-navy text-2xl mb-3 leading-snug group-hover:text-navy-mid transition-colors">{featured.title}</h2>
                 <p className="text-muted text-sm leading-relaxed mb-5">{featured.excerpt}</p>
@@ -92,7 +83,7 @@ export default function BlogPage() {
                   <span>{featured.readTime} read</span>
                 </div>
               </div>
-            </button>
+            </a>
           </div>
         )}
 
@@ -104,9 +95,10 @@ export default function BlogPage() {
           </div>
         ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {(activeCategory === 'All' && !search ? filtered.slice(1) : filtered).map((article) => (
-              <button
-                key={article.title}
+            {(!search ? filtered.slice(1) : filtered).map((article) => (
+              <a
+                key={article.slug}
+                href={`/blog/${article.slug}/`}
                 className="group bg-white rounded-2xl overflow-hidden card-shadow card-shadow-hover text-left transition-all duration-300 hover:-translate-y-1"
               >
                 <div className="h-44 overflow-hidden bg-light">
@@ -114,7 +106,7 @@ export default function BlogPage() {
                 </div>
                 <div className="p-5">
                   <div className="flex items-center gap-2 mb-3">
-                    <span className="text-xs font-semibold font-display bg-light text-muted px-3 py-1 rounded-full">{article.cat}</span>
+                    <span className="text-xs font-semibold font-display bg-light text-muted px-3 py-1 rounded-full">Insights</span>
                   </div>
                   <h3 className="font-display font-bold text-navy text-base mb-2 leading-snug group-hover:text-navy-mid transition-colors">{article.title}</h3>
                   <p className="text-xs text-muted leading-relaxed mb-4 line-clamp-2">{article.excerpt}</p>
@@ -123,7 +115,7 @@ export default function BlogPage() {
                     <span className="text-gold font-semibold font-display">Read →</span>
                   </div>
                 </div>
-              </button>
+              </a>
             ))}
           </div>
         )}
