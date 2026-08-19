@@ -4,6 +4,7 @@ import { allHomes, houseImage, type Home } from '../data/homes'
 import { productPath } from '../lib/routes'
 import { detailFor, PRICE_NOTE } from '../data/model-details'
 import { specFor } from '../data/catalogue-specs'
+import { plansFor } from '../data/floor-plans'
 
 const IMGS = {
   ext1: media.heroExterior,
@@ -40,6 +41,7 @@ export default function ProductPage({ home }: { home: Home }) {
   const relatedHomes = allHomes.filter((h) => h.slug !== home.slug).slice(0, 3)
   const detail = detailFor(home.slug)
   const spec = specFor(home.slug)
+  const plans = plansFor(home.slug)
 
   const areas = detail?.variants.map((v) => v.area) ?? []
   const stats = [
@@ -281,7 +283,37 @@ export default function ProductPage({ home }: { home: Home }) {
         </div>
       )}
 
-      {/* ─── C3: Room schedule, from the catalogue ─── */}
+      {/* ─── C3: Floor plans and room schedule ─── */}
+      {plans.length > 0 && (
+        <div className="border-t border-border py-14">
+          <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
+            <h2 className="font-display font-bold text-navy text-2xl mb-2">Floor plans</h2>
+            <p className="text-muted text-sm mb-6">
+              Numbered rooms correspond to the accommodation schedule below.
+              Dimensions in millimetres.
+            </p>
+            <div className={`grid gap-6 ${plans.length > 1 ? 'lg:grid-cols-2' : 'max-w-3xl'}`}>
+              {plans.map((src, i) => (
+                <figure key={src} className="bg-light rounded-2xl border border-border overflow-hidden">
+                  <img
+                    src={src}
+                    alt={`${home.name} floor plan${plans.length > 1 ? ` ${i + 1}` : ''}`}
+                    loading="lazy"
+                    className="w-full h-auto"
+                  />
+                  {plans.length > 1 && (
+                    <figcaption className="px-5 py-3 text-xs font-bold font-display text-muted uppercase tracking-widest border-t border-border bg-white">
+                      Plan {i + 1} of {plans.length}
+                    </figcaption>
+                  )}
+                </figure>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ─── C4: Room schedule, from the catalogue ─── */}
       {spec && spec.rooms.length > 1 && (
         <div className="border-t border-border py-14">
           <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
