@@ -11,7 +11,9 @@
 
 declare(strict_types=1);
 
-const MAIL_TO      = 'contact@tridentmodular.com';
+// Enquiries go to the sales inbox, Oleg and Michael. PHP mail() accepts a
+// comma-separated list.
+const MAIL_TO      = 'contact@tridentmodular.com, oleg@tridentmodular.com, bolebruch8075@gmail.com';
 // Must be a mailbox on the sending domain — shared hosts reject or spam-bin
 // mail claiming to be from an address they do not host.
 const MAIL_FROM    = 'website@tridentmodular.com';

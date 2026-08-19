@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { PRIMARY_CATEGORIES } from '../data/homes'
 
 /**
  * Lead-capture gate for the catalogue.
@@ -13,7 +14,7 @@ export default function CatalogueDownload() {
   const [done, setDone] = useState(false)
   const [submitError, setSubmitError] = useState('')
   const [errors, setErrors] = useState<Record<string, string>>({})
-  const [form, setForm] = useState({ name: '', email: '', phone: '', consent: false, company: '' })
+  const [form, setForm] = useState({ name: '', email: '', phone: '', interest: '', consent: false, company: '' })
   const nameRef = useRef<HTMLInputElement>(null)
 
   /** Update a field and drop its error, so a corrected input stops nagging. */
@@ -60,7 +61,6 @@ export default function CatalogueDownload() {
     const errs: Record<string, string> = {}
     if (!form.name.trim()) errs.name = 'Please enter your name.'
     if (!/\S+@\S+\.\S+/.test(form.email)) errs.email = 'Please enter a valid email address.'
-    if (!form.consent) errs.consent = 'Please confirm you are happy for us to contact you.'
     if (Object.keys(errs).length) {
       setErrors(errs)
       return
@@ -199,6 +199,25 @@ export default function CatalogueDownload() {
               </div>
 
               <div>
+                <label htmlFor="cat-interest" className="block text-xs font-bold font-display text-navy uppercase tracking-widest mb-1.5">
+                  Which homes interest you? <span className="text-muted font-normal normal-case tracking-normal">(optional)</span>
+                </label>
+                <select
+                  id="cat-interest"
+                  value={form.interest}
+                  onChange={(e) => set('interest', e.target.value)}
+                  className="w-full border border-border rounded-xl px-4 py-2.5 text-sm bg-white focus:outline-none focus:border-gold"
+                >
+                  <option value="">Select a category…</option>
+                  {PRIMARY_CATEGORIES.map((c) => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
+                  <option value="Commercial buildings">Commercial buildings</option>
+                  <option value="Not sure yet">Not sure yet</option>
+                </select>
+              </div>
+
+              <div>
                 <label className="flex items-start gap-2.5 cursor-pointer">
                   <input
                     type="checkbox"
@@ -207,10 +226,10 @@ export default function CatalogueDownload() {
                     className="mt-0.5 accent-gold"
                   />
                   <span className="text-xs text-muted leading-relaxed">
-                    I am happy for Trident Modular to contact me about my enquiry.
+                    Yes, I would like Trident Modular to contact me about my enquiry.{' '}
+                    <span className="text-border">(optional)</span>
                   </span>
                 </label>
-                {errors.consent && <p className="text-red-500 text-xs mt-1">{errors.consent}</p>}
               </div>
 
               {submitError && (

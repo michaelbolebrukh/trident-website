@@ -8,7 +8,8 @@
  * Ukrainian edition and carries models not sold in the UK.
  *
  * Bedroom and bathroom counts are derived from the room schedule rather than
- * read from a field, because the catalogue does not state them directly.
+ * read from a field, because the catalogue does not state them directly. A
+ * "Children's room" is counted as a bedroom.
  */
 import { getDocument } from 'pdfjs-dist/legacy/build/pdf.mjs'
 import { readFileSync, writeFileSync } from 'node:fs'
@@ -38,6 +39,15 @@ const SLUGS = {
   GOTHIC: 'gothic',
   LOFT: 'loft',
   ESTATE: 'estate',
+  // The catalogue heads these differently to the site:
+  //   APEX      is the A-Frame ("the legendary A-Frame house – the Apex")
+  //   RESIDENCE drops the site's leading "The"
+  //   FAMILY    sits under a Cyrillic section heading
+  APEX: 'a-frame',
+  RESIDENCE: 'the-residence',
+  FAMILY: 'family-house',
+  'MEDITERRANEAN SINGLE HOUSE': 'mediterranean-single-house',
+  'MEDITERRANEAN DOUBLE HOUSE': 'mediterranean-double-house',
 }
 
 const doc = await getDocument({
@@ -51,13 +61,33 @@ for (let i = 1; i <= doc.numPages; i++) {
   pages.push(content.items.map((x) => x.str).join(' ').replace(/\s+/g, ' ').trim())
 }
 
-/** "1 Kitchen-living room 14,46 2 Bathroom 2,52" -> [{name, area}] */
-function parseRooms(block) {
+/**
+ * Pulls a numbered room schedule out of a page: "1 Kitchen-living room 14,46
+ * 2 Bathroom 2,52" -> [{name, area}].
+ *
+ * The whole page is scanned rather than the span after the "PLANNING" heading,
+ * because on some pages the extracted text places the schedule after the plan
+ * dimensions rather than before. To avoid picking up unrelated number pairs,
+ * only runs numbered 1, 2, 3 … are kept. A two-storey model carries one
+ * schedule per floor, each restarting at 1, so a reset to 1 continues the same
+ * list rather than ending it.
+ */
+function parseRooms(page) {
+  const re = /(\d{1,2})\s+([A-Za-z][A-Za-z\-'\u2019 ]{2,40}?)\s+(\d+[.,]\d+)/g
   const rooms = []
-  const re = /(\d{1,2})\s+([A-Za-z][A-Za-z\-' ]{2,40}?)\s+(\d+[.,]\d+)/g
+  let expected = 1
   let m
-  while ((m = re.exec(block))) {
+  let last = 0
+  while ((m = re.exec(page))) {
+    const n = Number(m[1])
+    const startsNewFloor = n === 1 && rooms.length > 0
+    // Increasing, allowing a small gap for an entry the pattern could not
+    // read, but rejecting the unrelated number pairs that appear elsewhere.
+    const continuesRun = n > last && n - last <= 3
+    if (!continuesRun && !startsNewFloor) continue
     rooms.push({ name: m[2].trim(), area: parseFloat(m[3].replace(',', '.')) })
+    last = n
+    expected = n + 1
   }
   return rooms
 }
@@ -69,17 +99,14 @@ for (const [heading, slug] of Object.entries(SLUGS)) {
   for (const [index, body] of pages.entries()) {
     if (!body.includes(`· ${heading} ·`) || !body.includes('PREMISES AREA')) continue
 
-    const block = body.match(/PLANNING (.*?)# PREMISES AREA/s)
-    if (!block) continue
-
-    const rooms = parseRooms(block[1])
+    const rooms = parseRooms(body)
     if (!rooms.length) continue
 
     results[slug] = {
       page: index + 1,
       rooms,
       // "Master bedroom" counts as a bedroom; "Master wardrobe room" must not.
-      bedrooms: countMatching(rooms, /bedroom/i),
+      bedrooms: countMatching(rooms, /bedroom|children/i),
       bathrooms: countMatching(rooms, /bathroom|shower room|wc/i),
       totalArea: Number(rooms.reduce((sum, r) => sum + r.area, 0).toFixed(2)),
     }

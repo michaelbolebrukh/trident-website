@@ -14,7 +14,9 @@
 
 declare(strict_types=1);
 
-const MAIL_TO         = 'contact@tridentmodular.com';
+// Enquiries go to the sales inbox, Oleg and Michael. PHP mail() accepts a
+// comma-separated list.
+const MAIL_TO         = 'contact@tridentmodular.com, oleg@tridentmodular.com, bolebruch8075@gmail.com';
 const MAIL_FROM       = 'website@tridentmodular.com';
 const CATALOGUE_FILE  = __DIR__ . '/../downloads/trident-catalogue.pdf';
 const CATALOGUE_NAME  = 'Trident Modular Catalogue.pdf';
@@ -125,8 +127,11 @@ if (!empty($data['company'])) {
 $field = static fn(string $k): string => trim((string) ($data[$k] ?? ''));
 $name    = $field('name');
 $email   = $field('email');
-$phone   = $field('phone');
-$consent = !empty($data['consent']);
+$phone    = $field('phone');
+$interest = $field('interest');
+// Optional: the catalogue is not withheld for declining contact. It records
+// only whether Trident may follow up, which is the lawful basis for doing so.
+$consent  = !empty($data['consent']);
 
 $errors = [];
 if ($name === '' || mb_strlen($name) > 100) {
@@ -137,9 +142,6 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL) || mb_strlen($email) > 254) {
 }
 if ($phone !== '' && mb_strlen($phone) > 40) {
     $errors['phone'] = 'Please shorten your phone number.';
-}
-if (!$consent) {
-    $errors['consent'] = 'Please confirm you are happy for us to contact you.';
 }
 if ($errors) {
     http_response_code(422);
@@ -168,13 +170,14 @@ $clean = static fn(string $v): string => str_replace(["\r", "\n"], ' ', $v);
 
 $sent = mail(
     MAIL_TO,
-    'Catalogue download — ' . $clean($name),
+    'Catalogue download — ' . $clean($name) . ($consent ? '' : ' [no contact consent]'),
     implode("\n", [
         'Name:  ' . $name,
         'Email: ' . $email,
         'Phone: ' . ($phone !== '' ? $phone : '—'),
+        'Interested in: ' . ($interest !== '' ? $interest : 'not stated'),
         '',
-        'Consented to being contacted by Trident: yes',
+        'Happy to be contacted: ' . ($consent ? 'YES' : 'no'),
         '',
         '---',
         'Sent: ' . date('c'),
