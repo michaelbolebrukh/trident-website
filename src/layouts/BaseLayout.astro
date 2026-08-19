@@ -2,6 +2,7 @@
 import '../styles/global.css'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import CatalogueDownload from '../components/CatalogueDownload'
 
 interface Props {
   title: string
@@ -56,8 +57,10 @@ const blockIndexing = noindex || import.meta.env.PUBLIC_NOINDEX === '1'
       <main id="main" class="flex-1">
         <slot />
       </main>
-      {/* Static markup — ships no JavaScript. */}
+      {/* Static markup, ships no JavaScript. */}
       <Footer />
+      {/* Shared lead-capture dialog for every catalogue download button. */}
+      <CatalogueDownload client:idle />
     </div>
   </body>
 </html>

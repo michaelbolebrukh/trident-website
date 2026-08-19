@@ -1,0 +1,4 @@
+# The catalogue is gated behind /api/catalogue.php, which reads it from disk.
+# Blocking direct HTTP access is what makes the lead-capture form meaningful
+# rather than a formality anyone can bypass with a direct link.
+Require all denied

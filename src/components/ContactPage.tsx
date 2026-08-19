@@ -130,7 +130,7 @@ export default function ContactPage() {
             <div className="mt-8 p-5 bg-light rounded-xl border border-border">
               <p className="font-display font-bold text-navy text-sm mb-2">Download our catalogue</p>
               <p className="text-xs text-muted mb-3">Browse our full range of homes, specifications and options offline.</p>
-              <button className="text-sm font-semibold font-display text-gold flex items-center gap-1.5 hover:text-gold-dark transition-colors">
+              <button data-catalogue-download className="text-sm font-semibold font-display text-gold flex items-center gap-1.5 hover:text-gold-dark transition-colors">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11zM8 15.01l1.41 1.41L11 14.84V19h2v-4.16l1.59 1.59L16 15.01 12.01 11 8 15.01z"/></svg>
                 Download PDF Catalogue
               </button>

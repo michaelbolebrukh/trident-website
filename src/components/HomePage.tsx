@@ -948,7 +948,7 @@ export default function HomePage() {
               className="bg-gold text-navy font-bold font-display px-8 py-4 rounded-xl hover:bg-gold-dark transition-colors text-sm">
               Start Your Project
             </a>
-            <button className="border border-white/30 text-white font-semibold font-display px-8 py-4 rounded-xl hover:bg-white/10 transition-colors text-sm">
+            <button data-catalogue-download className="border border-white/30 text-white font-semibold font-display px-8 py-4 rounded-xl hover:bg-white/10 transition-colors text-sm">
               Download Catalogue
             </button>
           </div>

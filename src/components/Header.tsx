@@ -118,7 +118,7 @@ export default function Header({ currentPath }: HeaderProps) {
           <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
           contact@tridentmodular.com
         </a>
-        <button className="opacity-80 hover:opacity-100 transition-opacity flex items-center gap-1">
+        <button data-catalogue-download className="opacity-80 hover:opacity-100 transition-opacity flex items-center gap-1">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11zM8 15.01l1.41 1.41L11 14.84V19h2v-4.16l1.59 1.59L16 15.01 12.01 11 8 15.01z"/></svg>
           Download Catalogue
         </button>

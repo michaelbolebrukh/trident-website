@@ -46,7 +46,7 @@ export default function Footer() {
                 </a>
               ))}
             </div>
-            <button className="mt-6 flex items-center gap-2 text-sm font-semibold font-display text-gold hover:text-gold-dark transition-colors">
+            <button data-catalogue-download className="mt-6 flex items-center gap-2 text-sm font-semibold font-display text-gold hover:text-gold-dark transition-colors">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11zM8 15.01l1.41 1.41L11 14.84V19h2v-4.16l1.59 1.59L16 15.01 12.01 11 8 15.01z"/></svg>
               Download Our Catalogue
             </button>
