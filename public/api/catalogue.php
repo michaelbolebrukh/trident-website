@@ -10,8 +10,6 @@
  * access, so the only route to it is through this script. That is what makes
  * the gate real rather than decorative: readfile() reads from disk and is not
  * affected by the HTTP-level deny.
- *
- * Set DOWNLOAD_SECRET to any long random string before going live.
  */
 
 declare(strict_types=1);
@@ -20,15 +18,44 @@ const MAIL_TO         = 'contact@tridentmodular.com';
 const MAIL_FROM       = 'website@tridentmodular.com';
 const CATALOGUE_FILE  = __DIR__ . '/../downloads/trident-catalogue.pdf';
 const CATALOGUE_NAME  = 'Trident Modular Catalogue.pdf';
-// CHANGE THIS before launch. Any long random string.
-const DOWNLOAD_SECRET = 'change-me-to-a-long-random-string';
+// Outside the deploy path: rsync --delete would wipe a key stored under
+// downloads/ on every release, invalidating live download links.
 const TOKEN_TTL       = 900; // seconds a download link stays valid
 const RATE_LIMIT      = 5;
 const RATE_WINDOW     = 3600;
 
+/**
+ * The signing key is generated on first use and stored outside the web root.
+ * Generating it rather than committing it keeps a secret out of the repository
+ * and removes a manual launch step that would silently weaken the gate if
+ * forgotten. If it is ever lost, outstanding links simply expire early.
+ */
+function secret(): string
+{
+    static $cached = null;
+    if ($cached !== null) {
+        return $cached;
+    }
+    $path = sys_get_temp_dir() . '/tm-catalogue-signing-key';
+    if (is_readable($path)) {
+        $key = trim((string) file_get_contents($path));
+        if ($key !== '') {
+            return $cached = $key;
+        }
+    }
+    $key = bin2hex(random_bytes(32));
+    if (@file_put_contents($path, $key, LOCK_EX) === false) {
+        // Read-only filesystem: fall back to a per-host constant so links still
+        // verify within a single deploy rather than failing outright.
+        error_log('Catalogue download: cannot persist signing key, using fallback');
+        $key = hash('sha256', __DIR__ . php_uname('n'));
+    }
+    return $cached = $key;
+}
+
 function sign(int $expires): string
 {
-    return $expires . '.' . hash_hmac('sha256', (string) $expires, DOWNLOAD_SECRET);
+    return $expires . '.' . hash_hmac('sha256', (string) $expires, secret());
 }
 
 function verify(string $token): bool
@@ -42,7 +69,7 @@ function verify(string $token): bool
         return false;
     }
     // hash_equals is constant-time, so a wrong token cannot be probed byte by byte.
-    return hash_equals(hash_hmac('sha256', $expires, DOWNLOAD_SECRET), $sig);
+    return hash_equals(hash_hmac('sha256', $expires, secret()), $sig);
 }
 
 // ─── GET: serve the file to a valid token ───────────────────────────────

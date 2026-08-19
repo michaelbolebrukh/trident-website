@@ -3,6 +3,7 @@ import { media } from '../data/media'
 import { allHomes, houseImage, type Home } from '../data/homes'
 import { productPath } from '../lib/routes'
 import { detailFor, PRICE_NOTE } from '../data/model-details'
+import { specFor } from '../data/catalogue-specs'
 
 const IMGS = {
   ext1: media.heroExterior,
@@ -38,6 +39,7 @@ const sustainableCards = [
 export default function ProductPage({ home }: { home: Home }) {
   const relatedHomes = allHomes.filter((h) => h.slug !== home.slug).slice(0, 3)
   const detail = detailFor(home.slug)
+  const spec = specFor(home.slug)
 
   const areas = detail?.variants.map((v) => v.area) ?? []
   const stats = [
@@ -273,6 +275,36 @@ export default function ProductPage({ home }: { home: Home }) {
               )}
               {detail.accreditations.map((a) => (
                 <span key={a} className="font-bold font-display text-navy">{a}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ─── C3: Room schedule, from the catalogue ─── */}
+      {spec && spec.rooms.length > 1 && (
+        <div className="border-t border-border py-14">
+          <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
+            <h2 className="font-display font-bold text-navy text-2xl mb-2">Accommodation</h2>
+            <p className="text-muted text-sm mb-6">
+              {spec.bedrooms > 0 && `${spec.bedrooms} bedroom${spec.bedrooms > 1 ? 's' : ''}`}
+              {spec.bedrooms > 0 && spec.bathrooms > 0 && ', '}
+              {spec.bathrooms > 0 && `${spec.bathrooms} bathroom${spec.bathrooms > 1 ? 's' : ''}`}
+              {(spec.bedrooms > 0 || spec.bathrooms > 0) && ' · '}
+              {spec.totalArea} m² of scheduled accommodation
+            </p>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-1 max-w-4xl">
+              {spec.rooms.map((room, i) => (
+                <div
+                  key={`${room.name}-${i}`}
+                  className="flex items-baseline justify-between gap-3 py-2 border-b border-border"
+                >
+                  <span className="text-sm text-body">{room.name}</span>
+                  <span className="text-sm font-medium font-display text-navy shrink-0">
+                    {room.area} m²
+                  </span>
+                </div>
               ))}
             </div>
           </div>

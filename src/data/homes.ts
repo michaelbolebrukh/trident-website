@@ -7,11 +7,26 @@
  */
 import { generatedHomes, houseImage, type Home } from './homes.generated'
 import { applyOverride } from './overrides'
+import { specFor } from './catalogue-specs'
 
 export { houseImage }
 export type { Home }
 
-export const allHomes: Home[] = generatedHomes.map(applyOverride)
+/**
+ * Bedroom and bathroom counts come from the catalogue's room schedules where
+ * available — the WordPress export carried them for only 8 of 23 models, and
+ * the catalogue is the agreed source of truth.
+ */
+export const allHomes: Home[] = generatedHomes.map((home) => {
+  const merged = applyOverride(home)
+  const spec = specFor(merged.slug)
+  if (!spec) return merged
+  return {
+    ...merged,
+    bedrooms: spec.bedrooms || merged.bedrooms,
+    bathrooms: spec.bathrooms || merged.bathrooms,
+  }
+})
 
 export const homeBySlug = (slug: string) => allHomes.find((h) => h.slug === slug)
 
