@@ -201,28 +201,81 @@ export default function ProductPage({ home }: { home: Home }) {
         </div>
       </div>
 
-      {/* ─── B: Key Features ─── */}
-      <div className="border-t border-border bg-light py-14">
-        <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
-          <h2 className="font-display font-bold text-navy text-2xl mb-8">Key features</h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              { icon: '◎', title: 'Full-height glazing', desc: 'Large fixed and opening sections to the garden elevation. Options for bi-fold or sliding door systems.' },
-              { icon: '◈', title: 'Open-plan living', desc: 'Ground floor combines kitchen, dining and sitting areas beneath a galleried first floor.' },
-              { icon: '◉', title: 'Mezzanine bedroom level', desc: 'Three bedrooms on a half-storey above the main living area with views into the double-height space.' },
-              { icon: '◆', title: 'Timber or render finish', desc: 'Standard models available with dark-stained timber cladding or white through-coloured render.' },
-              { icon: '◇', title: 'Heat pump ready', desc: 'Pre-designed to accommodate air-source heat pump with underfloor heating throughout.' },
-              { icon: '○', title: 'Turnkey available', desc: 'Full internal completion including kitchen, bathrooms, electrical and plumbing works on request.' },
-            ].map((f) => (
-              <div key={f.title} className="bg-white rounded-xl p-5 border border-border">
-                <span className="text-gold text-lg">{f.icon}</span>
-                <h4 className="font-display font-bold text-navy text-sm mt-2 mb-1">{f.title}</h4>
-                <p className="text-xs text-muted leading-relaxed">{f.desc}</p>
+      {/* ─── C5: The three packages ─── */}
+      {pricing && (
+        <div className="border-t border-border bg-light py-14">
+          <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
+            <h2 className="font-display font-bold text-navy text-2xl mb-2">Three ways to buy</h2>
+            <p className="text-muted text-sm mb-8 max-w-2xl">
+              Each option is a defined package. Numbers move with your site and finishes, so treat
+              these as the honest floor of today&rsquo;s cost.
+              {pricing.fromSmallestOf && ` Prices shown are for the smallest of ${pricing.fromSmallestOf} sizes.`}
+            </p>
+
+            <div className="grid md:grid-cols-3 gap-5">
+              {pricing.options.map((opt, i) => {
+                const last = i === pricing.options.length - 1
+                return (
+                  <div
+                    key={opt.n}
+                    className={`rounded-2xl border p-6 flex flex-col ${
+                      last ? 'bg-navy border-navy' : 'bg-white border-border'
+                    }`}
+                  >
+                    <p className={`text-xs font-bold font-display tracking-[0.15em] uppercase mb-2 ${last ? 'text-gold' : 'text-gold'}`}>
+                      Option {opt.n}
+                    </p>
+                    <p className={`font-display font-bold text-lg mb-1 ${last ? 'text-white' : 'text-navy'}`}>
+                      {opt.label}
+                    </p>
+                    <p className={`text-2xl font-bold font-display mb-4 ${last ? 'text-white' : 'text-navy'}`}>
+                      {opt.price === null ? 'On request' : `from ${formatPrice(opt.price)}`}
+                    </p>
+                    <p className={`text-xs leading-relaxed ${last ? 'text-white/70' : 'text-muted'}`}>
+                      {opt.desc}
+                    </p>
+                  </div>
+                )
+              })}
+            </div>
+
+            {pricing.note && (
+              <div className="mt-6 bg-white border-l-4 border-gold rounded-r-xl px-5 py-4">
+                <p className="text-sm text-body leading-relaxed">{pricing.note}</p>
               </div>
-            ))}
+            )}
+
+            <p className="text-xs text-muted mt-6">
+              All prices from, excl. VAT. Delivery to Greater London included.
+            </p>
+
+            <div className="grid md:grid-cols-2 gap-5 mt-8">
+              <details className="bg-white rounded-xl border border-border px-5 py-4">
+                <summary className="cursor-pointer font-display font-bold text-navy text-sm">
+                  What every price excludes
+                </summary>
+                <ul className="mt-3 space-y-1.5">
+                  {STANDARD_EXCLUSIONS.map((x) => (
+                    <li key={x} className="text-xs text-muted">{x}</li>
+                  ))}
+                </ul>
+              </details>
+              <details className="bg-white rounded-xl border border-border px-5 py-4">
+                <summary className="cursor-pointer font-display font-bold text-navy text-sm">
+                  Available upgrades
+                </summary>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {AVAILABLE_UPGRADES.map((u) => (
+                    <span key={u} className="text-xs text-muted bg-light border border-border rounded-full px-3 py-1">
+                      {u}
+                    </span>
+                  ))}
+                </div>
+              </details>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* ─── C2: Sizes and packages (from the 2026 price guide) ─── */}
       {detail && (
@@ -357,81 +410,28 @@ export default function ProductPage({ home }: { home: Home }) {
         </div>
       )}
 
-      {/* ─── C5: The three packages ─── */}
-      {pricing && (
-        <div className="border-t border-border bg-light py-14">
-          <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
-            <h2 className="font-display font-bold text-navy text-2xl mb-2">Three ways to buy</h2>
-            <p className="text-muted text-sm mb-8 max-w-2xl">
-              Each option is a defined package. Numbers move with your site and finishes, so treat
-              these as the honest floor of today&rsquo;s cost.
-              {pricing.fromSmallestOf && ` Prices shown are for the smallest of ${pricing.fromSmallestOf} sizes.`}
-            </p>
-
-            <div className="grid md:grid-cols-3 gap-5">
-              {pricing.options.map((opt, i) => {
-                const last = i === pricing.options.length - 1
-                return (
-                  <div
-                    key={opt.n}
-                    className={`rounded-2xl border p-6 flex flex-col ${
-                      last ? 'bg-navy border-navy' : 'bg-white border-border'
-                    }`}
-                  >
-                    <p className={`text-xs font-bold font-display tracking-[0.15em] uppercase mb-2 ${last ? 'text-gold' : 'text-gold'}`}>
-                      Option {opt.n}
-                    </p>
-                    <p className={`font-display font-bold text-lg mb-1 ${last ? 'text-white' : 'text-navy'}`}>
-                      {opt.label}
-                    </p>
-                    <p className={`text-2xl font-bold font-display mb-4 ${last ? 'text-white' : 'text-navy'}`}>
-                      {opt.price === null ? 'On request' : `from ${formatPrice(opt.price)}`}
-                    </p>
-                    <p className={`text-xs leading-relaxed ${last ? 'text-white/70' : 'text-muted'}`}>
-                      {opt.desc}
-                    </p>
-                  </div>
-                )
-              })}
-            </div>
-
-            {pricing.note && (
-              <div className="mt-6 bg-white border-l-4 border-gold rounded-r-xl px-5 py-4">
-                <p className="text-sm text-body leading-relaxed">{pricing.note}</p>
+      {/* ─── B: Key Features ─── */}
+      <div className="border-t border-border bg-light py-14">
+        <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
+          <h2 className="font-display font-bold text-navy text-2xl mb-8">Key features</h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              { icon: '◎', title: 'Full-height glazing', desc: 'Large fixed and opening sections to the garden elevation. Options for bi-fold or sliding door systems.' },
+              { icon: '◈', title: 'Open-plan living', desc: 'Ground floor combines kitchen, dining and sitting areas beneath a galleried first floor.' },
+              { icon: '◉', title: 'Mezzanine bedroom level', desc: 'Three bedrooms on a half-storey above the main living area with views into the double-height space.' },
+              { icon: '◆', title: 'Timber or render finish', desc: 'Standard models available with dark-stained timber cladding or white through-coloured render.' },
+              { icon: '◇', title: 'Heat pump ready', desc: 'Pre-designed to accommodate air-source heat pump with underfloor heating throughout.' },
+              { icon: '○', title: 'Turnkey available', desc: 'Full internal completion including kitchen, bathrooms, electrical and plumbing works on request.' },
+            ].map((f) => (
+              <div key={f.title} className="bg-white rounded-xl p-5 border border-border">
+                <span className="text-gold text-lg">{f.icon}</span>
+                <h4 className="font-display font-bold text-navy text-sm mt-2 mb-1">{f.title}</h4>
+                <p className="text-xs text-muted leading-relaxed">{f.desc}</p>
               </div>
-            )}
-
-            <p className="text-xs text-muted mt-6">
-              All prices from, excl. VAT. Delivery to Greater London included.
-            </p>
-
-            <div className="grid md:grid-cols-2 gap-5 mt-8">
-              <details className="bg-white rounded-xl border border-border px-5 py-4">
-                <summary className="cursor-pointer font-display font-bold text-navy text-sm">
-                  What every price excludes
-                </summary>
-                <ul className="mt-3 space-y-1.5">
-                  {STANDARD_EXCLUSIONS.map((x) => (
-                    <li key={x} className="text-xs text-muted">{x}</li>
-                  ))}
-                </ul>
-              </details>
-              <details className="bg-white rounded-xl border border-border px-5 py-4">
-                <summary className="cursor-pointer font-display font-bold text-navy text-sm">
-                  Available upgrades
-                </summary>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {AVAILABLE_UPGRADES.map((u) => (
-                    <span key={u} className="text-xs text-muted bg-light border border-border rounded-full px-3 py-1">
-                      {u}
-                    </span>
-                  ))}
-                </div>
-              </details>
-            </div>
+            ))}
           </div>
         </div>
-      )}
+      </div>
 
       {/* ─── D: Completion options ─── */}
       <div className="border-t border-border py-14">
