@@ -4,6 +4,8 @@ import { allHomes, houseImage, type Home } from '../data/homes'
 import { productPath } from '../lib/routes'
 import { detailFor, PRICE_NOTE } from '../data/model-details'
 import { specFor } from '../data/catalogue-specs'
+import { pricingFor, formatPrice } from '../lib/price-options'
+import { STANDARD_EXCLUSIONS, AVAILABLE_UPGRADES } from '../data/pricing'
 import { plansFor } from '../data/floor-plans'
 
 const IMGS = {
@@ -42,6 +44,7 @@ export default function ProductPage({ home }: { home: Home }) {
   const detail = detailFor(home.slug)
   const spec = specFor(home.slug)
   const plans = plansFor(home.slug)
+  const pricing = pricingFor(home.slug)
 
   const areas = detail?.variants.map((v) => v.area) ?? []
   const stats = [
@@ -132,8 +135,19 @@ export default function ProductPage({ home }: { home: Home }) {
               <span className="text-xs font-bold font-display text-gold uppercase tracking-widest">{home.category}</span>
             </div>
             <h1 className="font-display font-bold text-navy text-4xl mb-2">{home.name}</h1>
-            <p className="text-2xl font-bold font-display text-gold mb-1">From £{home.price.toLocaleString('en-GB')}</p>
-            <p className="text-xs text-muted mb-4">excl. VAT · foundations quoted separately</p>
+            {pricing?.onRequest ? (
+              <>
+                <p className="text-2xl font-bold font-display text-gold mb-1">Price on request</p>
+                <p className="text-xs text-muted mb-4">We reply with a firm proposal within 5 working days</p>
+              </>
+            ) : (
+              <>
+                <p className="text-2xl font-bold font-display text-gold mb-1">
+                  From {formatPrice(pricing?.options[0]?.price ?? home.price)}
+                </p>
+                <p className="text-xs text-muted mb-4">excl. VAT · foundations quoted separately</p>
+              </>
+            )}
 
             {/* Stats grid */}
             <div className="grid grid-cols-3 gap-3 mb-5 p-4 bg-light rounded-xl">
@@ -338,6 +352,82 @@ export default function ProductPage({ home }: { home: Home }) {
                   </span>
                 </div>
               ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ─── C5: The three packages ─── */}
+      {pricing && (
+        <div className="border-t border-border bg-light py-14">
+          <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
+            <h2 className="font-display font-bold text-navy text-2xl mb-2">Three ways to buy</h2>
+            <p className="text-muted text-sm mb-8 max-w-2xl">
+              Each option is a defined package. Numbers move with your site and finishes, so treat
+              these as the honest floor of today&rsquo;s cost.
+              {pricing.fromSmallestOf && ` Prices shown are for the smallest of ${pricing.fromSmallestOf} sizes.`}
+            </p>
+
+            <div className="grid md:grid-cols-3 gap-5">
+              {pricing.options.map((opt, i) => {
+                const last = i === pricing.options.length - 1
+                return (
+                  <div
+                    key={opt.n}
+                    className={`rounded-2xl border p-6 flex flex-col ${
+                      last ? 'bg-navy border-navy' : 'bg-white border-border'
+                    }`}
+                  >
+                    <p className={`text-xs font-bold font-display tracking-[0.15em] uppercase mb-2 ${last ? 'text-gold' : 'text-gold'}`}>
+                      Option {opt.n}
+                    </p>
+                    <p className={`font-display font-bold text-lg mb-1 ${last ? 'text-white' : 'text-navy'}`}>
+                      {opt.label}
+                    </p>
+                    <p className={`text-2xl font-bold font-display mb-4 ${last ? 'text-white' : 'text-navy'}`}>
+                      {opt.price === null ? 'On request' : `from ${formatPrice(opt.price)}`}
+                    </p>
+                    <p className={`text-xs leading-relaxed ${last ? 'text-white/70' : 'text-muted'}`}>
+                      {opt.desc}
+                    </p>
+                  </div>
+                )
+              })}
+            </div>
+
+            {pricing.note && (
+              <div className="mt-6 bg-white border-l-4 border-gold rounded-r-xl px-5 py-4">
+                <p className="text-sm text-body leading-relaxed">{pricing.note}</p>
+              </div>
+            )}
+
+            <p className="text-xs text-muted mt-6">
+              All prices from, excl. VAT. Delivery to Greater London included.
+            </p>
+
+            <div className="grid md:grid-cols-2 gap-5 mt-8">
+              <details className="bg-white rounded-xl border border-border px-5 py-4">
+                <summary className="cursor-pointer font-display font-bold text-navy text-sm">
+                  What every price excludes
+                </summary>
+                <ul className="mt-3 space-y-1.5">
+                  {STANDARD_EXCLUSIONS.map((x) => (
+                    <li key={x} className="text-xs text-muted">{x}</li>
+                  ))}
+                </ul>
+              </details>
+              <details className="bg-white rounded-xl border border-border px-5 py-4">
+                <summary className="cursor-pointer font-display font-bold text-navy text-sm">
+                  Available upgrades
+                </summary>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {AVAILABLE_UPGRADES.map((u) => (
+                    <span key={u} className="text-xs text-muted bg-light border border-border rounded-full px-3 py-1">
+                      {u}
+                    </span>
+                  ))}
+                </div>
+              </details>
             </div>
           </div>
         </div>

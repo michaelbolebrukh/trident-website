@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react'
 import { allHomes, houseImage, categories } from '../data/homes'
 import { productPath } from '../lib/routes'
+import { pricingFor, formatShort } from '../lib/price-options'
 
 
 
@@ -174,17 +175,49 @@ export default function CataloguePage() {
                       {/* Tags */}
                       <p className="text-xs text-muted mb-4">{[`${home.floors} storey`, `${home.dimensions} m`, `${home.areaFt} ft²`].join(' · ')}</p>
 
-                      {/* Price */}
-                      <div className="rounded-xl overflow-hidden border border-border mt-auto">
-                        <div className="flex items-center justify-between px-4 py-3 bg-navy">
-                          <span className="text-[10px] font-bold font-display text-white tracking-[0.15em] uppercase">From · excl. VAT</span>
-                          <span className="text-sm font-bold font-display text-white">£{home.price.toLocaleString('en-GB')}</span>
-                        </div>
-                      </div>
+                      {/* Three packages, as the design's stacked rows. The last
+                          is the full-service option and carries the emphasis. */}
+                      {(() => {
+                        const pricing = pricingFor(home.slug)
+                        if (!pricing) {
+                          // No package pricing published for this model; keep the
+                          // single figure it already had rather than a blank card.
+                          return (
+                            <div className="rounded-xl overflow-hidden border border-border mt-auto">
+                              <div className="flex items-center justify-between px-4 py-3 bg-navy">
+                                <span className="text-[10px] font-bold font-display text-white tracking-[0.15em] uppercase">From</span>
+                                <span className="text-sm font-bold font-display text-white">{formatShort(home.price)}</span>
+                              </div>
+                            </div>
+                          )
+                        }
+                        return (
+                          <div className="rounded-xl overflow-hidden border border-border mt-auto">
+                            {pricing.options.map((opt, i) => {
+                              const last = i === pricing.options.length - 1
+                              return (
+                                <div
+                                  key={opt.n}
+                                  className={`flex items-center justify-between gap-2 px-4 py-2.5 ${
+                                    last ? 'bg-navy' : 'bg-light'
+                                  } ${i > 0 && !last ? 'border-t border-border' : ''}`}
+                                >
+                                  <span className={`text-[10px] font-bold font-display tracking-[0.15em] uppercase ${last ? 'text-white' : 'text-muted'}`}>
+                                    {opt.n} {opt.label}
+                                  </span>
+                                  <span className={`text-sm font-bold font-display shrink-0 ${last ? 'text-white' : 'text-navy'}`}>
+                                    {formatShort(opt.price)}
+                                  </span>
+                                </div>
+                              )
+                            })}
+                          </div>
+                        )
+                      })()}
 
                       {/* Footer */}
                       <div className="mt-3 flex items-center justify-between">
-                        <span className="text-xs text-muted">{home.bedrooms ? `${home.bedrooms} bed` : `${home.area} m²`}</span>
+                        <span className="text-xs text-muted">from · excl. VAT</span>
                         <span className="text-xs font-bold font-display text-navy border border-border rounded-lg px-4 py-1.5 group-hover:border-navy group-hover:bg-light transition-colors">
                           Open
                         </span>
