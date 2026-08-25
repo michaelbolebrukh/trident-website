@@ -40,10 +40,12 @@ export const overrides: Record<string, HomeOverride> = {
     desc: 'A luxury two-storey house with a spacious terrace, a master bedroom and a study, representing comfortable country living without limits.',
   },
 
-  // Two full storeys, so it belongs in 2 Storey rather than 1.5.
+  // Confirmed by Trident as 1.5 storey: the upper level sits within the roof
+  // rather than being a full second storey.
   'mediterranean-double-house': {
-    category: '2 Storey Houses',
-    categories: ['2 Storey Houses'],
+    category: '1.5 Storey Houses',
+    categories: ['1.5 Storey Houses'],
+    floors: 1.5,
     desc: 'The Mediterranean Double House is equally suitable for either rental businesses or your own comfort. It features two bathrooms, two living rooms and three bedrooms, making it a great space for families and social gatherings.',
   },
 
