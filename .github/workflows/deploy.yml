@@ -87,16 +87,36 @@ jobs:
           done
 
       - name: Verify connection
-        # BatchMode stops ssh falling back to an interactive password prompt,
-        # so an auth failure is reported as one instead of a generic timeout.
+        # Retries first: a timeout here is usually the host being briefly
+        # unreachable rather than anything wrong with the key or the secrets.
         run: |
-          ssh -i ~/.ssh/deploy_key -p "${{ secrets.SSH_PORT }}" \
-            -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new \
-            "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" true \
-            || {
-              echo "::error::SSH authentication failed. Check that the matching public key is added under hPanel > Advanced > SSH Access, and that SSH_USER and SSH_HOST are correct."
-              exit 1
-            }
+          for attempt in 1 2 3; do
+            if err=$(ssh -i ~/.ssh/deploy_key -p "${{ secrets.SSH_PORT }}" \
+                -o BatchMode=yes -o IdentitiesOnly=yes \
+                -o StrictHostKeyChecking=accept-new -o ConnectTimeout=20 \
+                "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" true 2>&1); then
+              echo "connected on attempt $attempt"
+              exit 0
+            fi
+            echo "attempt $attempt: $err"
+            sleep 20
+          done
+
+          # Separate "could not reach the host" from "the host said no": they
+          # need completely different fixes, and conflating them sent the last
+          # investigation looking at the key when the port was unreachable.
+          case "$err" in
+            *"timed out"*|*"Connection refused"*|*"No route to host"*|*"Name or service not known"*)
+              echo "::error::Could not reach ${{ secrets.SSH_HOST }} on the SSH port after 3 attempts: $err. The key is not the problem. Check SSH access is still enabled in hPanel > Advanced > SSH Access, and that Hostinger is not blocking the runner."
+              ;;
+            *"Permission denied"*)
+              echo "::error::Reached the host but it rejected the key. Check the matching public key is added under hPanel > Advanced > SSH Access, and that SSH_USER is correct."
+              ;;
+            *)
+              echo "::error::SSH failed: $err"
+              ;;
+          esac
+          exit 1
 
       - name: Verify remote path
         # Guard against a mistyped SSH_PATH: rsync --delete would otherwise
