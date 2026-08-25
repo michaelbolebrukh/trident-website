@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { media } from '../data/media'
 import Logo from './Logo'
-import { routes } from '../lib/routes'
+import { routes, categoryPath } from '../lib/routes'
 
 interface HeaderProps {
   /** Pathname of the page being rendered, used for the active nav state. */
@@ -10,10 +10,10 @@ interface HeaderProps {
 
 const homesMegaMenu = [
   { label: 'View All Homes', href: routes.catalogue },
-  { label: 'Garden Rooms', href: routes.catalogue },
-  { label: 'Bungalows', href: routes.catalogue },
-  { label: '1.5 Storey Houses', href: routes.catalogue },
-  { label: '2 Storey Houses', href: routes.catalogue },
+  { label: 'Garden Rooms', href: categoryPath('Garden Rooms') },
+  { label: 'Bungalows', href: categoryPath('Bungalows') },
+  { label: '1.5 Storey Houses', href: categoryPath('1.5 Storey Houses') },
+  { label: '2 Storey Houses', href: categoryPath('2 Storey Houses') },
 ]
 
 const bespokeDropdown = [
@@ -23,38 +23,42 @@ const bespokeDropdown = [
   { label: 'Sustainable Upgrades', href: `${routes.bespoke}#sustainable` },
 ]
 
+const aboutDropdown = [
+  { label: 'About Trident', href: routes.about },
+  { label: 'Technology', href: routes.technology },
+  { label: 'BOPAS & certificates', href: routes.bopas },
+  { label: 'Project gallery', href: routes.gallery },
+  { label: 'Blog & insights', href: routes.blog },
+  { label: 'FAQ', href: routes.faq },
+]
+
 const navLinks = [
   { label: 'Homes', href: routes.catalogue, hasMega: true },
   { label: 'Bespoke & Commercial', href: routes.bespoke, hasDropdown: true },
   { label: 'Installation', href: routes.installation },
-  { label: 'Gallery', href: routes.gallery },
-  { label: 'About', href: routes.about },
-  { label: 'Blog', href: routes.blog },
-  { label: 'FAQ', href: routes.faq },
+  { label: 'About us', href: routes.about, hasAbout: true },
 ]
 
 const mobileLinks = [
   { label: 'Installation', href: routes.installation },
-  { label: 'Gallery', href: routes.gallery },
-  { label: 'About', href: routes.about },
-  { label: 'Blog', href: routes.blog },
-  { label: 'FAQ', href: routes.faq },
   { label: 'Contact', href: routes.contact },
 ]
 
 const megaCategories = [
-  { label: 'Garden Rooms', img: media.gardenRoom, desc: 'Year-round spaces from 4.4 m²' },
-  { label: 'Modular Homes', img: media.familyHome, desc: 'Factory-built, site-ready homes' },
-  { label: 'Frame Houses', img: media.chaletExterior, desc: 'Flexible homes assembled on site' },
+  { label: 'Garden Rooms', href: categoryPath('Garden Rooms'), img: media.gardenRoom, desc: 'Year-round spaces from 4.4 m²' },
+  { label: 'Bungalows', href: categoryPath('Bungalows'), img: media.familyHome, desc: 'Single-storey homes and annexes' },
+  { label: '2 Storey Houses', href: categoryPath('2 Storey Houses'), img: media.chaletExterior, desc: 'Two full floors for families' },
 ]
 
 export default function Header({ currentPath }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false)
   const [megaOpen, setMegaOpen] = useState(false)
   const [bespokeOpen, setBespokeOpen] = useState(false)
+  const [aboutOpen, setAboutOpen] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [mobileHomesOpen, setMobileHomesOpen] = useState(false)
   const [mobileBespokeOpen, setMobileBespokeOpen] = useState(false)
+  const [mobileAboutOpen, setMobileAboutOpen] = useState(false)
   const headerRef = useRef<HTMLElement>(null)
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -74,6 +78,7 @@ export default function Header({ currentPath }: HeaderProps) {
     closeTimer.current = setTimeout(() => {
       setMegaOpen(false)
       setBespokeOpen(false)
+      setAboutOpen(false)
     }, 200)
   }
 
@@ -99,6 +104,7 @@ export default function Header({ currentPath }: HeaderProps) {
       setMobileOpen(false)
       setMegaOpen(false)
       setBespokeOpen(false)
+      setAboutOpen(false)
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
@@ -148,17 +154,19 @@ export default function Header({ currentPath }: HeaderProps) {
                     cancelClose()
                     setMegaOpen(link.hasMega ?? false)
                     setBespokeOpen(link.hasDropdown ?? false)
+                    setAboutOpen(link.hasAbout ?? false)
                   }}
                   onFocus={() => {
                     cancelClose()
                     setMegaOpen(link.hasMega ?? false)
                     setBespokeOpen(link.hasDropdown ?? false)
+                    setAboutOpen(link.hasAbout ?? false)
                   }}
                   aria-current={isActive(link.href) ? 'page' : undefined}
                   className={`flex items-center gap-1 px-3 py-2 text-sm font-medium font-display rounded-lg transition-colors ${isActive(link.href) ? 'text-navy' : 'text-body hover:text-navy'}`}
                 >
                   {link.label}
-                  {(link.hasMega || link.hasDropdown) && (
+                  {(link.hasMega || link.hasDropdown || link.hasAbout) && (
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" className="opacity-50 mt-0.5"><path d="M7 10l5 5 5-5z"/></svg>
                   )}
                 </a>
@@ -171,6 +179,25 @@ export default function Header({ currentPath }: HeaderProps) {
                     onMouseLeave={scheduleClose}
                   >
                     {bespokeDropdown.map((item) => (
+                      <a
+                        key={item.label}
+                        href={item.href}
+                        className="block w-full text-left px-4 py-2 text-sm text-body hover:text-navy hover:bg-light transition-colors"
+                      >
+                        {item.label}
+                      </a>
+                    ))}
+                  </div>
+                )}
+
+                {/* About dropdown */}
+                {link.hasAbout && aboutOpen && (
+                  <div
+                    className="absolute top-full left-0 pt-1 bg-white border border-border rounded-xl shadow-lg py-2 min-w-52 z-50"
+                    onMouseEnter={cancelClose}
+                    onMouseLeave={scheduleClose}
+                  >
+                    {aboutDropdown.map((item) => (
                       <a
                         key={item.label}
                         href={item.href}
@@ -210,7 +237,7 @@ export default function Header({ currentPath }: HeaderProps) {
                     {megaCategories.map((cat) => (
                       <a
                         key={cat.label}
-                        href={routes.catalogue}
+                        href={cat.href}
                         className="relative overflow-hidden rounded-xl group cursor-pointer text-left"
                       >
                         <div className="bg-light h-36 overflow-hidden rounded-xl">
@@ -313,6 +340,27 @@ export default function Header({ currentPath }: HeaderProps) {
                 {mobileBespokeOpen && (
                   <div className="pl-4 space-y-1 mt-1">
                     {bespokeDropdown.map((item) => (
+                      <a key={item.label} href={item.href} className="block w-full text-left px-3 py-2 rounded-lg text-sm text-body hover:text-navy hover:bg-light transition-colors">
+                        {item.label}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* About expand */}
+              <div>
+                <button
+                  onClick={() => setMobileAboutOpen(!mobileAboutOpen)}
+                  aria-expanded={mobileAboutOpen}
+                  className="flex items-center justify-between w-full px-3 py-3 rounded-xl text-sm font-semibold font-display text-navy hover:bg-light transition-colors"
+                >
+                  About us
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className={`transition-transform ${mobileAboutOpen ? 'rotate-180' : ''}`}><path d="M7 10l5 5 5-5z"/></svg>
+                </button>
+                {mobileAboutOpen && (
+                  <div className="pl-4 space-y-1 mt-1">
+                    {aboutDropdown.map((item) => (
                       <a key={item.label} href={item.href} className="block w-full text-left px-3 py-2 rounded-lg text-sm text-body hover:text-navy hover:bg-light transition-colors">
                         {item.label}
                       </a>

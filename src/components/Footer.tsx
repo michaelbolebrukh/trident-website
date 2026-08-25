@@ -1,12 +1,12 @@
 import Logo from './Logo'
-import { routes } from '../lib/routes'
+import { routes, categoryPath } from '../lib/routes'
 
 const homesLinks = [
   { label: 'All Homes', href: routes.catalogue },
-  { label: 'Garden Rooms', href: routes.catalogue },
-  { label: 'Bungalows', href: routes.catalogue },
-  { label: '1.5 Storey Houses', href: routes.catalogue },
-  { label: '2 Storey Houses', href: routes.catalogue },
+  { label: 'Garden Rooms', href: categoryPath('Garden Rooms') },
+  { label: 'Bungalows', href: categoryPath('Bungalows') },
+  { label: '1.5 Storey Houses', href: categoryPath('1.5 Storey Houses') },
+  { label: '2 Storey Houses', href: categoryPath('2 Storey Houses') },
 ]
 
 const servicesLinks = [

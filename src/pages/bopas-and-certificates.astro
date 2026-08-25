@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import WpPageBody from '../components/WpPageBody.astro'
+import pages from '../data/pages.json'
+
+const page = pages.find((p) => p.slug === 'bopas-and-certificates')!
+---
+
+<BaseLayout
+  title="BOPAS and Certificates | Trident Modular"
+  description="Trident Modular is BOPAS accredited and ISO 9001:2015 certified, with a 60-year durability assessment — the assurances lenders and warranty providers look for."
+>
+  <WpPageBody
+    eyebrow="Accreditation"
+    title="BOPAS and certificates"
+    intro="BOPAS accreditation and ISO 9001:2015 certification, with a 60-year durability assessment. These are the assurances lenders, insurers and warranty providers ask for on a modular build."
+    html={page.html}
+  />
+</BaseLayout>

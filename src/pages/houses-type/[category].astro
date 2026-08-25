@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import CategoryPage from '../../components/CategoryPage'
+import { allHomes, PRIMARY_CATEGORIES } from '../../data/homes'
+import { categoryTerms } from '../../data/categories'
+
+/**
+ * Category pages keep the URL the old site used, /houses-type/<slug>/, so the
+ * ranking they already hold carries over without a redirect.
+ */
+
+export function getStaticPaths() {
+  return Object.entries(categoryTerms)
+    .map(([slug, term]) => ({
+      slug,
+      term,
+      homes: allHomes.filter((h) => h.categories.includes(term.name)),
+    }))
+    // A term with nothing in it would be a thin page and a dead end.
+    .filter(({ homes }) => homes.length > 0)
+    .map(({ slug, term, homes }) => ({
+      params: { category: slug },
+      props: { term, homes },
+    }))
+}
+
+const { term, homes } = Astro.props
+const isPrimary = PRIMARY_CATEGORIES.includes(term.name as (typeof PRIMARY_CATEGORIES)[number])
+---
+
+<BaseLayout
+  title={`${term.name} | Trident Modular`}
+  description={`${term.blurb} ${homes.length} ${homes.length === 1 ? 'model' : 'models'} available from Trident Modular.`}
+>
+  <CategoryPage
+    name={term.name}
+    blurb={term.blurb}
+    homes={homes}
+    isPrimary={isPrimary}
+    client:load
+  />
+</BaseLayout>

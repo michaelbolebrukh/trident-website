@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import WpPageBody from '../components/WpPageBody.astro'
+import pages from '../data/pages.json'
+
+const page = pages.find((p) => p.slug === 'technology')!
+---
+
+<BaseLayout
+  title="Our Technology | Trident Modular"
+  description="How Trident builds: a closed-panel timber frame system manufactured under ISO 9001:2015, with quality control in the factory rather than on site."
+>
+  <WpPageBody
+    eyebrow="How we build"
+    title="Technology"
+    intro="Modular and timber-framed houses built with a closed-panel system, manufactured to ISO 9001:2015 and quality-controlled in the factory rather than on site."
+    html={page.html}
+  />
+</BaseLayout>

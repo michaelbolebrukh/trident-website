@@ -20,8 +20,11 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
+    "@napi-rs/canvas": "^1.0.8",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "fast-xml-parser": "^5.11.0",
+    "pdfjs-dist": "^6.2.108",
     "playwright": "^1.62.1",
     "typescript": "^5.7.0"
   }

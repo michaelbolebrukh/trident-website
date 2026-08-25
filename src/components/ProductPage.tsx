@@ -410,10 +410,14 @@ export default function ProductPage({ home }: { home: Home }) {
         </div>
       )}
 
-      {/* ─── B: Key Features ─── */}
+      {/* ─── B: Optional extras ─── */}
       <div className="border-t border-border bg-light py-14">
         <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
-          <h2 className="font-display font-bold text-navy text-2xl mb-8">Key features</h2>
+          <h2 className="font-display font-bold text-navy text-2xl mb-2">Additional features</h2>
+          <p className="text-muted text-sm mb-8 max-w-2xl">
+            These are bespoke options rather than standard specification. They are not included in
+            any of the packages above and are priced separately once we know what you want.
+          </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               { icon: '◎', title: 'Full-height glazing', desc: 'Large fixed and opening sections to the garden elevation. Options for bi-fold or sliding door systems.' },
