@@ -55,7 +55,6 @@ PAGE_MAP = {
 # Old paths deliberately left to 404: no page on the new site serves the same
 # purpose, and redirecting them somewhere unrelated would be worse than a 404.
 UNMAPPED_OK = {
-    '/privacy-policy/',
     '/terms-and-conditions/',
     '/cookie-policy-uk/',
     '/cookie-policy-eu/',
@@ -72,6 +71,7 @@ UNCHANGED = {
     '/about_us/',
     '/contact-us/',
     '/customise-your-build/',
+    '/privacy-policy/',
 }
 
 BLOCK_START = '# ─── Migration redirects (301) ───'

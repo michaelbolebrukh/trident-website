@@ -1,0 +1,22 @@
+---
+import { seoFor } from '../data/seo'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import WpPageBody from '../components/WpPageBody.astro'
+import pages from '../data/pages.json'
+
+const page = pages.find((p) => p.slug === 'privacy-policy')!
+
+const meta = seoFor(
+  '/privacy-policy/',
+  'Privacy Policy',
+  'How Trident Modular Housing Ltd collects, uses and protects your personal data, the lawful bases we rely on, and the rights you have under UK GDPR.',
+)
+---
+
+<BaseLayout title={meta.title} description={meta.description} noindex={false}>
+  <WpPageBody
+    eyebrow="Legal"
+    title="Privacy Policy"
+    html={page.html}
+  />
+</BaseLayout>

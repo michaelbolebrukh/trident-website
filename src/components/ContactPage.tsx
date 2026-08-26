@@ -236,7 +236,7 @@ export default function ContactPage() {
                     className="mt-0.5 w-4 h-4 rounded border-border accent-gold shrink-0"
                   />
                   <span className="text-xs text-muted leading-relaxed">
-                    I have read and agree to the <a href="#" className="text-navy underline">Privacy Policy</a>. I consent to Trident Modular contacting me regarding my enquiry.
+                    I have read and agree to the <a href="/privacy-policy/" className="text-navy underline">Privacy Policy</a>. I consent to Trident Modular contacting me regarding my enquiry.
                   </span>
                 </label>
                 {errors.consent && <p className="text-red-500 text-xs mt-1">{errors.consent}</p>}
