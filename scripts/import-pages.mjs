@@ -21,10 +21,6 @@ if (!XML) {
 const WANTED = {
   technology: 'technology',
   'bopas-and-certificates': 'bopas-and-certificates',
-  // Prose, and legally required now the site is going live. The other three
-  // legal pages were rendered by a consent plugin rather than stored as post
-  // content, so the export holds nothing for them.
-  'privacy-policy': 'privacy-policy',
 }
 
 const parser = new XMLParser({
