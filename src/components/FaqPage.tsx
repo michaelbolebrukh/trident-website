@@ -81,7 +81,7 @@ export default function FaqPage() {
           <div className="text-center py-16">
             <p className="font-display font-bold text-navy text-xl mb-2">No matching questions found.</p>
             <p className="text-muted text-sm mb-4">Try another keyword or contact our team.</p>
-            <a href="/contact/" className="text-sm font-semibold font-display text-gold underline">Contact us</a>
+            <a href="/contact-us/" className="text-sm font-semibold font-display text-gold underline">Contact us</a>
           </div>
         ) : (
           <div className="space-y-2 max-w-3xl">
@@ -121,7 +121,7 @@ export default function FaqPage() {
         <div className="mt-14 max-w-2xl bg-light rounded-2xl p-8 border border-border">
           <h3 className="font-display font-bold text-navy text-xl mb-2">Still need help?</h3>
           <p className="text-muted text-sm mb-5">Send us your question and our team will respond within one working day.</p>
-          <a href="/contact/"
+          <a href="/contact-us/"
             className="bg-navy text-white font-semibold font-display px-7 py-3 rounded-xl hover:bg-navy-mid transition-colors text-sm">
             Send us a question
           </a>

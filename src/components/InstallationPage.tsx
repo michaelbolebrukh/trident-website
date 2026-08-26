@@ -217,11 +217,11 @@ function ComparisonSlider() {
       </div>
 
       <div className="flex flex-col sm:flex-row gap-3">
-        <a href="/contact/"
+        <a href="/contact-us/"
           className="bg-gold text-navy font-bold font-display px-7 py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm">
           Discuss your completion option
         </a>
-        <a href="/contact/"
+        <a href="/contact-us/"
           className="border border-border text-navy font-semibold font-display px-7 py-3.5 rounded-xl hover:border-navy transition-colors text-sm">
           Request a specification
         </a>
@@ -250,7 +250,7 @@ export default function InstallationPage() {
           <p className="text-white/70 text-lg max-w-xl mb-8">
             Choose the level of completion that suits your project and see how Trident manages delivery, assembly and finishing.
           </p>
-          <a href="/contact/"
+          <a href="/contact-us/"
             className="bg-gold text-navy font-bold font-display px-7 py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm">
             Discuss Your Installation
           </a>
@@ -392,7 +392,7 @@ export default function InstallationPage() {
             ))}
           </div>
           <div className="mt-10 flex flex-col sm:flex-row gap-3">
-            <a href="/contact/"
+            <a href="/contact-us/"
               className="bg-navy text-white font-semibold font-display px-7 py-3.5 rounded-xl hover:bg-navy-mid transition-colors text-sm">
               Discuss your installation
             </a>

@@ -24,26 +24,26 @@ HTACCESS = Path(__file__).resolve().parent.parent / 'public' / '.htaccess'
 
 # Old page path -> where its traffic should now go.
 PAGE_MAP = {
-    '/about_us/': '/about/',
-    '/contact-us/': '/contact/',
-    '/houses-type/': '/catalogue/',
-    '/commercial/': '/bespoke/#support',
-    '/customise-your-build/': '/bespoke/',
-    '/eco-modular-homes/': '/bespoke/#sustainable',
-    '/modular-building-company-uk/': '/about/',
-    '/self-build-modular-homes/': '/catalogue/',
-    '/modular-home-cost-uk/': '/catalogue/',
-    '/london/': '/catalogue/',
+    # Pages the new site serves at their old URL are absent from this map on
+    # purpose: they need no rule. Keeping the URL beats redirecting to a
+    # tidier one, so /about_us/, /contact-us/, /customise-your-build/,
+    # /houses-type/ and every /houses/<slug>/ model page stay put.
+    '/commercial/': '/customise-your-build/#support',
+    '/eco-modular-homes/': '/customise-your-build/#sustainable',
+    '/modular-building-company-uk/': '/about_us/',
+    '/self-build-modular-homes/': '/houses-type/',
+    '/modular-home-cost-uk/': '/houses-type/',
+    '/london/': '/houses-type/',
     '/installation/our-solution/': '/installation/',
     '/installation/permissions-for-modular-building/': '/faq/',
-    '/installation/garden-office-with-electrics/': '/catalogue/garden-studio/',
+    '/installation/garden-office-with-electrics/': '/houses/garden-studio/',
     '/category/': '/blog/',
     '/tag/': '/blog/',
-    '/example-product-page/': '/catalogue/',
+    '/example-product-page/': '/houses-type/',
     # These existed only in Ukrainian. They are not recreated; their traffic
     # goes to the English page covering the same ground.
     '/vyrobnycztvo/': '/technology/',
-    '/proyektuvannya/': '/bespoke/',
+    '/proyektuvannya/': '/customise-your-build/',
     '/gotovi-proyekty-karkasnyh-budynkiv/': '/gallery/',
     '/gotovi-proyekty-modulnyh-budynkiv/': '/gallery/',
 }
@@ -65,6 +65,10 @@ UNCHANGED = {
     '/installation/',
     '/technology/',
     '/bopas-and-certificates/',
+    '/about_us/',
+    '/contact-us/',
+    '/customise-your-build/',
+    '/houses-type/',
 }
 
 BLOCK_START = '# ─── Migration redirects (301) ───'
@@ -95,8 +99,14 @@ def render(found):
         '<IfModule mod_rewrite.c>',
         '  RewriteEngine On',
         '',
-        f"  # {len(found['houses'])} models moved from /houses/<slug>/ to /catalogue/<slug>/.",
-        '  RewriteRule ^houses/([^/]+)/?$ /catalogue/$1/ [R=301,L]',
+        f"  # All {len(found['houses'])} models keep their /houses/<slug>/ URL, so no",
+        '  # rule is needed for them. /catalogue/ was used while the site was in',
+        '  # development and is folded back in here.',
+        '  RewriteRule ^catalogue/([^/]+)/?$ /houses/$1/ [R=301,L]',
+        '  RewriteRule ^catalogue/?$ /houses-type/ [R=301,L]',
+        '  RewriteRule ^about/?$ /about_us/ [R=301,L]',
+        '  RewriteRule ^contact/?$ /contact-us/ [R=301,L]',
+        '  RewriteRule ^bespoke/?$ /customise-your-build/ [R=301,L]',
         '',
         f"  # {len(found['post'])} blog posts lost their placeholder category segment.",
         '  RewriteRule ^blog/uncategorized-en_gb/(.+)$ /blog/$1 [R=301,L]',

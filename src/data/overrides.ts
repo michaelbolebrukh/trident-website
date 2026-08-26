@@ -18,7 +18,6 @@ export const overrides: Record<string, HomeOverride> = {
   // ─── Classification ───────────────────────────────────────────────────
   // Had no primary class at all, so fell into "Other" in the catalogue.
   'a-frame': {
-    name: 'A-Frame',
     category: '2 Storey Houses',
     categories: ['2 Storey Houses'],
     desc: 'Your countryside escape, featuring two floors, multiple terraces and panoramic views.',
@@ -50,13 +49,15 @@ export const overrides: Record<string, HomeOverride> = {
   },
 
   // ─── Naming ───────────────────────────────────────────────────────────
-  'garden-studio': { name: 'Garden Studio' },
+  // The customer team's review corrected the capitalisation and accents here
+  // ("Garden studio" -> "Garden Studio", "Cafe" -> "Café", "A-frame" ->
+  // "A-Frame"). Those corrections are held back for now: the brief is that a
+  // model's name must read exactly as it does on tridentmodular.com, so the
+  // page title, H1 and link text all match what is already indexed.
   'garden-cafe': {
-    name: 'Garden Café',
     desc: 'A modern factory-built café, delivered as a turnkey solution and installed in just one day. The garden café includes a quick start-up and minimal energy costs.',
   },
   'modwood-cafe': {
-    name: 'ModWood Café',
     desc: 'A spacious commercial property in a modern prefabricated-frame style with a sizeable terrace and professional zoning, designed for fast construction to progress new business launches.',
   },
 

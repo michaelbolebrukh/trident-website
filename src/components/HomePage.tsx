@@ -124,11 +124,11 @@ export default function HomePage() {
               to final installation.
             </p>
             <div className="flex flex-wrap gap-4">
-              <a href="/catalogue/"
+              <a href="/houses-type/"
                 className="bg-gold text-navy font-semibold font-display px-7 py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm">
                 Explore Our Homes
               </a>
-              <a href="/contact/"
+              <a href="/contact-us/"
                 className="border border-white/30 text-white font-semibold font-display px-7 py-3.5 rounded-xl hover:bg-white/10 transition-colors text-sm">
                 Start Your Project
               </a>
@@ -214,7 +214,7 @@ export default function HomePage() {
                   className="w-full border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold/40 focus:border-gold resize-none"
                 />
               </div>
-              <a href="/contact/"
+              <a href="/contact-us/"
                 className="block w-full text-center bg-navy text-white font-semibold font-display py-3.5 rounded-xl hover:bg-navy-mid transition-colors text-sm">
                 Request a Consultation
               </a>
@@ -333,7 +333,7 @@ export default function HomePage() {
             ))}
           </div>
           <div className="mt-6 text-center">
-            <a href="/bespoke/"
+            <a href="/customise-your-build/"
               className="inline-flex items-center gap-2 text-sm font-semibold font-display text-navy border border-border rounded-xl px-6 py-3 hover:border-navy transition-colors">
               Commercial Buildings & Bespoke Projects
               <svg
@@ -361,7 +361,7 @@ export default function HomePage() {
                 Featured homes
               </h2>
             </div>
-            <a href="/catalogue/"
+            <a href="/houses-type/"
               className="shrink-0 text-sm font-semibold font-display text-navy border border-border rounded-xl px-5 py-2.5 hover:border-navy transition-colors">
               View all homes →
             </a>
@@ -540,7 +540,7 @@ export default function HomePage() {
                   </li>
                 ))}
               </ul>
-              <a href="/bespoke/"
+              <a href="/customise-your-build/"
                 className="bg-navy text-white font-semibold font-display px-7 py-3.5 rounded-xl hover:bg-navy-mid transition-colors text-sm">
                 Explore Bespoke Design
               </a>
@@ -970,7 +970,7 @@ export default function HomePage() {
             Tell us about your project and we'll guide you through the next steps.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/contact/"
+            <a href="/contact-us/"
               className="bg-gold text-navy font-bold font-display px-8 py-4 rounded-xl hover:bg-gold-dark transition-colors text-sm">
               Start Your Project
             </a>

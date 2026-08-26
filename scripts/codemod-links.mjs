@@ -15,7 +15,7 @@ const DIR = new URL('../src/components/', import.meta.url).pathname
 
 const routes = {
   home: '/',
-  catalogue: '/catalogue/',
+  catalogue: '/houses-type/',
   installation: '/installation/',
   bespoke: '/bespoke/',
   gallery: '/gallery/',
@@ -23,7 +23,7 @@ const routes = {
   blog: '/blog/',
   faq: '/faq/',
   contact: '/contact/',
-  product: '/catalogue/garden-premium/', // placeholder model until real data lands
+  product: '/houses/garden-premium/', // placeholder model until real data lands
 }
 
 /**

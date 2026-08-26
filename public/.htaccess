@@ -63,31 +63,33 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
-  # 23 models moved from /houses/<slug>/ to /catalogue/<slug>/.
-  RewriteRule ^houses/([^/]+)/?$ /catalogue/$1/ [R=301,L]
+  # All 23 models keep their /houses/<slug>/ URL, so no
+  # rule is needed for them. /catalogue/ was used while the site was in
+  # development and is folded back in here.
+  RewriteRule ^catalogue/([^/]+)/?$ /houses/$1/ [R=301,L]
+  RewriteRule ^catalogue/?$ /houses-type/ [R=301,L]
+  RewriteRule ^about/?$ /about_us/ [R=301,L]
+  RewriteRule ^contact/?$ /contact-us/ [R=301,L]
+  RewriteRule ^bespoke/?$ /customise-your-build/ [R=301,L]
 
   # 24 blog posts lost their placeholder category segment.
   RewriteRule ^blog/uncategorized-en_gb/(.+)$ /blog/$1 [R=301,L]
 
   # Pages that moved or were folded into another page.
-  RewriteRule ^about_us/?$ /about/ [R=301,L]
   RewriteRule ^category/?$ /blog/ [R=301,L]
-  RewriteRule ^commercial/?$ /bespoke/#support [R=301,L]
-  RewriteRule ^contact-us/?$ /contact/ [R=301,L]
-  RewriteRule ^customise-your-build/?$ /bespoke/ [R=301,L]
-  RewriteRule ^eco-modular-homes/?$ /bespoke/#sustainable [R=301,L]
-  RewriteRule ^example-product-page/?$ /catalogue/ [R=301,L]
+  RewriteRule ^commercial/?$ /customise-your-build/#support [R=301,L]
+  RewriteRule ^eco-modular-homes/?$ /customise-your-build/#sustainable [R=301,L]
+  RewriteRule ^example-product-page/?$ /houses-type/ [R=301,L]
   RewriteRule ^gotovi-proyekty-karkasnyh-budynkiv/?$ /gallery/ [R=301,L]
   RewriteRule ^gotovi-proyekty-modulnyh-budynkiv/?$ /gallery/ [R=301,L]
-  RewriteRule ^houses-type/?$ /catalogue/ [R=301,L]
-  RewriteRule ^installation/garden-office-with-electrics/?$ /catalogue/garden-studio/ [R=301,L]
+  RewriteRule ^installation/garden-office-with-electrics/?$ /houses/garden-studio/ [R=301,L]
   RewriteRule ^installation/our-solution/?$ /installation/ [R=301,L]
   RewriteRule ^installation/permissions-for-modular-building/?$ /faq/ [R=301,L]
-  RewriteRule ^london/?$ /catalogue/ [R=301,L]
-  RewriteRule ^modular-building-company-uk/?$ /about/ [R=301,L]
-  RewriteRule ^modular-home-cost-uk/?$ /catalogue/ [R=301,L]
-  RewriteRule ^proyektuvannya/?$ /bespoke/ [R=301,L]
-  RewriteRule ^self-build-modular-homes/?$ /catalogue/ [R=301,L]
+  RewriteRule ^london/?$ /houses-type/ [R=301,L]
+  RewriteRule ^modular-building-company-uk/?$ /about_us/ [R=301,L]
+  RewriteRule ^modular-home-cost-uk/?$ /houses-type/ [R=301,L]
+  RewriteRule ^proyektuvannya/?$ /customise-your-build/ [R=301,L]
+  RewriteRule ^self-build-modular-homes/?$ /houses-type/ [R=301,L]
   RewriteRule ^tag/?$ /blog/ [R=301,L]
   RewriteRule ^vyrobnycztvo/?$ /technology/ [R=301,L]
 

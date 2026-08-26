@@ -84,7 +84,7 @@ export default function AboutPage() {
             <p className="text-muted text-base leading-relaxed mb-6">
               We focus on clear communication, realistic expectations and accountable project delivery.
             </p>
-            <a href="/contact/"
+            <a href="/contact-us/"
               className="bg-navy text-white font-semibold font-display px-7 py-3.5 rounded-xl hover:bg-navy-mid transition-colors text-sm">
               Talk to our team
             </a>
@@ -98,8 +98,8 @@ export default function AboutPage() {
           <h2 className="font-display font-bold text-white text-3xl mb-4">Ready to start a conversation?</h2>
           <p className="text-white/65 mb-8">Tell us about your project and our team will help identify the most suitable next step.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/contact/" className="bg-gold text-navy font-bold font-display px-8 py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm">Start Your Project</a>
-            <a href="/catalogue/" className="border border-white/30 text-white font-semibold font-display px-8 py-3.5 rounded-xl hover:bg-white/10 transition-colors text-sm">Browse our homes</a>
+            <a href="/contact-us/" className="bg-gold text-navy font-bold font-display px-8 py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm">Start Your Project</a>
+            <a href="/houses-type/" className="border border-white/30 text-white font-semibold font-display px-8 py-3.5 rounded-xl hover:bg-white/10 transition-colors text-sm">Browse our homes</a>
           </div>
         </div>
       </section>

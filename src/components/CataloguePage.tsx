@@ -257,7 +257,7 @@ export default function CataloguePage() {
             <p className="font-display font-bold text-navy text-xl mb-1">Can't find the right layout?</p>
             <p className="text-muted text-sm">Adapt an existing model or create a bespoke design with our team.</p>
           </div>
-          <a href="/bespoke/"
+          <a href="/customise-your-build/"
             className="shrink-0 bg-navy text-white font-semibold font-display px-7 py-3.5 rounded-xl hover:bg-navy-mid transition-colors text-sm">
             Explore Bespoke Design
           </a>

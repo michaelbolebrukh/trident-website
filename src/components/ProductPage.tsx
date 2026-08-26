@@ -84,7 +84,7 @@ export default function ProductPage({ home }: { home: Home }) {
         <div className="max-w-[1280px] mx-auto px-6 lg:px-8 flex items-center gap-2 text-xs text-muted">
           <a href="/" className="hover:text-navy transition-colors">Home</a>
           <span>/</span>
-          <a href="/catalogue/" className="hover:text-navy transition-colors">All Homes</a>
+          <a href="/houses-type/" className="hover:text-navy transition-colors">All Homes</a>
           <span>/</span>
           <span className="text-navy font-medium">{home.name}</span>
         </div>
@@ -172,14 +172,14 @@ export default function ProductPage({ home }: { home: Home }) {
 
             {/* CTAs */}
             <div className="space-y-3">
-              <a href="/contact/"
+              <a href="/contact-us/"
                 className="block w-full text-center bg-gold text-navy font-bold font-display py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm">
                 Request a Quote
               </a>
               <button className="w-full border border-navy text-navy font-semibold font-display py-3.5 rounded-xl hover:bg-light transition-colors text-sm">
                 Download Specification
               </button>
-              <a href="/bespoke/"
+              <a href="/customise-your-build/"
                 className="block w-full text-center text-sm font-semibold font-display text-muted hover:text-navy transition-colors underline underline-offset-2 py-1">
                 Customise this home
               </a>
@@ -481,7 +481,7 @@ export default function ProductPage({ home }: { home: Home }) {
                 </ul>
               </div>
             )}
-            <a href="/contact/"
+            <a href="/contact-us/"
               className="mt-5 text-sm font-semibold font-display text-navy underline underline-offset-2 hover:text-gold transition-colors">
               Request the full specification →
             </a>
@@ -514,7 +514,7 @@ export default function ProductPage({ home }: { home: Home }) {
               </div>
             ))}
           </div>
-          <a href="/bespoke/"
+          <a href="/customise-your-build/"
             className="text-sm font-semibold font-display text-navy border border-navy rounded-xl px-6 py-3 hover:bg-navy hover:text-white transition-colors">
             Discuss Bespoke Options
           </a>
@@ -582,8 +582,8 @@ export default function ProductPage({ home }: { home: Home }) {
           <h2 className="font-display font-bold text-white text-3xl mb-3">Interested in the {home.name}?</h2>
           <p className="text-white/65 text-base mb-8">Tell us about your site, delivery area and any modifications you have in mind. We'll come back to you with a tailored quotation.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/contact/" className="bg-gold text-navy font-bold font-display px-8 py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm">Request a Quote</a>
-            <a href="/catalogue/" className="border border-white/30 text-white font-semibold font-display px-8 py-3.5 rounded-xl hover:bg-white/10 transition-colors text-sm">Browse all homes</a>
+            <a href="/contact-us/" className="bg-gold text-navy font-bold font-display px-8 py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm">Request a Quote</a>
+            <a href="/houses-type/" className="border border-white/30 text-white font-semibold font-display px-8 py-3.5 rounded-xl hover:bg-white/10 transition-colors text-sm">Browse all homes</a>
           </div>
         </div>
       </div>
@@ -600,7 +600,7 @@ export default function ProductPage({ home }: { home: Home }) {
 
       {/* Mobile sticky CTA */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-border px-4 py-3 flex gap-3">
-        <a href="/contact/" className="flex-1 bg-gold text-navy font-bold font-display py-3 rounded-xl text-sm">
+        <a href="/contact-us/" className="flex-1 bg-gold text-navy font-bold font-display py-3 rounded-xl text-sm">
           Request a Quote
         </a>
         <button className="flex-1 border border-navy text-navy font-semibold font-display py-3 rounded-xl text-sm">

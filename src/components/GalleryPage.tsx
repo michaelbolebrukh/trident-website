@@ -93,7 +93,7 @@ export default function GalleryPage() {
             <p className="font-display font-bold text-navy text-xl mb-1">Interested in any of these projects?</p>
             <p className="text-muted text-sm">Tell us about your own site and we'll discuss the right solution.</p>
           </div>
-          <a href="/contact/" className="shrink-0 bg-navy text-white font-semibold font-display px-7 py-3.5 rounded-xl hover:bg-navy-mid transition-colors text-sm">
+          <a href="/contact-us/" className="shrink-0 bg-navy text-white font-semibold font-display px-7 py-3.5 rounded-xl hover:bg-navy-mid transition-colors text-sm">
             Start Your Project
           </a>
         </div>

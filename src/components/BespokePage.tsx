@@ -44,7 +44,7 @@ export default function BespokePage() {
           <p className="text-white/70 text-lg max-w-lg mb-8">
             Whether you need a one-off residential home, a commercial workspace or a fully bespoke design, Trident Modular can deliver a building that fits precisely.
           </p>
-          <a href="/contact/"
+          <a href="/contact-us/"
             className="bg-gold text-navy font-bold font-display px-7 py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm">
             Discuss Your Project
           </a>
@@ -90,7 +90,7 @@ export default function BespokePage() {
                       </li>
                     ))}
                   </ul>
-                  <a href="/contact/"
+                  <a href="/contact-us/"
                     className="text-sm font-semibold font-display text-navy border border-navy rounded-xl px-5 py-2.5 hover:bg-navy hover:text-white transition-colors">
                     {route.cta}
                   </a>
@@ -166,7 +166,7 @@ export default function BespokePage() {
         <div className="max-w-[700px] mx-auto px-6 text-center">
           <h2 className="font-display font-bold text-white text-3xl mb-4">Ready to discuss your project?</h2>
           <p className="text-white/65 mb-8">Tell us about your site, requirements and timeline and we'll get back to you with our initial thoughts.</p>
-          <a href="/contact/" className="bg-gold text-navy font-bold font-display px-8 py-4 rounded-xl hover:bg-gold-dark transition-colors text-sm">
+          <a href="/contact-us/" className="bg-gold text-navy font-bold font-display px-8 py-4 rounded-xl hover:bg-gold-dark transition-colors text-sm">
             Start a Conversation
           </a>
         </div>
