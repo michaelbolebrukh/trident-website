@@ -50,18 +50,18 @@ export const overrides: Record<string, HomeOverride> = {
 
 
   // ─── Garden room photography ──────────────────────────────────────────
-  // The renders the export points at are UK-only: they exist on
-  // tridentmodular.com and nowhere else, and that host answers image requests
-  // with a bot-protection challenge. Trident supplied the originals from
-  // Drive instead.
+  // The originals the old site used, supplied by Trident from Drive. The
+  // export points at these same filenames, but tridentmodular.com answers
+  // image requests with a bot-protection challenge, so they had to come
+  // across by hand.
   //
-  // Eight per model, chosen to show the same shell in different uses — a
-  // garden office, a gym, a cinema, a studio — rather than eight near
-  // identical exteriors in slightly different finishes, which is what the
-  // export's ext_1/ext_2 colour variants amounted to.
+  // The set is the product range rather than a set of scenes: two exterior
+  // layouts, three cladding colours, each with and without the wood front,
+  // plus the beam variants. Ordered plain, then colours, then wood front,
+  // then beam, so the gallery reads as a range.
   //
-  // These are site-absolute paths rather than export paths, so they bypass
-  // image-map.json; see houseImage in homes.ts.
+  // Site-absolute paths, so they bypass image-map.json; see houseImage in
+  // homes.ts.
   'base-model': {
     thumb: '/images/library/garden-base-01.webp',
     gallery: [
@@ -86,6 +86,10 @@ export const overrides: Record<string, HomeOverride> = {
       '/images/library/garden-premium-06.webp',
       '/images/library/garden-premium-07.webp',
       '/images/library/garden-premium-08.webp',
+      '/images/library/garden-premium-09.webp',
+      '/images/library/garden-premium-10.webp',
+      '/images/library/garden-premium-11.webp',
+      '/images/library/garden-premium-12.webp',
     ],
   },
 
