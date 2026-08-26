@@ -1,7 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
 import { intro, principles, stages, accreditations } from '../data/technology'
-import { media } from '../data/media'
+import { factoryPhoto, systemPhoto } from '../data/build-ups'
+import BuildUps from '../components/BuildUps'
 import { routes } from '../lib/routes'
 ---
 
@@ -38,13 +39,20 @@ import { routes } from '../lib/routes'
             </a>
           </div>
         </div>
-        <div class="rounded-2xl overflow-hidden h-72 lg:h-[420px] bg-navy-mid">
-          <img
-            src={media.chaletExterior}
-            alt="A Trident timber-frame building"
-            class="w-full h-full object-cover"
-          />
-        </div>
+        <figure class="m-0">
+          <div class="rounded-2xl overflow-hidden h-72 lg:h-[420px] bg-navy-mid">
+            <img
+              src={factoryPhoto}
+              alt="Trident wall panels being assembled on the factory floor"
+              width="1200"
+              height="904"
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <figcaption class="text-xs mt-3" style="color: rgba(255,255,255,0.55)">
+            Wall panels squared and sheathed under cover, before delivery.
+          </figcaption>
+        </figure>
       </div>
     </section>
 
@@ -63,17 +71,29 @@ import { routes } from '../lib/routes'
     {/* The engineering system */}
     <section class="py-20 lg:py-24">
       <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
-        <div class="max-w-2xl mb-12">
-          <p class="text-xs font-semibold font-display uppercase tracking-[0.2em] text-gold mb-3">
-            The system
-          </p>
-          <h2 class="font-display font-bold text-navy text-3xl lg:text-4xl mb-4">
-            One engineering system, not a set of parts
-          </h2>
-          <p class="text-muted text-base leading-relaxed">
-            Every component is designed against the same requirements: energy efficiency, moisture
-            resistance and spatial rigidity, held across the whole life of the building.
-          </p>
+        <div class="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center mb-14">
+          <div>
+            <p class="text-xs font-semibold font-display uppercase tracking-[0.2em] text-gold mb-3">
+              The system
+            </p>
+            <h2 class="font-display font-bold text-navy text-3xl lg:text-4xl mb-4">
+              One engineering system, not a set of parts
+            </h2>
+            <p class="text-muted text-base leading-relaxed">
+              Every component is designed against the same requirements: energy efficiency, moisture
+              resistance and spatial rigidity, held across the whole life of the building.
+            </p>
+          </div>
+          <div class="rounded-2xl overflow-hidden bg-light h-64 lg:h-80">
+            <img
+              src={systemPhoto}
+              alt="Cutaway view of a Trident house showing its structure and layout"
+              loading="lazy"
+              width="1200"
+              height="675"
+              class="w-full h-full object-cover"
+            />
+          </div>
         </div>
 
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -87,8 +107,34 @@ import { routes } from '../lib/routes'
       </div>
     </section>
 
-    {/* How it is made */}
+    {/* Construction build-ups */}
     <section class="bg-light border-t border-border py-20 lg:py-24">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <div class="max-w-2xl mb-10">
+          <p class="text-xs font-semibold font-display uppercase tracking-[0.2em] text-gold mb-3">
+            Construction build-ups
+          </p>
+          <h2 class="font-display font-bold text-navy text-3xl lg:text-4xl mb-4">
+            Every layer, specified
+          </h2>
+          <p class="text-muted text-base leading-relaxed">
+            The envelope is built up from the same set of layers whichever model you choose. What
+            changes is the depth of the frame and the insulation within it. Select a thickness to
+            see the full specification for each element.
+          </p>
+        </div>
+
+        <BuildUps client:visible />
+
+        <p class="text-xs text-muted mt-8 max-w-2xl leading-relaxed">
+          Layers marked optional are specified with you: façade material, roof covering and internal
+          finishes are all your choice. Numbers correspond to the diagram beside each list.
+        </p>
+      </div>
+    </section>
+
+    {/* How it is made */}
+    <section class="bg-white border-t border-border py-20 lg:py-24">
       <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
         <div class="max-w-2xl mb-12">
           <p class="text-xs font-semibold font-display uppercase tracking-[0.2em] text-gold mb-3">
