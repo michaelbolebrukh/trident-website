@@ -10,6 +10,17 @@ SiteGround's bot protection blocks automated access to that host, so they
 have to come across by hand.
 
 WHERE THEY ARE
+
+  Easiest: the renders are already in Drive, in
+    "Візуалізації AI++" > "Garden house Base" / "Garden house Premium"
+    https://drive.google.com/drive/folders/1GkOFVRIRo4ySfsj7X4-qZVtoFxMYAD9z
+
+  That folder belongs to a colleague and is not link-shared, so Drive
+  answers automated requests with a sign-in page. Set it to
+  "anyone with the link" and scripts/fetch-garden-renders.mjs pulls the
+  eight-per-model selection in one go.
+
+  Or, from the old site:
   SiteGround Site Tools -> File Manager
   public_html/wp-content/uploads/2026/06/
 
