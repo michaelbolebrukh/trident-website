@@ -5,12 +5,29 @@
  * Import from here, never from homes.generated.ts — that file is overwritten
  * wholesale each time the import script runs.
  */
-import { generatedHomes, houseImage, type Home } from './homes.generated'
+import { generatedHomes, type Home } from './homes.generated'
+import imageMap from './image-map.json'
 import { applyOverride } from './overrides'
 import { specFor } from './catalogue-specs'
 
-export { houseImage }
 export type { Home }
+
+/** Shown where the source photograph is not available to us yet. */
+export const IMAGE_PLACEHOLDER = '/images/placeholder.svg'
+
+/**
+ * Resolve a stored image path to a local file.
+ *
+ * These used to be hotlinked from tridentmodular.com. That host began
+ * answering image requests with a bot-protection challenge instead of the
+ * file, so every image on the site broke at once. They are now served from
+ * this site, and nothing here depends on an external host.
+ *
+ * Paths with no local copy fall back to a placeholder rather than a broken
+ * image; see docs/missing-images.txt for what still needs supplying.
+ */
+export const houseImage = (path: string | null | undefined): string =>
+  (path && (imageMap as Record<string, string>)[path]) || IMAGE_PLACEHOLDER
 
 /**
  * Bedroom and bathroom counts come from the catalogue's room schedules where
