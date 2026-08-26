@@ -31,15 +31,19 @@ PAGE_MAP = {
     '/commercial/': '/customise-your-build/#support',
     '/eco-modular-homes/': '/customise-your-build/#sustainable',
     '/modular-building-company-uk/': '/about_us/',
-    '/self-build-modular-homes/': '/houses-type/',
-    '/modular-home-cost-uk/': '/houses-type/',
-    '/london/': '/houses-type/',
+    '/self-build-modular-homes/': '/houses/',
+    '/modular-home-cost-uk/': '/houses/',
+    '/london/': '/houses/',
+    # The catalogue lives at /houses/ alongside the models it lists. The old
+    # taxonomy index redirects into it; the per-category pages under it keep
+    # their own URLs.
+    '/houses-type/': '/houses/',
     '/installation/our-solution/': '/installation/',
     '/installation/permissions-for-modular-building/': '/faq/',
     '/installation/garden-office-with-electrics/': '/houses/garden-studio/',
     '/category/': '/blog/',
     '/tag/': '/blog/',
-    '/example-product-page/': '/houses-type/',
+    '/example-product-page/': '/houses/',
     # These existed only in Ukrainian. They are not recreated; their traffic
     # goes to the English page covering the same ground.
     '/vyrobnycztvo/': '/technology/',
@@ -68,7 +72,6 @@ UNCHANGED = {
     '/about_us/',
     '/contact-us/',
     '/customise-your-build/',
-    '/houses-type/',
 }
 
 BLOCK_START = '# ─── Migration redirects (301) ───'
@@ -103,7 +106,7 @@ def render(found):
         '  # rule is needed for them. /catalogue/ was used while the site was in',
         '  # development and is folded back in here.',
         '  RewriteRule ^catalogue/([^/]+)/?$ /houses/$1/ [R=301,L]',
-        '  RewriteRule ^catalogue/?$ /houses-type/ [R=301,L]',
+        '  RewriteRule ^catalogue/?$ /houses/ [R=301,L]',
         '  RewriteRule ^about/?$ /about_us/ [R=301,L]',
         '  RewriteRule ^contact/?$ /contact-us/ [R=301,L]',
         '  RewriteRule ^bespoke/?$ /customise-your-build/ [R=301,L]',

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { media } from '../data/media'
 import { allHomes, houseImage, type Home } from '../data/homes'
-import { productPath } from '../lib/routes'
+import { productPath, routes } from '../lib/routes'
 import { detailFor, PRICE_NOTE } from '../data/model-details'
 import { specFor } from '../data/catalogue-specs'
 import { pricingFor, formatPrice } from '../lib/price-options'
@@ -84,7 +84,7 @@ export default function ProductPage({ home }: { home: Home }) {
         <div className="max-w-[1280px] mx-auto px-6 lg:px-8 flex items-center gap-2 text-xs text-muted">
           <a href="/" className="hover:text-navy transition-colors">Home</a>
           <span>/</span>
-          <a href="/houses-type/" className="hover:text-navy transition-colors">All Homes</a>
+          <a href="/houses/" className="hover:text-navy transition-colors">All Homes</a>
           <span>/</span>
           <span className="text-navy font-medium">{home.name}</span>
         </div>
@@ -249,29 +249,68 @@ export default function ProductPage({ home }: { home: Home }) {
               All prices from, excl. VAT. Delivery to Greater London included.
             </p>
 
-            <div className="grid md:grid-cols-2 gap-5 mt-8">
-              <details className="bg-white rounded-xl border border-border px-5 py-4">
-                <summary className="cursor-pointer font-display font-bold text-navy text-sm">
-                  What every price excludes
-                </summary>
-                <ul className="mt-3 space-y-1.5">
-                  {STANDARD_EXCLUSIONS.map((x) => (
-                    <li key={x} className="text-xs text-muted">{x}</li>
-                  ))}
-                </ul>
-              </details>
-              <details className="bg-white rounded-xl border border-border px-5 py-4">
-                <summary className="cursor-pointer font-display font-bold text-navy text-sm">
-                  Available upgrades
-                </summary>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {AVAILABLE_UPGRADES.map((u) => (
-                    <span key={u} className="text-xs text-muted bg-light border border-border rounded-full px-3 py-1">
-                      {u}
-                    </span>
+            {/* What the price does and does not cover.
+                Left open rather than folded into <details>: this is the part
+                of a quote buyers most need to see, and collapsing it hid it
+                from search engines too. */}
+            <div className="grid lg:grid-cols-2 gap-5 mt-10">
+              <section className="bg-white rounded-2xl border border-border overflow-hidden">
+                <header className="px-6 py-4 border-b border-border">
+                  <h3 className="font-display font-bold text-navy text-base">Not included</h3>
+                  <p className="text-xs text-muted mt-1">
+                    Applies to every price on this page. Budget for these separately.
+                  </p>
+                </header>
+                <div className="px-6 py-5 space-y-5">
+                  {STANDARD_EXCLUSIONS.map((group) => (
+                    <div key={group.title}>
+                      <h4 className="font-display font-semibold text-[11px] uppercase tracking-[0.14em] text-gold mb-2">
+                        {group.title}
+                      </h4>
+                      <ul className="space-y-1.5">
+                        {group.items.map((item) => (
+                          <li key={item} className="flex gap-2.5 text-sm text-body leading-relaxed">
+                            <span aria-hidden="true" className="text-muted shrink-0 mt-px">—</span>
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   ))}
                 </div>
-              </details>
+              </section>
+
+              <section className="bg-white rounded-2xl border border-border overflow-hidden">
+                <header className="px-6 py-4 border-b border-border">
+                  <h3 className="font-display font-bold text-navy text-base">Available upgrades</h3>
+                  <p className="text-xs text-muted mt-1">
+                    Specified with you and quoted per project.
+                  </p>
+                </header>
+                <div className="px-6 py-5 space-y-5">
+                  {AVAILABLE_UPGRADES.map((group) => (
+                    <div key={group.title}>
+                      <h4 className="font-display font-semibold text-[11px] uppercase tracking-[0.14em] text-gold mb-2">
+                        {group.title}
+                      </h4>
+                      <ul className="space-y-1.5">
+                        {group.items.map((item) => (
+                          <li key={item} className="flex gap-2.5 text-sm text-body leading-relaxed">
+                            <span aria-hidden="true" className="text-gold shrink-0 font-bold">+</span>
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                  <a
+                    href={routes.contact}
+                    className="block text-center border border-navy/20 text-navy font-semibold font-display text-sm rounded-xl px-5 py-3 hover:bg-light transition-colors"
+                  >
+                    Ask us to price your upgrades
+                  </a>
+                </div>
+              </section>
             </div>
           </div>
         </div>
@@ -583,7 +622,7 @@ export default function ProductPage({ home }: { home: Home }) {
           <p className="text-white/65 text-base mb-8">Tell us about your site, delivery area and any modifications you have in mind. We'll come back to you with a tailored quotation.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="/contact-us/" className="bg-gold text-navy font-bold font-display px-8 py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm">Request a Quote</a>
-            <a href="/houses-type/" className="border border-white/30 text-white font-semibold font-display px-8 py-3.5 rounded-xl hover:bg-white/10 transition-colors text-sm">Browse all homes</a>
+            <a href="/houses/" className="border border-white/30 text-white font-semibold font-display px-8 py-3.5 rounded-xl hover:bg-white/10 transition-colors text-sm">Browse all homes</a>
           </div>
         </div>
       </div>

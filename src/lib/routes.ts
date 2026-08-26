@@ -9,7 +9,7 @@
  */
 export const routes = {
   home: '/',
-  catalogue: '/houses-type/',
+  catalogue: '/houses/',
   installation: '/installation/',
   bespoke: '/customise-your-build/',
   gallery: '/gallery/',

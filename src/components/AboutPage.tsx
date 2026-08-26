@@ -99,7 +99,7 @@ export default function AboutPage() {
           <p className="text-white/65 mb-8">Tell us about your project and our team will help identify the most suitable next step.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="/contact-us/" className="bg-gold text-navy font-bold font-display px-8 py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm">Start Your Project</a>
-            <a href="/houses-type/" className="border border-white/30 text-white font-semibold font-display px-8 py-3.5 rounded-xl hover:bg-white/10 transition-colors text-sm">Browse our homes</a>
+            <a href="/houses/" className="border border-white/30 text-white font-semibold font-display px-8 py-3.5 rounded-xl hover:bg-white/10 transition-colors text-sm">Browse our homes</a>
           </div>
         </div>
       </section>

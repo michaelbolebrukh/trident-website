@@ -124,7 +124,7 @@ export default function HomePage() {
               to final installation.
             </p>
             <div className="flex flex-wrap gap-4">
-              <a href="/houses-type/"
+              <a href="/houses/"
                 className="bg-gold text-navy font-semibold font-display px-7 py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm">
                 Explore Our Homes
               </a>
@@ -361,7 +361,7 @@ export default function HomePage() {
                 Featured homes
               </h2>
             </div>
-            <a href="/houses-type/"
+            <a href="/houses/"
               className="shrink-0 text-sm font-semibold font-display text-navy border border-border rounded-xl px-5 py-2.5 hover:border-navy transition-colors">
               View all homes →
             </a>
