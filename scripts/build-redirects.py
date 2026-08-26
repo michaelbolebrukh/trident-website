@@ -41,6 +41,10 @@ PAGE_MAP = {
     '/installation/our-solution/': '/installation/',
     '/installation/permissions-for-modular-building/': '/faq/',
     '/installation/garden-office-with-electrics/': '/houses/garden-studio/',
+    # One cookie policy now covers both, since UK and EU rules are aligned on
+    # the point that matters here: consent before a non-essential cookie.
+    '/cookie-policy-uk/': '/cookie-policy/',
+    '/cookie-policy-eu/': '/cookie-policy/',
     '/category/': '/blog/',
     '/tag/': '/blog/',
     '/example-product-page/': '/houses/',
@@ -54,11 +58,7 @@ PAGE_MAP = {
 
 # Old paths deliberately left to 404: no page on the new site serves the same
 # purpose, and redirecting them somewhere unrelated would be worse than a 404.
-UNMAPPED_OK = {
-    '/terms-and-conditions/',
-    '/cookie-policy-uk/',
-    '/cookie-policy-eu/',
-}
+UNMAPPED_OK = set()
 
 # Old paths the new site serves at the identical URL, so no rule is needed and
 # no ranking is at risk.
@@ -72,6 +72,7 @@ UNCHANGED = {
     '/contact-us/',
     '/customise-your-build/',
     '/privacy-policy/',
+    '/terms-and-conditions/',
 }
 
 BLOCK_START = '# ─── Migration redirects (301) ───'

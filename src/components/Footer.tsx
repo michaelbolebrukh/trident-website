@@ -105,11 +105,11 @@ export default function Footer() {
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3" style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}>
           <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>© 2026 Trident Modular Housing Ltd. All rights reserved.</p>
           <div className="flex gap-5">
-            {/* Only pages that exist. Cookie Policy and Terms & Conditions
-                were rendered by a consent plugin on the old site, so there is
-                no copy to carry over; they linked to "#" here, which is worse
-                than not offering them. */}
-            {[{ label: 'Privacy Policy', href: '/privacy-policy/' }].map((l) => (
+            {[
+              { label: 'Privacy Policy', href: '/privacy-policy/' },
+              { label: 'Cookie Policy', href: '/cookie-policy/' },
+              { label: 'Terms & Conditions', href: '/terms-and-conditions/' },
+            ].map((l) => (
               <a key={l.href} href={l.href} className="text-xs hover:text-gold transition-colors" style={{ color: 'rgba(255,255,255,0.4)' }}>
                 {l.label}
               </a>

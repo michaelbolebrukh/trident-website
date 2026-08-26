@@ -89,6 +89,8 @@
   # Pages that moved or were folded into another page.
   RewriteRule ^category/?$ /blog/ [R=301,L]
   RewriteRule ^commercial/?$ /customise-your-build/#support [R=301,L]
+  RewriteRule ^cookie-policy-eu/?$ /cookie-policy/ [R=301,L]
+  RewriteRule ^cookie-policy-uk/?$ /cookie-policy/ [R=301,L]
   RewriteRule ^eco-modular-homes/?$ /customise-your-build/#sustainable [R=301,L]
   RewriteRule ^example-product-page/?$ /houses/ [R=301,L]
   RewriteRule ^gotovi-proyekty-karkasnyh-budynkiv/?$ /gallery/ [R=301,L]
