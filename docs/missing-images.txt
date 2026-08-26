@@ -1,40 +1,47 @@
-Images the site references but does not yet have a local copy of.
+Garden room photography still needed
+=====================================
 
-These lived only on tridentmodular.com, which now answers image requests
-with a bot-protection challenge. The .ua media library does not carry them.
-Until they are supplied, the site shows a placeholder.
+These are the only images the site is missing. Everything else is local.
+22 files in total.
 
-To add them: drop the files into public/images/library/ using the exact
-filename shown, then add the mapping to src/data/image-map.json.
+They live on tridentmodular.com and nowhere else -- the .ua library does
+not have them under any filename, and the Wayback Machine has no snapshot.
+SiteGround's bot protection blocks automated access to that host, so they
+have to come across by hand.
 
-Garden Base  (10 of 10)
-    2026/06/ext_1_color_1_s_.jpg   ->   public/images/library/2026-06-ext-1-color-1-s.webp
-    2026/06/ext_1_color_1_s_.jpg   ->   public/images/library/2026-06-ext-1-color-1-s.webp
-    2026/06/ext_1_color_1____balka.jpg   ->   public/images/library/2026-06-ext-1-color-1-balka.webp
-    2026/06/ext_2_color_1______balka.jpg   ->   public/images/library/2026-06-ext-2-color-1-balka.webp
-    2026/06/ext_2_color_3_woodfront_s_.jpg   ->   public/images/library/2026-06-ext-2-color-3-woodfront-s.webp
-    2026/06/ext_2_color_3_s_.jpg   ->   public/images/library/2026-06-ext-2-color-3-s.webp
-    2026/06/ext_2_color_2_woodfront_s_.jpg   ->   public/images/library/2026-06-ext-2-color-2-woodfront-s.webp
-    2026/06/ext_2_color_2_s.jpg   ->   public/images/library/2026-06-ext-2-color-2-s.webp
-    2026/06/ext_2_color_1_woodfront_s_.jpg   ->   public/images/library/2026-06-ext-2-color-1-woodfront-s.webp
-    2026/06/ext_2_color_1_s_.jpg   ->   public/images/library/2026-06-ext-2-color-1-s.webp
+WHERE THEY ARE
+  SiteGround Site Tools -> File Manager
+  public_html/wp-content/uploads/2026/06/
 
-Garden Premium  (14 of 14)
-    2026/06/premium_4500_v2__s.jpg   ->   public/images/library/2026-06-premium-4500-v2-s.webp
-    2026/06/premium_4500_v2__s.jpg   ->   public/images/library/2026-06-premium-4500-v2-s.webp
-    2026/06/premium_4500_v1_s.jpg   ->   public/images/library/2026-06-premium-4500-v1-s.webp
-    2026/06/ext_2_color_3_woodfront_s.jpg   ->   public/images/library/2026-06-ext-2-color-3-woodfront-s.webp
-    2026/06/ext_2_color_3_s.jpg   ->   public/images/library/2026-06-ext-2-color-3-s.webp
-    2026/06/ext_2_color_2_woodfront_s.jpg   ->   public/images/library/2026-06-ext-2-color-2-woodfront-s.webp
-    2026/06/ext_2_color_2_s-1.jpg   ->   public/images/library/2026-06-ext-2-color-2-s-1.webp
-    2026/06/ext_2_color_1_woodfront_s.jpg   ->   public/images/library/2026-06-ext-2-color-1-woodfront-s.webp
-    2026/06/ext_1_color_3_woodfront_s-1.jpg   ->   public/images/library/2026-06-ext-1-color-3-woodfront-s-1.webp
-    2026/06/ext_1_color_3_s-1.jpg   ->   public/images/library/2026-06-ext-1-color-3-s-1.webp
-    2026/06/ext_1_color_2_woodfront_s.jpg   ->   public/images/library/2026-06-ext-1-color-2-woodfront-s.webp
-    2026/06/ext_1_color_2_s.jpg   ->   public/images/library/2026-06-ext-1-color-2-s.webp
-    2026/06/ext_1_color_1_woodfront_s-1.jpg   ->   public/images/library/2026-06-ext-1-color-1-woodfront-s-1.webp
-    2026/06/premium_4500_v1_____balka.jpg   ->   public/images/library/2026-06-premium-4500-v1-balka.webp
+  Select the files below, download as a zip, and either drop it in the
+  'Trident New Website' Drive folder or drag it into the GitHub repo.
 
-Blog imagery (58 files)
-    All 24 featured images and 34 in-article images were unavailable.
-    Posts currently render without illustration.
+  Faster alternative: turn off bot protection in Site Tools -> Security
+  for ten minutes and tell me -- I will pull all of them automatically.
+
+Garden Base  (9 files)
+    ext_1_color_1____balka.jpg
+    ext_1_color_1_s_.jpg
+    ext_2_color_1______balka.jpg
+    ext_2_color_1_s_.jpg
+    ext_2_color_1_woodfront_s_.jpg
+    ext_2_color_2_s.jpg
+    ext_2_color_2_woodfront_s_.jpg
+    ext_2_color_3_s_.jpg
+    ext_2_color_3_woodfront_s_.jpg
+
+Garden Premium  (13 files)
+    ext_1_color_1_woodfront_s-1.jpg
+    ext_1_color_2_s.jpg
+    ext_1_color_2_woodfront_s.jpg
+    ext_1_color_3_s-1.jpg
+    ext_1_color_3_woodfront_s-1.jpg
+    ext_2_color_1_woodfront_s.jpg
+    ext_2_color_2_s-1.jpg
+    ext_2_color_2_woodfront_s.jpg
+    ext_2_color_3_s.jpg
+    ext_2_color_3_woodfront_s.jpg
+    premium_4500_v1_____balka.jpg
+    premium_4500_v1_s.jpg
+    premium_4500_v2__s.jpg
+
