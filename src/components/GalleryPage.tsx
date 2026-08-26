@@ -1,25 +1,14 @@
 import { useState } from 'react'
-import { media } from '../data/media'
+import { projects, allPhotos } from '../data/projects'
 
-const IMGS = [
-  { src: media.heroExterior, label: 'Modern Loft', type: 'Residential Homes', location: 'Shropshire' },
-  { src: media.gardenRoom, label: 'Garden Premium Studio', type: 'Garden Rooms', location: 'Cheshire' },
-  { src: media.interiorLiving, label: 'Open Plan Living', type: 'Interiors', location: '' },
-  { src: media.chaletExterior, label: 'Frame House, Garden Level', type: 'Residential Homes', location: 'Worcestershire' },
-  { src: media.residenceExterior, label: 'Timber Cladding Detail', type: 'Bespoke Features', location: '' },
-  { src: media.interiorKitchen, label: 'Contemporary Interior', type: 'Interiors', location: '' },
-  { src: media.siteAerial, label: 'Aerial View, Plot', type: 'Installation', location: 'Herefordshire' },
-  { src: media.commercial, label: 'Gothic 1.5 Storey', type: 'Residential Homes', location: 'Staffordshire' },
-  { src: media.interiorBedroom, label: 'Hallway & Stair', type: 'Interiors', location: '' },
-]
-
-const filterOptions = ['All', 'Garden Rooms', 'Residential Homes', 'Interiors', 'Commercial', 'Installation', 'Bespoke Features']
+/** "All" plus one entry per project, so the filter reads as places built. */
+const filterOptions = ['All', ...projects.map((p) => p.name)]
 
 export default function GalleryPage() {
   const [activeFilter, setActiveFilter] = useState('All')
   const [lightbox, setLightbox] = useState<number | null>(null)
 
-  const filtered = IMGS.filter((i) => activeFilter === 'All' || i.type === activeFilter)
+  const filtered = allPhotos.filter((i) => activeFilter === 'All' || i.project === activeFilter)
 
   const goTo = (dir: -1 | 1) => {
     if (lightbox === null) return
@@ -35,11 +24,45 @@ export default function GalleryPage() {
         <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
           <p className="text-xs font-semibold font-display uppercase tracking-[0.2em] text-gold mb-3">Projects</p>
           <h1 className="font-display font-bold text-navy text-4xl lg:text-5xl">Project gallery</h1>
-          <p className="text-muted text-base mt-3 max-w-xl">Completed homes, garden rooms, interiors and commercial spaces from across the Trident Modular range.</p>
+          <p className="text-muted text-base mt-3 max-w-xl">Buildings we have delivered across London and the South East, photographed from the frame going up through to the finished room.</p>
         </div>
       </div>
 
-      <div className="max-w-[1280px] mx-auto px-6 lg:px-8 py-10">
+      {/* The projects themselves, before the wall of photographs. Clicking one
+          filters the grid below rather than opening a page of its own. */}
+      <div className="max-w-[1280px] mx-auto px-6 lg:px-8 pt-12">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {projects.map((p) => (
+            <button
+              key={p.slug}
+              onClick={() => {
+                setActiveFilter(p.name)
+                document.getElementById('photographs')?.scrollIntoView({ behavior: 'smooth' })
+              }}
+              className="text-left bg-white border border-border rounded-2xl overflow-hidden card-shadow hover:border-navy/30 transition-colors"
+            >
+              <img
+                src={p.cover}
+                alt={`${p.name} — ${p.location}`}
+                loading="lazy"
+                className="w-full h-48 object-cover"
+              />
+              <div className="p-6">
+                <h2 className="font-display font-bold text-navy text-lg">{p.name}</h2>
+                <p className="text-xs font-semibold font-display uppercase tracking-[0.14em] text-gold mt-1 mb-3">
+                  {p.location}
+                </p>
+                <p className="text-sm text-muted leading-relaxed">{p.blurb}</p>
+                <p className="text-xs text-muted mt-4">
+                  {p.photos.length} photograph{p.photos.length === 1 ? '' : 's'}
+                </p>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div id="photographs" className="max-w-[1280px] mx-auto px-6 lg:px-8 py-10 scroll-mt-20">
         {/* Filters */}
         <div className="flex gap-2 flex-wrap mb-8">
           {filterOptions.map((f) => (
@@ -63,16 +86,14 @@ export default function GalleryPage() {
             >
               <img
                 src={img.src}
-                alt={img.label}
+                alt={`${img.project} — ${img.location}`}
+                loading="lazy"
                 className="w-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-navy/75 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                <p className="text-white font-semibold font-display text-sm">{img.label}</p>
-                <div className="flex items-center gap-2 mt-0.5">
-                  <span className="text-white/60 text-xs">{img.type}</span>
-                  {img.location && <><span className="text-white/40 text-xs">·</span><span className="text-white/60 text-xs">{img.location}</span></>}
-                </div>
+                <p className="text-white font-semibold font-display text-sm">{img.project}</p>
+                <p className="text-white/60 text-xs mt-0.5">{img.location}</p>
               </div>
             </button>
           ))}
@@ -115,10 +136,10 @@ export default function GalleryPage() {
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
           </button>
           <div className="flex flex-col items-center max-w-4xl w-full" onClick={(e) => e.stopPropagation()}>
-            <img src={filtered[lightbox].src} alt={filtered[lightbox].label} className="max-h-[75vh] w-auto rounded-xl object-contain" />
+            <img src={filtered[lightbox].src} alt={`${filtered[lightbox].project} — ${filtered[lightbox].location}`} className="max-h-[75vh] w-auto rounded-xl object-contain" />
             <div className="mt-4 text-center">
-              <p className="text-white font-semibold font-display">{filtered[lightbox].label}</p>
-              <p className="text-white/60 text-sm mt-0.5">{filtered[lightbox].type}{filtered[lightbox].location ? ` · ${filtered[lightbox].location}` : ''}</p>
+              <p className="text-white font-semibold font-display">{filtered[lightbox].project}</p>
+              <p className="text-white/60 text-sm mt-0.5">{filtered[lightbox].location}</p>
             </div>
           </div>
           <button className="absolute top-4 right-4 text-white/70 hover:text-white w-10 h-10 flex items-center justify-center" onClick={() => setLightbox(null)}>

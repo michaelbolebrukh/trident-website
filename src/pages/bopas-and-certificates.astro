@@ -1,19 +1,166 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
-import WpPageBody from '../components/WpPageBody.astro'
-import pages from '../data/pages.json'
-
-const page = pages.find((p) => p.slug === 'bopas-and-certificates')!
+import { intro, explainers, credentials, materials } from '../data/accreditation'
+import { factoryPhoto } from '../data/build-ups'
+import { routes } from '../lib/routes'
 ---
 
 <BaseLayout
   title="BOPAS and Certificates | Trident Modular"
   description="Trident Modular is BOPAS accredited and ISO 9001:2015 certified, with a 60-year durability assessment — the assurances lenders and warranty providers look for."
 >
-  <WpPageBody
-    eyebrow="Accreditation"
-    title="BOPAS and certificates"
-    intro="BOPAS accreditation and ISO 9001:2015 certification, with a 60-year durability assessment. These are the assurances lenders, insurers and warranty providers ask for on a modular build."
-    html={page.html}
-  />
+  <div class="bg-white">
+    {/* Hero */}
+    <section class="bg-navy text-white">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8 py-16 lg:py-24 grid lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <p class="text-xs font-semibold font-display uppercase tracking-[0.2em] text-gold mb-4">
+            Accreditation
+          </p>
+          <h1 class="font-display font-bold text-4xl lg:text-5xl leading-tight mb-5">
+            Accredited, so your home is mortgageable.
+          </h1>
+          <p class="text-base leading-relaxed" style="color: rgba(255,255,255,0.75)">
+            {intro}
+          </p>
+          <div class="flex flex-col sm:flex-row gap-3 mt-8">
+            <a
+              href={routes.catalogue}
+              class="block text-center bg-gold text-navy font-bold font-display px-8 py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm"
+            >
+              Browse our homes
+            </a>
+            <a
+              href={routes.technology}
+              class="block text-center border border-white/30 text-white font-semibold font-display px-8 py-3.5 rounded-xl hover:bg-white/10 transition-colors text-sm"
+            >
+              How we build
+            </a>
+          </div>
+        </div>
+        <div class="rounded-2xl overflow-hidden h-72 lg:h-[420px] bg-navy-mid">
+          <img
+            src="/images/projects/chiswick-01.webp"
+            alt="A completed Trident building in Chiswick, London"
+            width="1600"
+            height="1067"
+            class="w-full h-full object-cover"
+          />
+        </div>
+      </div>
+    </section>
+
+    {/* Credentials strip */}
+    <section class="border-b border-border bg-light">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8 py-8 grid grid-cols-2 lg:grid-cols-4 gap-6">
+        {credentials.map((c) => (
+          <div>
+            <p class="font-display font-bold text-navy text-xl">{c.label}</p>
+            <p class="text-xs text-muted mt-1">{c.detail}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    {/* What BOPAS is */}
+    <section class="py-20 lg:py-24">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <div class="max-w-2xl mb-12">
+          <p class="text-xs font-semibold font-display uppercase tracking-[0.2em] text-gold mb-3">
+            The scheme
+          </p>
+          <h2 class="font-display font-bold text-navy text-3xl lg:text-4xl mb-4">
+            Independent assurance, not a self-declaration
+          </h2>
+          <p class="text-muted text-base leading-relaxed">
+            Accreditation covers the manufacturer and the building system together, and is held
+            through continuous evaluation rather than granted once.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6">
+          {explainers.map((c) => (
+            <div class="bg-white border border-border rounded-2xl p-7 card-shadow">
+              <h3 class="font-display font-bold text-navy text-lg mb-3">{c.title}</h3>
+              <p class="text-sm text-muted leading-relaxed">{c.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* Materials */}
+    <section class="bg-light border-t border-border py-20 lg:py-24">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8 grid lg:grid-cols-[minmax(0,1fr)_420px] gap-12 lg:gap-16 items-start">
+        <div>
+          <p class="text-xs font-semibold font-display uppercase tracking-[0.2em] text-gold mb-3">
+            Materials
+          </p>
+          <h2 class="font-display font-bold text-navy text-3xl lg:text-4xl mb-4">
+            What the accreditation rests on
+          </h2>
+          <p class="text-muted text-base leading-relaxed mb-8 max-w-xl">
+            An assessment of durability is an assessment of what a building is made from. These are
+            the materials specified in every Trident build-up.
+          </p>
+
+          <div class="grid sm:grid-cols-2 gap-5">
+            {materials.map((m) => (
+              <div class="bg-white border border-border rounded-2xl p-6">
+                <h3 class="font-display font-bold text-navy text-base mb-2">{m.title}</h3>
+                <p class="text-sm text-muted leading-relaxed">{m.body}</p>
+              </div>
+            ))}
+          </div>
+
+          <a
+            href={routes.technology}
+            class="inline-block mt-8 font-display font-bold text-navy text-sm border-b-2 border-gold pb-0.5 hover:text-gold transition-colors"
+          >
+            See the full layer schedules
+          </a>
+        </div>
+
+        <figure class="m-0 rounded-2xl overflow-hidden bg-white border border-border">
+          <img
+            src={factoryPhoto}
+            alt="Trident wall panels being assembled on the factory floor"
+            loading="lazy"
+            width="1200"
+            height="904"
+            class="w-full h-64 lg:h-80 object-cover"
+          />
+          <figcaption class="text-xs text-muted px-5 py-4">
+            Quality control happens on the production line, under cover, where it can be checked —
+            not on a wet site.
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    {/* CTA */}
+    <section class="bg-navy text-white py-16 lg:py-20">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8 text-center">
+        <h2 class="font-display font-bold text-3xl mb-3">Need our certificates for a lender?</h2>
+        <p class="text-base mb-8 max-w-xl mx-auto" style="color: rgba(255,255,255,0.7)">
+          We can send the BOPAS accreditation and ISO certification straight across, along with the
+          technical documentation a valuer or warranty provider will ask for.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+          <a
+            href={routes.contact}
+            class="block text-center bg-gold text-navy font-bold font-display px-8 py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm"
+          >
+            Request our certificates
+          </a>
+          <a
+            href={routes.faq}
+            class="block text-center border border-white/30 text-white font-semibold font-display px-8 py-3.5 rounded-xl hover:bg-white/10 transition-colors text-sm"
+          >
+            Common questions
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
 </BaseLayout>

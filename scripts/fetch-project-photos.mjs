@@ -56,7 +56,7 @@ const FILES = [
 
   ['kensington', 'kensington-01', '1YJ4ugQcXKFOcDnXjEmMc8UkuzoTh6KQn'],
   ['kensington', 'kensington-02', '1dIzTuvDNmX_q91ulMLVmZFdJ6YlB0bAM'],
-  ['kensington', 'kensington-06', '1DUtFgABd2N4XCXwtw8CHkFaNEaW08-RA'],
+  ['kensington', 'kensington-03', '1DUtFgABd2N4XCXwtw8CHkFaNEaW08-RA'],
 
   ['kent', 'kent-01', '1743L9j2ZtKEbbUH6jJ0Ouyx8kQQN0RYN'],
   ['kent', 'kent-02', '1d6pnzgv4vsc4_pRBwcyPX_IMVBWXYy3G'],
