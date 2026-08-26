@@ -1,58 +1,28 @@
-Garden room photography still needed
-=====================================
+Images still needed
+===================
 
-These are the only images the site is missing. Everything else is local.
-22 files in total.
+Every model image now resolves locally. What remains is the blog.
 
-They live on tridentmodular.com and nowhere else -- the .ua library does
-not have them under any filename, and the Wayback Machine has no snapshot.
-SiteGround's bot protection blocks automated access to that host, so they
-have to come across by hand.
+BLOG FEATURED IMAGES  (24 of 24 posts)
 
-WHERE THEY ARE
+  Every post's featured image was hotlinked from tridentmodular.com, which
+  now answers image requests with a bot-protection challenge, so none of
+  them came across. The posts render without one rather than showing a
+  placeholder, but a blog with no imagery is a weak page.
 
-  Easiest: the renders are already in Drive, in
-    "Візуалізації AI++" > "Garden house Base" / "Garden house Premium"
-    https://drive.google.com/drive/folders/1GkOFVRIRo4ySfsj7X4-qZVtoFxMYAD9z
+  The images are at:
+    SiteGround Site Tools -> File Manager
+    public_html/wp-content/uploads/
 
-  That folder belongs to a colleague and is not link-shared, so Drive
-  answers automated requests with a sign-in page. Set it to
-  "anyone with the link" and scripts/fetch-garden-renders.mjs pulls the
-  eight-per-model selection in one go.
+  Spread across month folders rather than one place, so the simplest fix by
+  far is to turn off bot protection in Site Tools -> Security for ten
+  minutes and say so — scripts/fetch-images.mjs then pulls every one
+  automatically, using the paths already recorded in src/data/posts.json.
 
-  Or, from the old site:
-  SiteGround Site Tools -> File Manager
-  public_html/wp-content/uploads/2026/06/
+  Failing that, a zip of wp-content/uploads/ dropped into Drive or the repo
+  works just as well.
 
-  Select the files below, download as a zip, and either drop it in the
-  'Trident New Website' Drive folder or drag it into the GitHub repo.
 
-  Faster alternative: turn off bot protection in Site Tools -> Security
-  for ten minutes and tell me -- I will pull all of them automatically.
-
-Garden Base  (9 files)
-    ext_1_color_1____balka.jpg
-    ext_1_color_1_s_.jpg
-    ext_2_color_1______balka.jpg
-    ext_2_color_1_s_.jpg
-    ext_2_color_1_woodfront_s_.jpg
-    ext_2_color_2_s.jpg
-    ext_2_color_2_woodfront_s_.jpg
-    ext_2_color_3_s_.jpg
-    ext_2_color_3_woodfront_s_.jpg
-
-Garden Premium  (13 files)
-    ext_1_color_1_woodfront_s-1.jpg
-    ext_1_color_2_s.jpg
-    ext_1_color_2_woodfront_s.jpg
-    ext_1_color_3_s-1.jpg
-    ext_1_color_3_woodfront_s-1.jpg
-    ext_2_color_1_woodfront_s.jpg
-    ext_2_color_2_s-1.jpg
-    ext_2_color_2_woodfront_s.jpg
-    ext_2_color_3_s.jpg
-    ext_2_color_3_woodfront_s.jpg
-    premium_4500_v1_____balka.jpg
-    premium_4500_v1_s.jpg
-    premium_4500_v2__s.jpg
-
+RESOLVED
+  Garden Base and Garden Premium renders — supplied from Drive.
+  See docs/garden-renders.md for where they came from.

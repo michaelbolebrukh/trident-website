@@ -48,6 +48,47 @@ export const overrides: Record<string, HomeOverride> = {
     desc: 'The Mediterranean Double House is equally suitable for either rental businesses or your own comfort. It features two bathrooms, two living rooms and three bedrooms, making it a great space for families and social gatherings.',
   },
 
+
+  // ─── Garden room photography ──────────────────────────────────────────
+  // The renders the export points at are UK-only: they exist on
+  // tridentmodular.com and nowhere else, and that host answers image requests
+  // with a bot-protection challenge. Trident supplied the originals from
+  // Drive instead.
+  //
+  // Eight per model, chosen to show the same shell in different uses — a
+  // garden office, a gym, a cinema, a studio — rather than eight near
+  // identical exteriors in slightly different finishes, which is what the
+  // export's ext_1/ext_2 colour variants amounted to.
+  //
+  // These are site-absolute paths rather than export paths, so they bypass
+  // image-map.json; see houseImage in homes.ts.
+  'base-model': {
+    thumb: '/images/library/garden-base-01.webp',
+    gallery: [
+      '/images/library/garden-base-01.webp',
+      '/images/library/garden-base-02.webp',
+      '/images/library/garden-base-03.webp',
+      '/images/library/garden-base-04.webp',
+      '/images/library/garden-base-05.webp',
+      '/images/library/garden-base-06.webp',
+      '/images/library/garden-base-07.webp',
+      '/images/library/garden-base-08.webp',
+    ],
+  },
+  'premium-model': {
+    thumb: '/images/library/garden-premium-01.webp',
+    gallery: [
+      '/images/library/garden-premium-01.webp',
+      '/images/library/garden-premium-02.webp',
+      '/images/library/garden-premium-03.webp',
+      '/images/library/garden-premium-04.webp',
+      '/images/library/garden-premium-05.webp',
+      '/images/library/garden-premium-06.webp',
+      '/images/library/garden-premium-07.webp',
+      '/images/library/garden-premium-08.webp',
+    ],
+  },
+
   // ─── Naming ───────────────────────────────────────────────────────────
   // The customer team's review corrected the capitalisation and accents here
   // ("Garden studio" -> "Garden Studio", "Cafe" -> "Café", "A-frame" ->

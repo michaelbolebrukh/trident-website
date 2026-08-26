@@ -28,31 +28,15 @@ export const IMAGE_PLACEHOLDER = '/images/placeholder.svg'
  */
 export const houseImage = (path: string | null | undefined): string => {
   if (!path) return IMAGE_PLACEHOLDER
-  // Already a site-absolute path: a fallback below has resolved it for us.
+  // Already a site-absolute path: an override in overrides.ts points straight
+  // at a file we hold, rather than at a path from the WordPress export.
   if (path.startsWith('/')) return path
   return (imageMap as Record<string, string>)[path] || IMAGE_PLACEHOLDER
 }
 
-/** True when a stored path has a local file behind it. */
+/** True when a path has a local file behind it, however it is written. */
 const resolves = (path: string | null | undefined): boolean =>
-  Boolean(path && (imageMap as Record<string, string>)[path])
-
-/**
- * Stand-in photography for models whose originals we cannot reach.
- *
- * The Garden Base and Garden Premium renders are UK-only, so they exist on
- * tridentmodular.com and nowhere else — and that host now answers image
- * requests with a bot-protection challenge. These two are lifted from the
- * product catalogue instead, which carries one clean render of each.
- *
- * They are a stopgap. The colour and cladding variants the galleries were
- * built around (ext_1/ext_2 in three colours, with and without the wood
- * front) are not in the catalogue and still need supplying.
- */
-const FALLBACK_THUMB: Record<string, string> = {
-  'base-model': '/images/library/garden-base-exterior.webp',
-  'premium-model': '/images/library/garden-premium-exterior.webp',
-}
+  Boolean(path && (path.startsWith('/') || (imageMap as Record<string, string>)[path]))
 
 /**
  * Bedroom and bathroom counts come from the catalogue's room schedules where
@@ -64,15 +48,12 @@ export const allHomes: Home[] = generatedHomes.map((home) => {
   const spec = specFor(merged.slug)
 
   // Drop gallery entries with no local file rather than tiling the strip with
-  // placeholders, and fall back to catalogue photography for the thumbnail.
+  // placeholders.
   const gallery = merged.gallery.filter(resolves)
-  const fallback = FALLBACK_THUMB[merged.slug]
-  const thumb = resolves(merged.thumb) ? merged.thumb : (fallback ?? merged.thumb)
 
   return {
     ...merged,
-    thumb,
-    gallery: gallery.length || !fallback ? gallery : [fallback],
+    gallery,
     bedrooms: spec?.bedrooms || merged.bedrooms,
     bathrooms: spec?.bathrooms || merged.bathrooms,
   }
