@@ -1,14 +1,17 @@
 ---
+import { seoFor } from '../data/seo'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import { intro, principles, stages, accreditations } from '../data/technology'
 import { factoryPhoto, systemPhoto } from '../data/build-ups'
 import BuildUps from '../components/BuildUps'
 import { routes } from '../lib/routes'
+
+const meta = seoFor('/technology/', 'Our Technology', 'A closed-panel timber frame system built to ISO 9001:2015, using C24 structural timber and non-combustible basalt wool insulation, with quality control in the factory rather than on site.')
 ---
 
 <BaseLayout
-  title="Our Technology | Trident Modular"
-  description="A closed-panel timber frame system built to ISO 9001:2015, using C24 structural timber and non-combustible basalt wool insulation, with quality control in the factory rather than on site."
+  title={meta.title}
+  description={meta.description}
 >
   <div class="bg-white">
     {/* Hero */}

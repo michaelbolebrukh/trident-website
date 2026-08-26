@@ -1,4 +1,5 @@
 ---
+import { seoFor } from '../../data/seo'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import ProductPage from '../../components/ProductPage'
 import { allHomes } from '../../data/homes'
@@ -26,11 +27,15 @@ const areaText = areas.length
 const description =
   `${detail?.tagline ?? home.desc} ${areaText} internal floor area. ` +
   'Available as a kit, weathertight shell or fully finished turnkey build.'
+
+// Title and description follow what tridentmodular.com served for this
+// URL; see src/data/seo.ts.
+const meta = seoFor(`/houses/${home.slug}/`, home.name, description)
 ---
 
 <BaseLayout
-  title={`${home.name} — ${home.category} | Trident Modular`}
-  description={description}
+  title={meta.title}
+  description={meta.description}
 >
   <ProductPage home={home} client:load />
 </BaseLayout>

@@ -1,11 +1,14 @@
 ---
+import { seoFor } from '../../data/seo'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import CataloguePage from '../../components/CataloguePage'
+
+const meta = seoFor('/houses/', 'Our Homes', 'Browse the full Trident range of garden rooms, bungalows, 1.5 storey and 2 storey modular homes. Filter by floor area, bedrooms and specification.')
 ---
 
 <BaseLayout
-  title="Our Homes | Trident Modular"
-  description="Browse the full Trident range of garden rooms, bungalows, 1.5 storey and 2 storey modular homes. Filter by floor area, bedrooms and specification."
+  title={meta.title}
+  description={meta.description}
 >
   <CataloguePage client:load />
 </BaseLayout>

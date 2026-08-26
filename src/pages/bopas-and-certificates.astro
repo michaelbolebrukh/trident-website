@@ -1,13 +1,16 @@
 ---
+import { seoFor } from '../data/seo'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import { intro, explainers, credentials, materials } from '../data/accreditation'
 import { factoryPhoto } from '../data/build-ups'
 import { routes } from '../lib/routes'
+
+const meta = seoFor('/bopas-and-certificates/', 'BOPAS and Certificates', 'Trident Modular is BOPAS accredited and ISO 9001:2015 certified, with a 60-year durability assessment — the assurances lenders and warranty providers look for.')
 ---
 
 <BaseLayout
-  title="BOPAS and Certificates | Trident Modular"
-  description="Trident Modular is BOPAS accredited and ISO 9001:2015 certified, with a 60-year durability assessment — the assurances lenders and warranty providers look for."
+  title={meta.title}
+  description={meta.description}
 >
   <div class="bg-white">
     {/* Hero */}

@@ -1,11 +1,14 @@
 ---
+import { seoFor } from '../data/seo'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import ContactPage from '../components/ContactPage'
+
+const meta = seoFor('/contact-us/', 'Contact Us', 'Tell us about your project and the Trident team will help identify the most suitable next step. Request a quotation or arrange a call.')
 ---
 
 <BaseLayout
-  title="Contact Us | Trident Modular"
-  description="Tell us about your project and the Trident team will help identify the most suitable next step. Request a quotation or arrange a call."
+  title={meta.title}
+  description={meta.description}
 >
   <ContactPage client:load />
 </BaseLayout>

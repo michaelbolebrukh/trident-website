@@ -1,11 +1,14 @@
 ---
+import { seoFor } from '../data/seo'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import BespokePage from '../components/BespokePage'
+
+const meta = seoFor('/customise-your-build/', 'Bespoke & Commercial Buildings', 'Bespoke modular design for homes, workspaces and commercial buildings. Tell us the site and the brief and our team will develop a tailored solution.')
 ---
 
 <BaseLayout
-  title="Bespoke & Commercial Buildings | Trident Modular"
-  description="Bespoke modular design for homes, workspaces and commercial buildings. Tell us the site and the brief and our team will develop a tailored solution."
+  title={meta.title}
+  description={meta.description}
 >
   <BespokePage />
 </BaseLayout>
