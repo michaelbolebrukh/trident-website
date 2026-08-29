@@ -6,7 +6,7 @@
  * Everything here is a real installation, and the only claim made about each
  * is where it is, which the source folders record.
  *
- * The Chiswick set is by Juliet Murphy Photography; the rest are Trident's own
+ * The Chiswick and Cambridge sets are by Juliet Murphy Photography; the rest are Trident's own
  * site records, which is why they run from bare frames through to finished
  * gardens. That mix is worth keeping: it shows the process, not just the
  * result.
@@ -39,6 +39,15 @@ export const projects: Project[] = [
       'A garden room set against slatted screening at the end of a landscaped west London garden, with full-height glazing across the front and a flat roof kept low to respect the boundary.',
     photos: photos('chiswick', 16),
     cover: '/images/projects/chiswick-01.webp',
+  },
+  {
+    slug: 'cambridge',
+    name: 'Cambridge garden studio',
+    location: 'Cambridge',
+    blurb:
+      'A dark-timber studio set under a mature tree, with a roof-access ladder and a matching screened store beside it — photographed finished and in use as a home gym.',
+    photos: photos('cambridge', 5),
+    cover: '/images/projects/cambridge-04.webp',
   },
   {
     slug: 'philbeach-gardens',

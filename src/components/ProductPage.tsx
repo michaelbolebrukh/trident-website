@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { media } from '../data/media'
 import { allHomes, houseImage, type Home } from '../data/homes'
 import { productPath, routes } from '../lib/routes'
@@ -68,6 +68,39 @@ export default function ProductPage({ home }: { home: Home }) {
       value: detail ? `${detail.variants[0].dimensions} mm` : `${home.dimensions} m`,
     },
   ]
+
+  // The sections this model's page actually renders, in page order. The nav
+  // is built from this rather than a fixed list, since pricing, sizes, plans
+  // and the room schedule are all conditional.
+  const sections = [
+    { id: 'overview', label: 'Overview' },
+    ...(pricing ? [{ id: 'pricing', label: 'Pricing' }] : []),
+    ...(detail ? [{ id: 'sizes', label: 'Sizes' }] : []),
+    ...(plans.length > 0 ? [{ id: 'floor-plans', label: 'Floor plans' }] : []),
+    ...(spec && spec.rooms.length > 1 ? [{ id: 'accommodation', label: 'Accommodation' }] : []),
+    { id: 'features', label: 'Extras' },
+    { id: 'completion', label: 'Completion' },
+    { id: 'specifications', label: 'Specifications' },
+  ]
+  const [activeSection, setActiveSection] = useState('overview')
+
+  useEffect(() => {
+    // Highlight the section whose heading most recently crossed the upper
+    // third of the viewport — steadier than raw intersection for long pages.
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) setActiveSection(entry.target.id)
+        }
+      },
+      { rootMargin: '-30% 0px -60% 0px' },
+    )
+    for (const sec of sections) {
+      const el = document.getElementById(sec.id)
+      if (el) observer.observe(el)
+    }
+    return () => observer.disconnect()
+  }, [])
 
   const [activeImage, setActiveImage] = useState(0)
   const [activeSpec, setActiveSpec] = useState<string | null>(null)
@@ -188,8 +221,33 @@ export default function ProductPage({ home }: { home: Home }) {
         </div>
       </div>
 
+      {/* ─── Section navigation ───
+          Sticks under the site header and follows the reader down the page.
+          Only sections this model actually has appear, and the one in view is
+          highlighted; see the IntersectionObserver above. */}
+      <nav
+        aria-label="Page sections"
+        className="sticky top-16 z-40 bg-white border-t border-b border-border"
+      >
+        <div className="max-w-[1280px] mx-auto px-6 lg:px-8 flex gap-1 overflow-x-auto">
+          {sections.map((sec) => (
+            <a
+              key={sec.id}
+              href={`#${sec.id}`}
+              className={`shrink-0 px-4 py-3.5 text-sm font-semibold font-display border-b-2 -mb-px transition-colors ${
+                activeSection === sec.id
+                  ? 'border-gold text-navy'
+                  : 'border-transparent text-muted hover:text-navy'
+              }`}
+            >
+              {sec.label}
+            </a>
+          ))}
+        </div>
+      </nav>
+
       {/* ─── A: Overview ─── */}
-      <div className="border-t border-border py-14">
+      <div id="overview" className="scroll-mt-32 border-t border-border py-14">
         <div className="max-w-[1280px] mx-auto px-6 lg:px-8 max-w-3xl">
           <h2 className="font-display font-bold text-navy text-2xl mb-4">Overview</h2>
           <p className="text-body text-base leading-relaxed mb-3">
@@ -203,7 +261,7 @@ export default function ProductPage({ home }: { home: Home }) {
 
       {/* ─── C5: The three packages ─── */}
       {pricing && (
-        <div className="border-t border-border bg-light py-14">
+        <div id="pricing" className="scroll-mt-32 border-t border-border bg-light py-14">
           <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
             <h2 className="font-display font-bold text-navy text-2xl mb-2">Three ways to buy</h2>
             <p className="text-muted text-sm mb-8 max-w-2xl">
@@ -318,7 +376,7 @@ export default function ProductPage({ home }: { home: Home }) {
 
       {/* ─── C2: Sizes and packages (from the 2026 price guide) ─── */}
       {detail && (
-        <div className="border-t border-border bg-light py-14">
+        <div id="sizes" className="scroll-mt-32 border-t border-border bg-light py-14">
           <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
             <h2 className="font-display font-bold text-navy text-2xl mb-2">Sizes and pricing</h2>
             <p className="text-muted text-sm mb-6">{detail.tagline}</p>
@@ -391,7 +449,7 @@ export default function ProductPage({ home }: { home: Home }) {
 
       {/* ─── C3: Floor plans and room schedule ─── */}
       {plans.length > 0 && (
-        <div className="border-t border-border py-14">
+        <div id="floor-plans" className="scroll-mt-32 border-t border-border py-14">
           <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
             <h2 className="font-display font-bold text-navy text-2xl mb-2">Floor plans</h2>
             <p className="text-muted text-sm mb-6">
@@ -421,7 +479,7 @@ export default function ProductPage({ home }: { home: Home }) {
 
       {/* ─── C4: Room schedule, from the catalogue ─── */}
       {spec && spec.rooms.length > 1 && (
-        <div className="border-t border-border py-14">
+        <div id="accommodation" className="scroll-mt-32 border-t border-border py-14">
           <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
             <h2 className="font-display font-bold text-navy text-2xl mb-2">Accommodation</h2>
             <p className="text-muted text-sm mb-6">
@@ -450,7 +508,7 @@ export default function ProductPage({ home }: { home: Home }) {
       )}
 
       {/* ─── B: Optional extras ─── */}
-      <div className="border-t border-border bg-light py-14">
+      <div id="features" className="scroll-mt-32 border-t border-border bg-light py-14">
         <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
           <h2 className="font-display font-bold text-navy text-2xl mb-2">Additional features</h2>
           <p className="text-muted text-sm mb-8 max-w-2xl">
@@ -477,7 +535,7 @@ export default function ProductPage({ home }: { home: Home }) {
       </div>
 
       {/* ─── D: Completion options ─── */}
-      <div className="border-t border-border py-14">
+      <div id="completion" className="scroll-mt-32 border-t border-border py-14">
         <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
           <h2 className="font-display font-bold text-navy text-2xl mb-2">Completion options</h2>
           <p className="text-muted text-sm mb-6">The {home.name} is available as a kit, shell or turnkey solution.</p>
@@ -561,7 +619,7 @@ export default function ProductPage({ home }: { home: Home }) {
       </div>
 
       {/* ─── F: Technical Specs accordion ─── */}
-      <div className="border-t border-border py-14">
+      <div id="specifications" className="scroll-mt-32 border-t border-border py-14">
         <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
           <h2 className="font-display font-bold text-navy text-2xl mb-6">Technical specifications</h2>
           <div className="max-w-2xl divide-y divide-border rounded-xl border border-border overflow-hidden">

@@ -84,7 +84,43 @@ export default function HomePage() {
     email: "",
     phone: "",
     message: "",
+    consent: false,
+    company: "", // honeypot, hidden from users, filled only by bots
   })
+  const [sending, setSending] = useState(false)
+  const [sent, setSent] = useState(false)
+  const [formError, setFormError] = useState("")
+
+  // Same endpoint and contract as the contact page; the server revalidates.
+  const submitEnquiry = async () => {
+    if (!form.name.trim() || !/\S+@\S+\.\S+/.test(form.email) || !form.phone.trim() || !form.projectType) {
+      setFormError("Please fill in project type, name, phone and a valid email.")
+      return
+    }
+    if (!form.consent) {
+      setFormError("Please confirm you have read the privacy policy.")
+      return
+    }
+    setSending(true)
+    setFormError("")
+    try {
+      const res = await fetch("/api/contact.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, page: window.location.pathname }),
+      })
+      const body = await res.json().catch(() => ({}))
+      if (!res.ok) {
+        setFormError(body.error ?? Object.values(body.errors ?? {})[0] as string ?? "Something went wrong. Please try again or call us.")
+        return
+      }
+      setSent(true)
+    } catch {
+      setFormError("We could not reach the server. Please check your connection or call us.")
+    } finally {
+      setSending(false)
+    }
+  }
 
   return (
     <div className="overflow-x-hidden">
@@ -137,6 +173,20 @@ export default function HomePage() {
 
           {/* Right: Enquiry card */}
           <div className="bg-white rounded-2xl p-7 shadow-2xl">
+            {sent ? (
+              <div className="text-center py-10">
+                <div className="w-14 h-14 rounded-full bg-gold/15 flex items-center justify-center mx-auto mb-4">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className="text-gold"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                </div>
+                <h3 className="font-display font-bold text-navy text-xl mb-2">
+                  Thank you{form.name ? `, ${form.name.split(" ")[0]}` : ""}.
+                </h3>
+                <p className="text-sm text-muted">
+                  We've received your enquiry and will be in touch within one working day.
+                </p>
+              </div>
+            ) : (
+            <>
             <h3 className="font-display font-bold text-navy text-lg mb-1">
               Tell us about your project
             </h3>
@@ -211,14 +261,45 @@ export default function HomePage() {
                 <textarea
                   rows={2}
                   placeholder="Tell us about your site or project idea…"
+                  value={form.message}
+                  onChange={(e) => setForm({ ...form, message: e.target.value })}
                   className="w-full border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold/40 focus:border-gold resize-none"
                 />
               </div>
-              <a href="/contact-us/"
-                className="block w-full text-center bg-navy text-white font-semibold font-display py-3.5 rounded-xl hover:bg-navy-mid transition-colors text-sm">
-                Request a Consultation
-              </a>
+              <input
+                type="text"
+                value={form.company}
+                onChange={(e) => setForm({ ...form, company: e.target.value })}
+                autoComplete="off"
+                tabIndex={-1}
+                aria-hidden="true"
+                className="hidden"
+              />
+              <label className="flex items-start gap-2.5 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={form.consent}
+                  onChange={(e) => setForm({ ...form, consent: e.target.checked })}
+                  className="mt-0.5 accent-[var(--color-gold)]"
+                />
+                <span className="text-xs text-muted leading-relaxed">
+                  I have read and agree to the <a href="/privacy-policy/" className="text-navy underline">Privacy Policy</a> and consent to being contacted about my enquiry.
+                </span>
+              </label>
+              {formError && (
+                <p className="text-xs text-red-600 leading-relaxed" role="alert">{formError}</p>
+              )}
+              <button
+                type="button"
+                onClick={submitEnquiry}
+                disabled={sending}
+                className="block w-full text-center bg-navy text-white font-semibold font-display py-3.5 rounded-xl hover:bg-navy-mid transition-colors text-sm disabled:opacity-60"
+              >
+                {sending ? "Sending…" : "Request a Consultation"}
+              </button>
             </div>
+            </>
+            )}
           </div>
         </div>
       </section>
