@@ -10,15 +10,21 @@ Similar technologies include tracking pixels, software development kits, and bro
 
 ## 2. Our Current Position
 
-**At present this website does not set any cookies.**
+This website uses one analytics service and nothing else. It runs no advertising pixels and no other third-party tracking scripts, and our own pages store nothing in your browser to identify you.
 
-The site is built as a set of static pages. It does not run analytics software, advertising pixels or third-party tracking scripts, and it does not store anything in your browser to identify you or follow you between visits.
+### Statcounter
 
-If that changes, we will update this policy and, where the law requires it, ask for your consent before any non-essential cookie is set.
+We use [Statcounter](https://statcounter.com/) to count visits and understand how the site is used — which pages are read, how visitors arrive, and where something is not working. We use it to improve the site, not to identify you personally.
+
+Statcounter sets a small number of first-party cookies (such as one that tells a first visit apart from a return visit) and records technical information including your IP address, browser and the pages you view. Statcounter's own handling of this data is described in the [Statcounter privacy policy](https://statcounter.com/about/legal/).
+
+You can opt out of Statcounter across all sites that use it at [statcounter.com/about/set-refusal-cookie/](https://statcounter.com/about/set-refusal-cookie/), or block its cookies in your browser — the site works fully without them.
+
+If we introduce anything further, we will update this policy and, where the law requires it, ask for your consent before any non-essential cookie is set.
 
 ## 3. Cookies We May Use in Future
 
-Our Privacy Policy sets out the categories of technology we may use as the website develops. Should we introduce them, they would fall into the following groups.
+Beyond Statcounter, our Privacy Policy sets out the categories of technology we may use as the website develops. They fall into the following groups.
 
 ### Strictly Necessary Cookies
 

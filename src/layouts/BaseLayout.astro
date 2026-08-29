@@ -62,5 +62,37 @@ const blockIndexing = noindex || import.meta.env.PUBLIC_NOINDEX === '1'
       {/* Shared lead-capture dialog for every catalogue download button. */}
       <CatalogueDownload client:idle />
     </div>
+
+    {/* Statcounter analytics (project 13352535, invisible mode). is:inline
+        keeps Astro from bundling it — the snippet must run as supplied.
+        It sets a first-party cookie for unique-visit counting, which the
+        cookie policy declares. */}
+    <script is:inline type="text/javascript">
+      var sc_project = 13352535;
+      var sc_invisible = 1;
+      var sc_security = "766af23f";
+    </script>
+    <script
+      is:inline
+      type="text/javascript"
+      src="https://www.statcounter.com/counter/counter.js"
+      async
+    ></script>
+    <noscript>
+      <div class="statcounter">
+        <a
+          title="Web Analytics Made Easy - Statcounter"
+          href="https://statcounter.com/"
+          target="_blank"
+        >
+          <img
+            class="statcounter"
+            src="https://c.statcounter.com/13352535/0/766af23f/1/"
+            alt="Web Analytics Made Easy - Statcounter"
+            referrerpolicy="no-referrer-when-downgrade"
+          />
+        </a>
+      </div>
+    </noscript>
   </body>
 </html>
