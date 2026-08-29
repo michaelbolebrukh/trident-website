@@ -1,28 +1,86 @@
 Images still needed
 ===================
 
-Every model image now resolves locally. What remains is the blog.
+Every model image resolves locally. What remains is the blog: 24 featured
+images, 34 inline images and one video, all of which lived only on the old
+SiteGround server.
 
-BLOG FEATURED IMAGES  (24 of 24 posts)
+WHY THEY ARE UNREACHABLE NOW
+  DNS for tridentmodular.com moved to Hostinger, so the old server can no
+  longer be reached by name, and it resets TLS when addressed by IP
+  (35.214.18.19). The .ua media library holds none of these 56 files.
 
-  Every post's featured image was hotlinked from tridentmodular.com, which
-  now answers image requests with a bot-protection challenge, so none of
-  them came across. The posts render without one rather than showing a
-  placeholder, but a blog with no imagery is a weak page.
+HOW TO RECOVER THEM
 
-  The images are at:
-    SiteGround Site Tools -> File Manager
-    public_html/wp-content/uploads/
+  Best: the SiteGround account still exists. Site Tools -> File Manager ->
+  public_html/wp-content/uploads/ — zip the folder and drop it in Drive or
+  the repo. Full quality, covers everything including the video.
 
-  Spread across month folders rather than one place, so the simplest fix by
-  far is to turn off bot protection in Site Tools -> Security for ten
-  minutes and say so — scripts/fetch-images.mjs then pulls every one
-  automatically, using the paths already recorded in src/data/posts.json.
+  Fallback: 27 of the 56 are in the Wayback Machine. This sandbox's network
+  policy blocks web.archive.org downloads, but a browser can fetch them —
+  the URLs below return the original file. Once the files are anywhere
+  reachable (Drive folder shared like the garden renders was), everything
+  wires itself in: the importer and templates already resolve any file that
+  appears in the image map.
 
-  Failing that, a zip of wp-content/uploads/ dropped into Drive or the repo
-  works just as well.
+ARCHIVED (fetchable in a browser)
+  http://web.archive.org/web/20251104025632id_/https://tridentmodular.com/wp-content/uploads/2023/02/label-image-1.jpg
+  http://web.archive.org/web/20251104025634id_/https://tridentmodular.com/wp-content/uploads/2023/03/01.jpg
+  http://web.archive.org/web/20251104025632id_/https://tridentmodular.com/wp-content/uploads/2023/03/1-9.jpg
+  http://web.archive.org/web/20251104025611id_/https://tridentmodular.com/wp-content/uploads/2023/03/3-7.jpg
+  http://web.archive.org/web/20250331162523id_/https://tridentmodular.com/wp-content/uploads/2023/03/Lake-house-floorplans-3d_Simon-1024x576.png
+  http://web.archive.org/web/20240517132953id_/https://tridentmodular.com/wp-content/uploads/2023/04/Basic-floorplans-_2_color_1_woodfront-1024x576.jpg
+  http://web.archive.org/web/20250331163003id_/https://tridentmodular.com/wp-content/uploads/2023/04/PHOTO-2023-05-16-16-46-01.jpg
+  http://web.archive.org/web/20251104025626id_/https://tridentmodular.com/wp-content/uploads/2023/04/ext_1_color_3_woodfront_s.jpg
+  http://web.archive.org/web/20250331163539id_/https://tridentmodular.com/wp-content/uploads/2023/04/scandinavian-bathroom-819x1024.jpg
+  http://web.archive.org/web/20251104025629id_/https://tridentmodular.com/wp-content/uploads/2023/06/Forest-house-floorplans-4.jpg
+  http://web.archive.org/web/20251104025631id_/https://tridentmodular.com/wp-content/uploads/2023/06/mediterranean-double-house-52.jpg
+  http://web.archive.org/web/20250815210045id_/https://tridentmodular.com/wp-content/uploads/2023/08/1_Interactive-LightMix-1024x576.jpg
+  http://web.archive.org/web/20251104025617id_/https://tridentmodular.com/wp-content/uploads/2023/11/%D0%91%D0%B5%D0%B7-%D0%B8%D0%BC%D0%B5%D0%BD%D0%B8-1-1024x576.jpg
+  http://web.archive.org/web/20251104025635id_/https://tridentmodular.com/wp-content/uploads/2023/11/345678.jpg
+  http://web.archive.org/web/20251104025633id_/https://tridentmodular.com/wp-content/uploads/2023/11/Wall-2.2.2.jpg
+  http://web.archive.org/web/20251104025622id_/https://tridentmodular.com/wp-content/uploads/2024/01/GA_03-1.jpg
+  http://web.archive.org/web/20251015084003id_/https://tridentmodular.com/wp-content/uploads/2024/06/F51_01-1024x576.jpg
+  http://web.archive.org/web/20241111090926id_/https://tridentmodular.com/wp-content/uploads/2024/06/F51_04-1024x576.jpg
+  http://web.archive.org/web/20251104025639id_/https://tridentmodular.com/wp-content/uploads/2024/06/F51_04.jpg
+  http://web.archive.org/web/20251104025616id_/https://tridentmodular.com/wp-content/uploads/2024/07/photo_2024-07-15_10-01-11.jpg
+  http://web.archive.org/web/20251206231817id_/https://tridentmodular.com/wp-content/uploads/2024/07/photo_2024-07-15_10-14-02.jpg
+  http://web.archive.org/web/20250331164014id_/https://tridentmodular.com/wp-content/uploads/2024/11/Nightingale-Banner-1024x320.png
+  http://web.archive.org/web/20251104025636id_/https://tridentmodular.com/wp-content/uploads/2025/03/image.png
+  http://web.archive.org/web/20251104025613id_/https://tridentmodular.com/wp-content/uploads/2025/06/photo_2025-06-08_18-47-12.jpg
+  http://web.archive.org/web/20251104025628id_/https://tridentmodular.com/wp-content/uploads/2025/07/116ee6b4259e43d883da0c7fc6bb348b.jpg
+  http://web.archive.org/web/20250915173437id_/https://tridentmodular.com/wp-content/uploads/2025/09/photo_2025-09-07_18-11-23-1024x771.jpg
+  http://web.archive.org/web/20251104025627id_/https://tridentmodular.com/wp-content/uploads/2025/09/photo_2025-09-30_00-37-29.jpg
 
+NOT ARCHIVED (SiteGround only)
+  2023/03/03-1-1024x576.jpg
+  2023/03/3-1-5-1024x576.jpg
+  2023/03/LH_03-1024x576.jpg
+  2023/03/Lviv_living_1-2-1024x576.jpg
+  2023/08/Corner_fin-1-1024x576.jpg
+  2023/12/Urban0068-1024x576.jpg
+  2023/12/Urban2-1024x576.jpg
+  2024/06/%D0%A12-ext_2_color_1_s_Garden-Home-Business-1024x576.jpg
+  2024/06/exterior-gardenshower-01terrace_gym-1.jpg
+  2025/05/Ulula-Resort-Alex-Morales-08.2024-04-1024x768.jpg
+  2025/05/ulula-resort-alex-morales-08.2024-16-scaled-1-scaled.jpg
+  2025/06/photo_2025-06-08_18-47-05-1024x682.jpg
+  2025/06/photo_2025-06-08_18-47-08-1024x682.jpg
+  2025/06/photo_2025-06-08_18-47-09-1024x682.jpg
+  2025/06/photo_2025-06-08_18-47-11-1024x682.jpg
+  2025/07/7f6a99e0caa2422aa0ea28e869903790.jpg
+  2025/09/photo_2025-09-07_18-11-18-1024x771.jpg
+  2025/09/photo_2025-09-07_18-11-20-1024x771.jpg
+  2025/09/photo_2025-09-07_18-11-21-1024x771.jpg
+  2025/09/photo_2025-09-07_18-11-23.jpg
+  2025/09/photo_2025-09-07_18-11-25-1024x771.jpg
+  2025/09/photo_2025-09-30_00-37-35-768x1024.jpg
+  2025/11/photo_2025-11-12_12-59-54-768x1024.jpg
+  2025/11/photo_2025-11-12_13-00-06-1024x768.jpg
+  2025/11/photo_2025-11-12_13-00-06.jpg
+  2025/11/photo_2025-11-12_13-00-12-768x1024.jpg
+  2026/01/Scene_house_on_waterF-scaled-1-1024x768.jpg
+  2026/01/a-freim_toprf-scaled-1.jpg
+  2026/07/chatgpt-image-jul-22-2026-03_41_09-pm.png
 
-RESOLVED
-  Garden Base and Garden Premium renders — supplied from Drive.
-  See docs/garden-renders.md for where they came from.
+Plus: 2023/12/Urban.mp4 (embedded video, one post)

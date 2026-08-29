@@ -53,10 +53,36 @@ const metaOf = (item) => {
   return out
 }
 
-/** Strip Gutenberg block comments and normalise whitespace. */
+// Inline images point at tridentmodular.com/wp-content/uploads/, which this
+// site does not serve. Rewrite each to the local copy where we hold one, and
+// drop the tag where we do not — a missing figure reads better than a broken
+// one. docs/missing-images.txt records what still needs supplying.
+import imageMapJson from '../src/data/image-map.json' with { type: 'json' }
+const imageMap = imageMapJson
+
+function localImage(src) {
+  const rel = decodeURIComponent((src.split('wp-content/uploads/')[1] ?? ''))
+  if (!rel) return null
+  const base = rel.replace(/-\d+x\d+(\.[a-z]+)$/i, '$1')
+  return imageMap[rel] ?? imageMap[base] ?? null
+}
+
+/** Strip Gutenberg block comments, resolve images, normalise whitespace. */
 function cleanHtml(html) {
   return html
     .replace(/<!--\s*\/?wp:[^>]*?-->/g, '')
+    .replace(/<img\b[^>]*\bsrc="([^"]+)"[^>]*>/gi, (tag, src) => {
+      if (!src.includes('wp-content/uploads')) return tag
+      const local = localImage(src)
+      if (!local) return ''
+      const alt = tag.match(/alt="([^"]*)"/i)
+      return `<img src="${local}" alt="${alt ? alt[1] : ''}" loading="lazy">`
+    })
+    // One post embeds a video from the same host; a player that can never
+    // load is worse than nothing. Note it in docs/missing-images.txt.
+    .replace(/<video\b[^>]*\bsrc="[^"]*wp-content\/uploads[^"]*"[^>]*>\s*<\/video>/gi, '')
+    // A figure that lost its image should not leave an empty box behind.
+    .replace(/<figure[^>]*>\s*(<figcaption[\s\S]*?<\/figcaption>)?\s*<\/figure>/gi, '')
     .replace(/\n{3,}/g, '\n\n')
     .trim()
 }

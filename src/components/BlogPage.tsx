@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { postImage } from '../lib/post-image'
 import postsData from '../data/posts.json'
 
 interface Post {
@@ -17,7 +18,7 @@ const articles = (postsData as Post[]).map((p) => ({
   slug: p.slug,
   title: p.title,
   excerpt: p.excerpt,
-  img: p.image ?? undefined,
+  img: postImage(p.image),
   date: new Date(p.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }),
   readTime: readTime(p.words),
 }))

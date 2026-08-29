@@ -1,4 +1,5 @@
 ---
+import { postImage } from '../../lib/post-image'
 import { seoFor } from '../../data/seo'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import posts from '../../data/posts.json'
@@ -22,6 +23,9 @@ const readMinutes = Math.max(1, Math.round(post.words / 200))
 const index = posts.findIndex((p) => p.slug === post.slug)
 const more = posts.filter((_, i) => i !== index).slice(0, 3)
 
+// Shown only when we hold the file locally; see src/lib/post-image.ts.
+const heroImage = postImage(post.image)
+
 // Article schema. Google uses it for the byline and date in results.
 const schema = {
   '@context': 'https://schema.org',
@@ -30,7 +34,7 @@ const schema = {
   datePublished: post.date,
   dateModified: post.date,
   description: post.seoDescription || post.excerpt,
-  image: post.image ?? undefined,
+  image: heroImage,
   author: { '@type': 'Organization', name: 'Trident Modular' },
   publisher: {
     '@type': 'Organization',
@@ -46,7 +50,7 @@ const meta = seoFor(`/blog/${post.slug}/`, post.title, post.seoDescription || po
 <BaseLayout
   title={meta.title}
   description={meta.description}
-  image={post.image ?? undefined}
+  image={heroImage}
 >
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
 
@@ -75,10 +79,10 @@ const meta = seoFor(`/blog/${post.slug}/`, post.title, post.seoDescription || po
       </div>
     </header>
 
-    {post.image && (
+    {heroImage && (
       <div class="max-w-4xl mx-auto px-6 lg:px-8 mb-10">
         <img
-          src={post.image}
+          src={heroImage}
           alt={post.title}
           class="w-full rounded-2xl"
           loading="eager"
@@ -99,10 +103,10 @@ const meta = seoFor(`/blog/${post.slug}/`, post.title, post.seoDescription || po
               href={`/blog/${p.slug}/`}
               class="group bg-white rounded-2xl overflow-hidden card-shadow card-shadow-hover transition-all duration-300 hover:-translate-y-1"
             >
-              {p.image && (
+              {postImage(p.image) && (
                 <div class="h-40 overflow-hidden bg-light">
                   <img
-                    src={p.image}
+                    src={postImage(p.image)}
                     alt={p.title}
                     loading="lazy"
                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
