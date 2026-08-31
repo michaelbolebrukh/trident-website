@@ -22,6 +22,35 @@ from urllib.parse import urlparse
 NS = {'wp': 'http://wordpress.org/export/1.2/'}
 HTACCESS = Path(__file__).resolve().parent.parent / 'public' / '.htaccess'
 
+
+# Model slugs the pre-2026 site used under /houses/. The trailing number is the
+# floor area it advertised at the time, which does not match today's figures
+# (the old Lake was 72 m2 and is now 114), so these are matched on name and
+# confirmed against src/data/homes.generated.ts rather than on the number.
+LEGACY_MODEL_SLUGS = {
+    'lake-house-72': 'lake',
+    'the-residence-140': 'the-residence',
+    'mediterranean-single-26': 'mediterranean-single-house',
+    'mediterraneanhouse-28': 'mediterranean-single-house',
+    'mediterranean-double-52': 'mediterranean-double-house',
+    'forest-house-59': 'forest-house',
+    'family-house-60': 'family-house',
+    'country-house-63': 'country',
+    'self-contained-garden-studio': 'garden-studio',
+}
+
+# No confident match, so these go to the range rather than to a guess:
+#   the-zen-bungalow    no Zen model exists, and no area to match on
+#   the-urban-loft-cube names two current models, Urban and Loft, and its
+#                       143 m2 matches neither (127.6 and 227.6)
+#   granny-annex-44     Granny Annexes was a category on the old site, not a
+#                       model, and no category replaces it here
+LEGACY_MODEL_TO_INDEX = [
+    'the-zen-bungalow',
+    'the-urban-loft-cube',
+    'granny-annex-44',
+]
+
 # Old page path -> where its traffic should now go.
 PAGE_MAP = {
     # Pages the new site serves at their old URL are absent from this map on
@@ -45,6 +74,16 @@ PAGE_MAP = {
     # the point that matters here: consent before a non-essential cookie.
     '/cookie-policy-uk/': '/cookie-policy/',
     '/cookie-policy-eu/': '/cookie-policy/',
+    '/get-a-quote/': '/contact-us/',
+    '/shop/': '/houses/',
+    '/download/': '/houses/',
+    '/bopas-and-mortgages/': '/bopas-and-certificates/',
+    '/homepage/': '/',
+    # WooCommerce pages from the old shop. Nothing replaces them.
+    '/my-account/': '/',
+    '/cart/': '/',
+    '/checkout/': '/',
+    '/installation/installation-of-a-garden-room-with-electricity/': '/installation/',
     '/category/': '/blog/',
     '/tag/': '/blog/',
     '/example-product-page/': '/houses/',
@@ -115,6 +154,15 @@ def render(found):
         f"  # {len(found['post'])} blog posts lost their placeholder category segment.",
         '  RewriteRule ^blog/uncategorized-en_gb/(.+)$ /blog/$1 [R=301,L]',
         '',
+        '  # Model slugs from the pre-2026 site.',
+    ]
+    for src, dst in sorted(LEGACY_MODEL_SLUGS.items()):
+        lines.append(f'  RewriteRule ^houses/{src}/?$ /houses/{dst}/ [R=301,L]')
+    for src in sorted(LEGACY_MODEL_TO_INDEX):
+        lines.append(f'  RewriteRule ^houses/{src}/?$ /houses/ [R=301,L]')
+
+    lines += [
+        '',
         '  # Pages that moved or were folded into another page.',
     ]
     for src, dst in sorted(PAGE_MAP.items()):
@@ -126,6 +174,20 @@ def render(found):
         f"  # {len(found['case-study'])} case studies are not carried over individually;",
         '  # the gallery replaces them.',
         '  RewriteRule ^case-study/(.*)$ /gallery/ [R=301,L]',
+        '',
+        '  # The old tag archive under /houses-tag/ has no equivalent.',
+        '  RewriteRule ^houses-tag(/.*)?$ /houses/ [R=301,L]',
+        '',
+        '  # WordPress appended /feed/ to every archive and single. Send each',
+        '  # back to the page it belonged to. (.+) not (.*), so a bare /feed/',
+        '  # cannot produce a doubled slash; it is handled on the line after.',
+        '  RewriteRule ^(.+)/feed/?$ /$1/ [R=301,L]',
+        '  RewriteRule ^feed/?$ / [R=301,L]',
+        '',
+        '  # WordPress internals. These are gone for good rather than moved, so',
+        '  # 410 tells a crawler to drop them instead of retrying a 404.',
+        '  RewriteRule ^wp-content(/.*)?$ - [G,L]',
+        '  RewriteRule ^wp-json(/.*)?$ - [G,L]',
         '</IfModule>',
         '',
     ]
