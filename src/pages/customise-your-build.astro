@@ -2,6 +2,7 @@
 import { seoFor } from '../data/seo'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import BespokePage from '../components/BespokePage'
+import { routes } from '../lib/routes'
 
 const meta = seoFor('/customise-your-build/', 'Bespoke & Commercial Buildings', 'Bespoke modular design for homes, workspaces and commercial buildings. Tell us the site and the brief and our team will develop a tailored solution.')
 ---
@@ -11,4 +12,10 @@ const meta = seoFor('/customise-your-build/', 'Bespoke & Commercial Buildings', 
   description={meta.description}
 >
   <BespokePage />
+  <section class="bg-white border-t border-border py-10">
+    <div class="max-w-[1280px] mx-auto px-6 lg:px-8 flex flex-wrap gap-4 items-center justify-between">
+      <p class="text-body">Looking for a café, changing-room module or another commercial building from the standard range?</p>
+      <a href={routes.commercial} class="text-sm font-semibold font-display text-navy underline underline-offset-2 hover:text-gold">Commercial modular buildings →</a>
+    </div>
+  </section>
 </BaseLayout>

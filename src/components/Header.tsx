@@ -14,6 +14,8 @@ const homesMegaMenu = [
   { label: 'Bungalows', href: categoryPath('Bungalows') },
   { label: '1.5 Storey Houses', href: categoryPath('1.5 Storey Houses') },
   { label: '2 Storey Houses', href: categoryPath('2 Storey Houses') },
+  { label: 'Modern Modular Homes', href: routes.modern },
+  { label: 'Eco Modular Homes', href: routes.eco },
 ]
 
 /** Second column of the Homes menu: the purchase routes. */
@@ -29,6 +31,7 @@ const buyYourWay = [
 const bespokeDropdown = [
   { label: 'Bespoke Home Design', href: `${routes.bespoke}#design` },
   { label: 'The Bespoke Process', href: `${routes.bespoke}#process` },
+  { label: 'Commercial Modular Buildings', href: routes.commercial },
   { label: 'Commercial & Workspaces', href: `${routes.bespoke}#support` },
   { label: 'Sustainable Upgrades', href: `${routes.bespoke}#sustainable` },
 ]

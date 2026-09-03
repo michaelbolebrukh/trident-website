@@ -1,0 +1,123 @@
+---
+/**
+ * /commercial/ — grounded in what exists: the three commercial-capable
+ * models, the bespoke commercial route as the customise page words it, and
+ * the blog posts as further reading rather than as track record.
+ */
+import { seoFor } from '../data/seo'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import PageHero from '../components/PageHero.astro'
+import FaqBlock from '../components/FaqBlock.astro'
+import { homeBySlug, houseImage } from '../data/homes'
+import { specFor } from '../data/catalogue-specs'
+import { housePricing } from '../data/pricing'
+import posts from '../data/posts.json'
+import { routes, productPath } from '../lib/routes'
+import { responsive, SIZES } from '../lib/images'
+
+const meta = seoFor('/commercial/', 'Commercial Modular Buildings', '')
+
+const models = ['modwood-cafe', 'garden-cafe', 'match-point'].map((slug) => ({
+  slug,
+  home: homeBySlug(slug)!,
+  spec: specFor(slug),
+  pricing: housePricing[slug],
+}))
+
+// The customise page's own wording for the commercial route and its services.
+const commercialRoute =
+  'Trident Modular works with developers, landowners and commercial clients on a wide range of building types, from offices and workspaces to hospitality buildings, glamping lodges and rental units. Modular construction is particularly well suited to multi-unit and phased commercial schemes.'
+const services = ['Planning Permission Support', 'Architectural Services', 'Structural Design']
+
+const reading = ['modular-sports-facilities', 'modular-classrooms-are-transforming-uk', 'modular-construction-for-healthcare-facilities', 'modular-housing-for-social-housing']
+  .map((slug) => posts.find((p) => p.slug === slug)!)
+
+const faqQuestions = [
+  'Can I adapt a standard design to suit my site?',
+  'How do I get a price?',
+  'How long does installation take?',
+  'How far do you deliver?',
+]
+---
+
+<BaseLayout title={meta.title} description={meta.description}>
+  <PageHero
+    eyebrow="Cafés, changing rooms, workspaces and multi-unit schemes"
+    title="Commercial Modular Buildings"
+    intro="Prefab buildings UK businesses can put to work: two café buildings and a sports changing-room module from the standard range, and a bespoke route for offices, workspaces, hospitality and phased multi-unit schemes, all on the same factory-built closed-panel system."
+  />
+
+  <article class="bg-white">
+    {/* Standard commercial models */}
+    <section class="max-w-[1280px] mx-auto px-6 lg:px-8 py-14">
+      <h2 class="font-display font-bold text-navy text-2xl mb-2">Prefab buildings UK businesses can order from the standard range</h2>
+      <p class="text-muted text-sm mb-8 max-w-2xl">Each card carries the model's own catalogue description and the room schedule from the catalogue. Commercial fit-outs vary by brief, so ModWood Cafe and Match Point are quoted on request.</p>
+      <div class="grid md:grid-cols-3 gap-5">
+        {models.map(({ slug, home, spec, pricing }) => (
+          <a href={productPath(slug)} class="group bg-white rounded-2xl overflow-hidden card-shadow card-shadow-hover transition-all duration-300 hover:-translate-y-1 flex flex-col border border-border">
+            <div class="h-44 overflow-hidden bg-light">
+              <img {...(home.thumb ? responsive(houseImage(home.thumb), SIZES.card) : {})} alt={home.name} loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+            </div>
+            <div class="p-5 flex flex-col flex-1">
+              <h3 class="font-display font-bold text-navy text-lg">{home.name}</h3>
+              <p class="text-xs text-muted mb-2">Catalogue area {home.area} m² · {home.category}</p>
+              <p class="text-sm text-muted leading-relaxed mb-3">{home.desc}</p>
+              {spec && spec.rooms.length > 1 && (
+                <p class="text-xs text-muted mb-3">Room schedule: {spec.rooms.map((r) => `${r.name} ${r.area} m²`).join(', ')}.</p>
+              )}
+              <p class="text-sm mt-auto font-semibold text-navy">{pricing?.onRequest ? `Price on request. ${pricing.note ?? ''}` : 'See the model page for prices.'}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    {/* Bespoke commercial route */}
+    <section class="border-t border-border bg-light py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-10">
+        <div>
+          <h2 class="font-display font-bold text-navy text-2xl mb-4">Modular classroom UK, office or hospitality brief: the bespoke route</h2>
+          <p class="text-body leading-relaxed mb-4">{commercialRoute}</p>
+          <p class="text-body leading-relaxed">A modular classroom UK schools need, a clinic, or a modular sports facility UK clubs want starts from a brief rather than a catalogue card: we discuss the site, purpose, programme and budget, review the plot and planning context, develop concept and technical design, then manufacture under factory conditions and deliver for installation.</p>
+        </div>
+        <div class="bg-white rounded-2xl border border-border p-6">
+          <h3 class="font-display font-bold text-navy mb-3">Professional support services</h3>
+          <p class="text-sm text-muted mb-4">Available as part of a full project service or independently.</p>
+          <ul class="space-y-2">{services.map((s) => <li class="text-sm text-body">{s}</li>)}</ul>
+          <a href={`${routes.bespoke}#support`} class="inline-block mt-5 text-sm font-semibold font-display text-navy underline underline-offset-2 hover:text-gold">Bespoke and commercial services →</a>
+        </div>
+      </div>
+    </section>
+
+    {/* Further reading */}
+    <section class="border-t border-border py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <h2 class="font-display font-bold text-navy text-2xl mb-2">Further reading: modular sports facility UK, classrooms and healthcare</h2>
+        <p class="text-muted text-sm mb-8 max-w-2xl">Articles from the Trident blog on where modular construction is being used. They discuss the sectors; they are not a list of our completed projects.</p>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {reading.map((p) => (
+            <a href={`/blog/${p.slug}/`} class="bg-white rounded-2xl border border-border p-5 hover:border-navy transition-colors">
+              <h3 class="font-display font-bold text-navy text-sm leading-snug mb-2">{p.title}</h3>
+              <p class="text-xs text-muted leading-relaxed line-clamp-3">{p.excerpt}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <FaqBlock title="Common questions" questions={faqQuestions} />
+
+    <section class="bg-navy text-white py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+        <div class="max-w-2xl">
+          <h2 class="font-display font-bold text-2xl lg:text-3xl mb-3">Ready to discuss your project?</h2>
+          <p class="text-white/70 leading-relaxed">Tell us about your site, requirements and timeline and we'll get back to you with our initial thoughts.</p>
+        </div>
+        <div class="flex flex-wrap gap-4 shrink-0">
+          <a href={routes.contact} class="bg-gold text-navy font-semibold font-display px-7 py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm">Discuss your project</a>
+          <a href={routes.companies} class="border border-white/30 text-white font-semibold font-display px-7 py-3.5 rounded-xl hover:bg-white/10 transition-colors text-sm">Check us as a supplier</a>
+        </div>
+      </div>
+    </section>
+  </article>
+</BaseLayout>
