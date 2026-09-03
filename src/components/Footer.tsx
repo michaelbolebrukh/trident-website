@@ -9,6 +9,16 @@ const homesLinks = [
   { label: '2 Storey Houses', href: categoryPath('2 Storey Houses') },
 ]
 
+const modularHomesLinks = [
+  { label: 'Modular Homes UK', href: routes.modularHomes },
+  { label: 'Kit Homes UK', href: routes.kitHomes },
+  { label: 'Modular Home Prices', href: routes.prices },
+  { label: 'Garden Rooms', href: categoryPath('Garden Rooms') },
+  { label: 'Bungalows', href: categoryPath('Bungalows') },
+  { label: '1.5 Storey Houses', href: categoryPath('1.5 Storey Houses') },
+  { label: '2 Storey Houses', href: categoryPath('2 Storey Houses') },
+]
+
 const servicesLinks = [
   { label: 'Bespoke Design', href: routes.bespoke },
   { label: 'Commercial Buildings', href: routes.bespoke },
@@ -27,7 +37,7 @@ export default function Footer() {
   return (
     <footer className="bg-navy text-white">
       <div className="max-w-[1280px] mx-auto px-6 lg:px-8 pt-16 pb-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 mb-14">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-10 mb-14">
           {/* Brand col */}
           <div className="lg:col-span-2">
             <Logo height={32} variant="white" />
@@ -57,6 +67,20 @@ export default function Footer() {
             <p className="text-xs font-semibold font-display uppercase tracking-widest mb-4" style={{ color: 'rgba(255,255,255,0.45)' }}>Homes</p>
             <ul className="space-y-2.5">
               {homesLinks.map((l) => (
+                <li key={l.label}>
+                  <a href={l.href} className="text-sm hover:text-gold transition-colors" style={{ color: 'rgba(255,255,255,0.7)' }}>
+                    {l.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Modular Homes UK */}
+          <div>
+            <p className="text-xs font-semibold font-display uppercase tracking-widest mb-4" style={{ color: 'rgba(255,255,255,0.45)' }}>Modular Homes UK</p>
+            <ul className="space-y-2.5">
+              {modularHomesLinks.map((l) => (
                 <li key={l.label}>
                   <a href={l.href} className="text-sm hover:text-gold transition-colors" style={{ color: 'rgba(255,255,255,0.7)' }}>
                     {l.label}

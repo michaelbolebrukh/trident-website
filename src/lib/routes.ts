@@ -19,6 +19,10 @@ export const routes = {
   blog: '/blog/',
   faq: '/faq/',
   contact: '/contact-us/',
+  /** SEO landing pages, September 2026. */
+  modularHomes: '/modular-homes/',
+  kitHomes: '/kit-homes/',
+  prices: '/modular-homes-prices/',
 } as const
 
 export type Page = keyof typeof routes

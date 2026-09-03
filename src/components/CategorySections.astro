@@ -1,0 +1,49 @@
+---
+/**
+ * The long-form sections under a category's model cards: intro, choosing
+ * guide, FAQ and links to the price guide and kit homes. Only categories
+ * with an entry in category-content.ts render these.
+ */
+import { categoryContent } from '../data/category-content'
+import FaqBlock from './FaqBlock.astro'
+import { routes } from '../lib/routes'
+
+interface Props {
+  slug: string
+}
+const { slug } = Astro.props
+const content = categoryContent[slug]
+---
+
+{content && (
+  <div class="bg-white">
+    <section class="border-t border-border py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <h2 class="font-display font-bold text-navy text-2xl mb-4">{content.introTitle}</h2>
+        <div class="max-w-3xl space-y-4">
+          {content.intro.map((p) => <p class="text-body leading-relaxed">{p}</p>)}
+        </div>
+      </div>
+    </section>
+
+    <section class="border-t border-border bg-light py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <h2 class="font-display font-bold text-navy text-2xl mb-8">{content.choosingTitle}</h2>
+        <div class="grid md:grid-cols-2 gap-5">
+          {content.choosing.map((c) => (
+            <div class="bg-white rounded-2xl border border-border p-6">
+              <h3 class="font-display font-bold text-navy mb-2">{c.title}</h3>
+              <p class="text-sm text-muted leading-relaxed">{c.body}</p>
+            </div>
+          ))}
+        </div>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <a href={routes.prices} class="text-sm font-semibold font-display text-navy underline underline-offset-2 hover:text-gold">Full price guide for every model →</a>
+          <a href={routes.kitHomes} class="text-sm font-semibold font-display text-navy underline underline-offset-2 hover:text-gold">Buy as a kit: the Shell delivered option →</a>
+        </div>
+      </div>
+    </section>
+
+    <FaqBlock title={content.faqTitle} questions={content.faq} />
+  </div>
+)}

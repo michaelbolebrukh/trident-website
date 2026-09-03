@@ -296,6 +296,10 @@ export default function ProductPage({ home }: { home: Home }) {
               })}
             </div>
 
+            <p className="text-sm text-muted mt-6">
+              Compare every model in the <a href={routes.prices} className="text-navy underline underline-offset-2 hover:text-gold">modular home price guide</a>, or read about the Shell delivered option on <a href={routes.kitHomes} className="text-navy underline underline-offset-2 hover:text-gold">kit homes UK</a>.
+            </p>
+
             {pricing.note && (
               <div className="mt-6 bg-white border-l-4 border-gold rounded-r-xl px-5 py-4">
                 <p className="text-sm text-body leading-relaxed">{pricing.note}</p>

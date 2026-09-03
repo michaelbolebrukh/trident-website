@@ -1,0 +1,219 @@
+---
+/**
+ * /modular-homes-prices/ — the price guide.
+ *
+ * Tables come from src/lib/price-guide.ts (pricing.ts and model-details.ts).
+ * Scope, exclusions, upgrades, programme and payment terms are the pricing.ts
+ * constants rendered as they are.
+ */
+import { seoFor } from '../data/seo'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import PageHero from '../components/PageHero.astro'
+import FaqBlock from '../components/FaqBlock.astro'
+import CtaBand from '../components/CtaBand.astro'
+import { HOUSE_OPTIONS, STANDARD_EXCLUSIONS, AVAILABLE_UPGRADES, PAYMENT_SCHEDULE, PROGRAMME } from '../data/pricing'
+import { PRICE_NOTE } from '../data/model-details'
+import { intro as bopasIntro } from '../data/accreditation'
+import { houseRows, guideRows, gbp } from '../lib/price-guide'
+import { routes } from '../lib/routes'
+
+const meta = seoFor('/modular-homes-prices/', 'Modular Home Prices UK', '')
+const priced = houseRows.filter((r) => !r.onRequest)
+const onRequest = houseRows.filter((r) => r.onRequest)
+const cheapest = priced.reduce((a, b) => (a.options[0].price! < b.options[0].price! ? a : b))
+const dearest = priced.reduce((a, b) => (a.options[2].price! > b.options[2].price! ? a : b))
+
+const faqQuestions = [
+  'How do I get a price?',
+  'Do the prices shown on the website include VAT?',
+  'Is finance available?',
+  'What is the difference between Base and Turnkey?',
+  'Do I need to prepare a foundation before you deliver?',
+]
+---
+
+<BaseLayout title={meta.title} description={meta.description}>
+  <PageHero
+    eyebrow="Price guide · August 2026 pricing"
+    title="Modular Home Prices UK"
+    intro={`How much does a modular home cost? At Trident, houses run from ${gbp(cheapest.options[0].price)} for the ${cheapest.home.name} as a Shell delivered kit to ${gbp(dearest.options[2].price)} for the ${dearest.home.name} finished as a Turnkey base (an indicative figure until its drawings are adapted). Every figure below is a from price, excludes VAT and assumes delivery to Greater London.`}
+  />
+
+  <article class="bg-white">
+    {/* Houses table */}
+    <section class="max-w-[1280px] mx-auto px-6 lg:px-8 py-14">
+      <h2 class="font-display font-bold text-navy text-2xl mb-2">Modular home prices by model and option</h2>
+      <p class="text-muted text-sm mb-6 max-w-3xl">
+        This is the modular home cost UK buyers ask us for most often: every model, every option, in one table. Price per m² is the option price divided by the internal area the pricing sheet quotes for that model. Where a model is quoted on request, no figure is published yet.
+      </p>
+      <div class="overflow-x-auto rounded-2xl border border-border">
+        <table class="w-full text-sm">
+          <thead class="bg-navy text-white text-left">
+            <tr>
+              <th class="px-4 py-3 font-display">Model</th>
+              <th class="px-4 py-3 font-display">Beds</th>
+              <th class="px-4 py-3 font-display">Area</th>
+              {HOUSE_OPTIONS.map((o) => <th class="px-4 py-3 font-display whitespace-nowrap">{o.label}</th>)}
+            </tr>
+          </thead>
+          <tbody>
+            {houseRows.map((r) => (
+              <tr class="border-t border-border">
+                <td class="px-4 py-3 font-display font-bold text-navy whitespace-nowrap"><a href={r.href} class="hover:text-gold">{r.home.name}</a></td>
+                <td class="px-4 py-3 text-muted">{r.home.bedrooms ?? '—'}</td>
+                <td class="px-4 py-3 text-muted whitespace-nowrap">{r.area} m²</td>
+                {r.options.map((o) => (
+                  <td class="px-4 py-3 whitespace-nowrap">
+                    <span class="font-bold text-navy">{gbp(o.price)}</span>
+                    {o.perM2 !== null && <span class="block text-xs text-muted">£{o.perM2.toLocaleString('en-GB')}/m²</span>}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="text-xs text-muted mt-3">Bedrooms as the model page states them. Areas are the internal habitable areas on the August 2026 pricing sheet.</p>
+      {onRequest.length > 0 && (
+        <div class="mt-6 rounded-2xl border border-border bg-light p-5">
+          <p class="text-sm font-semibold font-display text-navy mb-2">Why some models are on request</p>
+          <ul class="space-y-1.5">
+            {onRequest.map((r) => (
+              <li class="text-sm text-muted"><a href={r.href} class="text-navy font-medium hover:text-gold">{r.home.name}</a>: {r.note}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+      <div class="mt-6 rounded-2xl border border-border p-5">
+        <p class="text-sm font-semibold font-display text-navy mb-2">Model notes</p>
+        <ul class="space-y-1.5">
+          {priced.filter((r) => r.note).map((r) => (
+            <li class="text-sm text-muted"><a href={r.href} class="text-navy font-medium hover:text-gold">{r.home.name}</a>: {r.note}</li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    {/* Garden buildings */}
+    <section class="border-t border-border bg-light py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <h2 class="font-display font-bold text-navy text-2xl mb-2">Prefab house prices UK: garden buildings and the A-Frame</h2>
+        <p class="text-muted text-sm mb-6 max-w-3xl">These models are priced per size in the 2026 price guides on their own three-step ladder. The smallest size is shown; every size is on the model page. {PRICE_NOTE}</p>
+        <div class="overflow-x-auto rounded-2xl border border-border bg-white">
+          <table class="w-full text-sm">
+            <thead class="bg-navy text-white text-left">
+              <tr>
+                <th class="px-4 py-3 font-display">Model</th>
+                <th class="px-4 py-3 font-display">Size priced</th>
+                <th class="px-4 py-3 font-display">Area</th>
+                <th class="px-4 py-3 font-display">Option 01</th>
+                <th class="px-4 py-3 font-display">Option 02</th>
+                <th class="px-4 py-3 font-display">Option 03</th>
+              </tr>
+            </thead>
+            <tbody>
+              {guideRows.map((r) => (
+                <tr class="border-t border-border">
+                  <td class="px-4 py-3 font-display font-bold text-navy whitespace-nowrap"><a href={r.href} class="hover:text-gold">{r.home.name}</a></td>
+                  <td class="px-4 py-3 text-muted">{r.note ?? 'One size'}</td>
+                  <td class="px-4 py-3 text-muted whitespace-nowrap">{r.area} m²</td>
+                  {r.options.map((o) => (
+                    <td class="px-4 py-3 whitespace-nowrap">
+                      <span class="block text-xs text-muted">{o.label}</span>
+                      <span class="font-bold text-navy">{gbp(o.price)}</span>
+                      {o.perM2 !== null && <span class="block text-xs text-muted">£{o.perM2.toLocaleString('en-GB')}/m²</span>}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    {/* What each option includes */}
+    <section class="border-t border-border py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <h2 class="font-display font-bold text-navy text-2xl mb-2">What each option includes</h2>
+        <p class="text-muted text-sm mb-8 max-w-2xl">Each option contains the one before it. The scope below is the pricing schedule's own wording.</p>
+        <div class="grid md:grid-cols-3 gap-5">
+          {HOUSE_OPTIONS.map((opt, i) => (
+            <div class={`rounded-2xl border p-6 flex flex-col ${i === 2 ? 'bg-navy border-navy' : 'bg-white border-border'}`}>
+              <p class="text-xs font-bold font-display tracking-[0.15em] uppercase mb-2 text-gold">Option {opt.n}</p>
+              <h3 class={`font-display font-bold text-lg mb-3 ${i === 2 ? 'text-white' : 'text-navy'}`}>{opt.label}</h3>
+              <p class={`text-sm leading-relaxed ${i === 2 ? 'text-white/70' : 'text-muted'}`}>{opt.desc}</p>
+            </div>
+          ))}
+        </div>
+        <p class="text-sm text-muted mt-6">
+          Want the Shell delivered option on its own? See <a href={routes.kitHomes} class="text-navy underline underline-offset-2 hover:text-gold">kit homes UK</a>.
+        </p>
+      </div>
+    </section>
+
+    {/* Priced separately */}
+    <section class="border-t border-border bg-light py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-10">
+        <div>
+          <h2 class="font-display font-bold text-navy text-2xl mb-2">Excluded from every price</h2>
+          <p class="text-muted text-sm mb-6">Kitchen, underfloor heating, MVHR, PV and upgraded finishes are priced separately, along with the items below.</p>
+          <div class="grid sm:grid-cols-2 gap-5">
+            {STANDARD_EXCLUSIONS.map((g) => (
+              <div class="bg-white rounded-2xl border border-border p-5">
+                <p class="text-xs font-bold font-display uppercase tracking-widest text-muted mb-2">{g.title}</p>
+                <ul class="space-y-1.5">{g.items.map((i) => <li class="text-sm text-body leading-snug">{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div>
+          <h2 class="font-display font-bold text-navy text-2xl mb-2">Upgrades quoted per project</h2>
+          <p class="text-muted text-sm mb-6">Priced once we know the site and the specification.</p>
+          <div class="space-y-4">
+            {AVAILABLE_UPGRADES.map((g) => (
+              <div class="bg-white rounded-2xl border border-border p-5">
+                <p class="text-xs font-bold font-display uppercase tracking-widest text-muted mb-2">{g.title}</p>
+                <p class="text-sm text-body leading-relaxed">{g.items.join(' · ')}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* Programme, payment, mortgages */}
+    <section class="border-t border-border py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8 grid lg:grid-cols-3 gap-8">
+        <div class="rounded-2xl border border-border p-6">
+          <h2 class="font-display font-bold text-navy text-xl mb-4">Programme</h2>
+          <dl class="divide-y divide-border">
+            {PROGRAMME.map(([stage, time]) => (
+              <div class="flex justify-between gap-4 py-2.5 text-sm"><dt class="text-body">{stage}</dt><dd class="text-navy font-semibold shrink-0">{time}</dd></div>
+            ))}
+          </dl>
+        </div>
+        <div class="rounded-2xl border border-border p-6">
+          <h2 class="font-display font-bold text-navy text-xl mb-4">Payment schedule</h2>
+          <dl class="divide-y divide-border">
+            {PAYMENT_SCHEDULE.map(([share, when]) => (
+              <div class="flex justify-between gap-4 py-2.5 text-sm"><dt class="text-navy font-semibold">{share}</dt><dd class="text-body text-right">{when}</dd></div>
+            ))}
+          </dl>
+        </div>
+        <div class="rounded-2xl border border-border p-6 bg-light">
+          <h2 class="font-display font-bold text-navy text-xl mb-4">Mortgages and BOPAS</h2>
+          <p class="text-sm text-body leading-relaxed mb-4">{bopasIntro}</p>
+          <a href={routes.bopas} class="text-sm font-semibold font-display text-navy underline underline-offset-2 hover:text-gold">BOPAS accreditation and certificates →</a>
+        </div>
+      </div>
+    </section>
+
+    <FaqBlock title="How much does a modular home cost? Common questions" questions={faqQuestions} />
+
+    <CtaBand
+      title="Get a firm price for your plot"
+      body="Tell us the model, the site and the completion option you have in mind. We reply with a proposal, and for site-adapted models within 5 working days."
+    />
+  </article>
+</BaseLayout>

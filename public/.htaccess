@@ -122,7 +122,7 @@
   RewriteRule ^installation/permissions-for-modular-building/?$ /faq/ [R=301,L]
   RewriteRule ^london/?$ /houses/ [R=301,L]
   RewriteRule ^modular-building-company-uk/?$ /about_us/ [R=301,L]
-  RewriteRule ^modular-home-cost-uk/?$ /houses/ [R=301,L]
+  RewriteRule ^modular-home-cost-uk/?$ /modular-homes-prices/ [R=301,L]
   RewriteRule ^my-account/?$ / [R=301,L]
   RewriteRule ^proyektuvannya/?$ /customise-your-build/ [R=301,L]
   RewriteRule ^self-build-modular-homes/?$ /houses/ [R=301,L]
