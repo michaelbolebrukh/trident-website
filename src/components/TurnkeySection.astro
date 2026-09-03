@@ -1,0 +1,43 @@
+---
+/**
+ * "Turnkey" on the installation page: the Turnkey base scope from pricing.ts
+ * as the pricing schedule words it, with the programme stages it covers.
+ * The old /installation/our-solution/ URL redirects here, so this is where
+ * that intent lands.
+ */
+import { HOUSE_OPTIONS, PROGRAMME, AVAILABLE_UPGRADES } from '../data/pricing'
+import { routes } from '../lib/routes'
+
+const turnkey = HOUSE_OPTIONS[2]
+const fitOut = PROGRAMME.find(([stage]) => stage.startsWith('Internal fit-out'))
+const handover = PROGRAMME.find(([stage]) => stage.startsWith('Contract to handover'))
+---
+
+<section id="turnkey" class="bg-white border-t border-border py-14">
+  <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+    <p class="text-xs font-semibold font-display uppercase tracking-[0.2em] text-gold mb-3">Option 03</p>
+    <h2 class="font-display font-bold text-navy text-3xl lg:text-4xl mb-4">Turnkey modular home UK: what {turnkey.label} includes</h2>
+    <div class="grid lg:grid-cols-2 gap-10">
+      <div>
+        <p class="text-body leading-relaxed mb-4">{turnkey.desc}</p>
+        <p class="text-body leading-relaxed">
+          A turnkey prefab home from Trident is therefore the same factory-built shell as the other two options, taken through foundation, fit-out and compliance by one team. The house arrives, goes up to weathertight, and the internal works follow under the same contract.
+        </p>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-border p-6 bg-light">
+          <h3 class="font-display font-bold text-navy mb-3">On the typical programme</h3>
+          <dl class="divide-y divide-border">
+            {fitOut && <div class="flex justify-between gap-4 py-2.5 text-sm"><dt class="text-body">{fitOut[0]}</dt><dd class="text-navy font-semibold">{fitOut[1]}</dd></div>}
+            {handover && <div class="flex justify-between gap-4 py-2.5 text-sm"><dt class="text-body">{handover[0]}</dt><dd class="text-navy font-semibold">{handover[1]}</dd></div>}
+          </dl>
+        </div>
+        <div class="rounded-2xl border border-border p-6">
+          <h3 class="font-display font-bold text-navy mb-3">Priced separately</h3>
+          <p class="text-sm text-muted leading-relaxed">{AVAILABLE_UPGRADES.map((g) => g.items.join(', ')).join(', ')}.</p>
+        </div>
+        <p class="text-sm text-muted">Every model's price for this option is in the <a href={routes.prices} class="text-navy underline underline-offset-2 hover:text-gold">price guide</a>; the other two options are on <a href={routes.kitHomes} class="text-navy underline underline-offset-2 hover:text-gold">kit homes</a> and <a href={routes.selfBuild} class="text-navy underline underline-offset-2 hover:text-gold">self-build</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>

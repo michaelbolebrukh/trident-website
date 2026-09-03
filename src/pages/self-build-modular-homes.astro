@@ -1,0 +1,129 @@
+---
+/**
+ * /self-build-modular-homes/ — Shell delivered for self-builders. Scope is
+ * HOUSE_OPTIONS[0].desc verbatim; the model list comes from price-guide.ts.
+ */
+import { seoFor } from '../data/seo'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import PageHero from '../components/PageHero.astro'
+import FaqBlock from '../components/FaqBlock.astro'
+import CtaBand from '../components/CtaBand.astro'
+import { HOUSE_OPTIONS, STANDARD_EXCLUSIONS } from '../data/pricing'
+import { intro as bopasIntro } from '../data/accreditation'
+import { detailFor } from '../data/model-details'
+import { houseRows, guideRows, gbp } from '../lib/price-guide'
+import { routes } from '../lib/routes'
+
+const meta = seoFor('/self-build-modular-homes/', 'Self-Build Modular Homes', '')
+const shell = HOUSE_OPTIONS[0]
+const priced = houseRows.filter((r) => !r.onRequest)
+const aFrame = guideRows.find((r) => r.home.slug === 'a-frame')
+const aFrameDetail = detailFor('a-frame')
+
+// The Shell delivered scope, split into what arrives and what stays yours,
+// taken from the option description itself.
+const arrives = ['Structural panel kit', 'External cladding fitted at the factory', 'Roof covering where the model allows', 'Windows and external doors', 'Delivery to Greater London']
+const yours = ['Foundation', 'Unloading', 'Assembly', 'Floor cassettes (not included)']
+
+const faqQuestions = [
+  'Do I need to prepare a foundation before you deliver?',
+  'Can I add services to a Base contract separately?',
+  'Can I adapt a standard design to suit my site?',
+  'Do residential homes require full planning permission?',
+  'Is finance available?',
+]
+---
+
+<BaseLayout title={meta.title} description={meta.description}>
+  <PageHero
+    eyebrow="Option 01 · Shell delivered"
+    title="Self-Build Modular Homes"
+    intro="A self build modular home UK plot owners can erect themselves: the factory makes the closed-panel shell and delivers it with cladding fitted, together with the windows and external doors, and you or your builder take it from there. Same house, same factory as our assembled and finished options."
+  />
+
+  <article class="bg-white">
+    {/* Exact scope */}
+    <section class="max-w-[1280px] mx-auto px-6 lg:px-8 py-14">
+      <h2 class="font-display font-bold text-navy text-2xl mb-3">What arrives, and what stays with you</h2>
+      <p class="text-body leading-relaxed max-w-3xl mb-8">{shell.desc}</p>
+      <div class="grid md:grid-cols-2 gap-5">
+        <div class="rounded-2xl border border-border p-6 bg-light">
+          <h3 class="font-display font-bold text-navy mb-3">Delivered by Trident</h3>
+          <ul class="space-y-2">{arrives.map((i) => <li class="text-sm text-body">{i}</li>)}</ul>
+        </div>
+        <div class="rounded-2xl border border-navy p-6 bg-navy text-white">
+          <h3 class="font-display font-bold mb-3">Yours to arrange</h3>
+          <ul class="space-y-2">{yours.map((i) => <li class="text-sm text-white/80">{i}</li>)}</ul>
+        </div>
+      </div>
+      <p class="text-sm text-muted mt-6">
+        Self build house kits UK-wide are the same product described on the <a href={routes.kitHomes} class="text-navy underline underline-offset-2 hover:text-gold">kit homes</a> page; this page is about running the build with your own team.
+      </p>
+    </section>
+
+    {/* Which models */}
+    <section class="border-t border-border bg-light py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <h2 class="font-display font-bold text-navy text-2xl mb-2">Which models suit self build kit homes</h2>
+        <p class="text-muted text-sm mb-6 max-w-2xl">Every house with a published Shell delivered price can be bought as a self-build shell. The table lists them with the internal area the pricing sheet quotes; prices are from, excl. VAT.</p>
+        <div class="overflow-x-auto rounded-2xl border border-border bg-white">
+          <table class="w-full text-sm">
+            <thead class="bg-navy text-white text-left">
+              <tr><th class="px-4 py-3 font-display">Model</th><th class="px-4 py-3 font-display">Class</th><th class="px-4 py-3 font-display">Beds</th><th class="px-4 py-3 font-display">Internal area</th><th class="px-4 py-3 font-display">Shell delivered from</th></tr>
+            </thead>
+            <tbody>
+              {priced.map((r) => (
+                <tr class="border-t border-border">
+                  <td class="px-4 py-3 font-display font-bold text-navy whitespace-nowrap"><a href={r.href} class="hover:text-gold">{r.home.name}</a></td>
+                  <td class="px-4 py-3 text-muted whitespace-nowrap">{r.home.category}</td>
+                  <td class="px-4 py-3 text-muted">{r.home.bedrooms ?? '—'}</td>
+                  <td class="px-4 py-3 text-muted whitespace-nowrap">{r.area} m²</td>
+                  <td class="px-4 py-3 font-bold text-navy whitespace-nowrap">{gbp(r.options[0].price)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {aFrame && aFrameDetail && (
+          <div class="mt-6 rounded-2xl border border-border bg-white p-6">
+            <h3 class="font-display font-bold text-navy mb-2">The A-Frame, built by your own team</h3>
+            <p class="text-sm text-muted leading-relaxed">
+              The <a href={aFrame.href} class="text-navy underline underline-offset-2 hover:text-gold">A-Frame</a> is priced on its own ladder in the 2026 price guide. Its first option, {aFrameDetail.packages[0].name}, is {gbp(aFrame.options[0].price)}: {aFrameDetail.packages[0].desc} {aFrameDetail.intro}
+            </p>
+          </div>
+        )}
+      </div>
+    </section>
+
+    {/* Exclusions + mortgage */}
+    <section class="border-t border-border py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-10">
+        <div>
+          <h2 class="font-display font-bold text-navy text-2xl mb-2">Outside every option</h2>
+          <p class="text-muted text-sm mb-5">With this option you will be arranging most of these yourself.</p>
+          <div class="grid sm:grid-cols-2 gap-5">
+            {STANDARD_EXCLUSIONS.map((g) => (
+              <div class="rounded-2xl border border-border p-5">
+                <p class="text-xs font-bold font-display uppercase tracking-widest text-muted mb-2">{g.title}</p>
+                <ul class="space-y-1.5">{g.items.map((i) => <li class="text-sm text-body leading-snug">{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div class="rounded-2xl border border-border p-6 bg-light self-start">
+          <h2 class="font-display font-bold text-navy text-2xl mb-3">Mortgages for a factory-made shell</h2>
+          <p class="text-sm text-body leading-relaxed mb-4">{bopasIntro}</p>
+          <a href={routes.bopas} class="text-sm font-semibold font-display text-navy underline underline-offset-2 hover:text-gold">BOPAS accreditation and certificates →</a>
+          <p class="text-sm text-muted mt-4">If the build grows beyond what you want to manage, the same shell is available as <a href={routes.installation} class="text-navy underline underline-offset-2 hover:text-gold">Shell + Assembly or Turnkey base</a>; see the <a href={routes.prices} class="text-navy underline underline-offset-2 hover:text-gold">price guide</a> for both.</p>
+        </div>
+      </div>
+    </section>
+
+    <FaqBlock title="Common questions" questions={faqQuestions} />
+
+    <CtaBand
+      title="Price a shell for your own build"
+      body="Tell us the model and the plot. We confirm the Shell delivered price for your delivery address and what your team needs to have ready."
+    />
+  </article>
+</BaseLayout>

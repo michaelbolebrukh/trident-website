@@ -16,6 +16,42 @@ export interface CategoryContent {
 }
 
 export const categoryContent: Record<string, CategoryContent> = {
+  'tiny-pod-homes': {
+    introTitle: 'Tiny house UK living: the smallest habitable Trident models',
+    intro: [
+      'Tiny Homes & Pod Homes is a secondary tag rather than a class of its own: it marks the smallest habitable models in the range, whichever class they file under. The tag currently covers a factory-built garden café, three single-storey homes of around 54 to 55 m², and a sports changing-room module. Each is built on the same closed-panel timber frame as the largest house we make.',
+      'A micro home UK plot owners can actually live in is a real house rather than a cabin: Square of Harmony offers two separate bedrooms and a spacious terrace, Part balances compact design with a terrace for outdoor seating and dining, and Riva is the floating version of Part, adapted for water with pontoons in place of ground screws. The cards above show internal area, bedrooms and the published from prices for each of the three purchase options where one exists.',
+      'Buyers searching for a pod home UK-wide use these models as an annexe on an existing plot, a rental unit, or a compact permanent home. Because the panel kit is small, the three purchase options matter more than usual: Shell delivered leaves foundation and assembly to you, Shell + Assembly has our team erect the weathertight shell, and Turnkey base adds the ground screw foundation, floor panels, internal finishing, one standard bathroom, basic services and handover.',
+    ],
+    choosingTitle: 'Choosing a tiny home or pod home',
+    choosing: [
+      {
+        title: 'Habitable or commercial',
+        body: 'Part, Riva and Square of Harmony are homes with bedrooms and bathrooms. Garden Cafe and Match Point are commercial fit-outs: a café installed in a day, and a changing-room module for sports clubs. Match Point is site-adapted and quoted on request.',
+      },
+      {
+        title: 'On land or on water',
+        body: 'Riva shares its shell with Part but is adapted for water. The foundation differs, pontoons rather than screws, and is priced separately, so compare the two on the model pages before choosing.',
+      },
+      {
+        title: 'Which purchase option',
+        body: 'Published from prices exist for Part, Riva and Square of Harmony across Shell delivered, Shell + Assembly and Turnkey base. The full comparison, with price per square metre, is on the price guide.',
+      },
+      {
+        title: 'Planning and foundations',
+        body: 'Residential homes require full planning permission; we can provide planning support and work with your architect or planning consultant. Foundations are required before delivery, and delivery logistics and crane access are assessed at quotation.',
+      },
+    ],
+    faqTitle: 'Common questions',
+    faq: [
+      'What is the smallest building you supply?',
+      'Do residential homes require full planning permission?',
+      'What is the difference between Base and Turnkey?',
+      'How far do you deliver?',
+      'Is finance available?',
+    ],
+  },
+
   bungalows: {
     introTitle: 'Prefab bungalows UK: single-storey modular homes',
     intro: [

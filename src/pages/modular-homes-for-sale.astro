@@ -1,0 +1,142 @@
+---
+/**
+ * /modular-homes-for-sale/ — the transactional page: what is for sale, how
+ * buying works, what you receive. Prices from src/lib/price-guide.ts; scope
+ * verbatim from pricing.ts; FAQ items from faq.ts.
+ */
+import { seoFor } from '../data/seo'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import PageHero from '../components/PageHero.astro'
+import FaqBlock from '../components/FaqBlock.astro'
+import CtaBand from '../components/CtaBand.astro'
+import { allHomes, PRIMARY_CATEGORIES, houseImage } from '../data/homes'
+import { categoryTerms } from '../data/categories'
+import { HOUSE_OPTIONS, PAYMENT_SCHEDULE } from '../data/pricing'
+import { houseRows, guideRows, gbp } from '../lib/price-guide'
+import { categoryPath, routes } from '../lib/routes'
+import { responsive, SIZES } from '../lib/images'
+
+const meta = seoFor('/modular-homes-for-sale/', 'Modular Homes for Sale UK', '')
+
+const rowsBySlug = new Map([...houseRows, ...guideRows].map((r) => [r.home.slug, r]))
+
+const groups = Object.entries(categoryTerms)
+  .filter(([, term]) => PRIMARY_CATEGORIES.includes(term.name as (typeof PRIMARY_CATEGORIES)[number]))
+  .map(([, term]) => ({
+    term,
+    href: categoryPath(term.name),
+    homes: allHomes.filter((h) => h.categories.includes(term.name)).map((home) => ({ home, row: rowsBySlug.get(home.slug) })),
+  }))
+
+const turnkey = HOUSE_OPTIONS[2]
+
+const faqQuestions = [
+  'How do I get a price?',
+  'Do the prices shown on the website include VAT?',
+  'Is finance available?',
+  'How long does delivery take after I place an order?',
+  'Do I need to prepare a foundation before you deliver?',
+]
+---
+
+<BaseLayout title={meta.title} description={meta.description}>
+  <PageHero
+    eyebrow="The range, priced"
+    title="Modular Homes for Sale UK"
+    intro={`${allHomes.length} factory-built models for sale, from garden rooms to a four-bedroom family house, most of them available at three levels of completion. Every price is a from figure, excludes VAT and assumes delivery to Greater London.`}
+  />
+
+  <article class="bg-white">
+    {/* Range by category */}
+    {groups.map((g, gi) => (
+      <section class={`py-14 ${gi % 2 ? 'bg-light border-t border-border' : gi > 0 ? 'border-t border-border' : ''}`}>
+        <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+          <div class="flex flex-wrap items-end justify-between gap-4 mb-6">
+            <div>
+              <h2 class="font-display font-bold text-navy text-2xl mb-1">{gi === 0 ? `Modular homes for sale: ${g.term.name.toLowerCase()}` : gi === 1 ? `Modular house for sale: ${g.term.name.toLowerCase()}` : g.term.name}</h2>
+              <p class="text-muted text-sm max-w-2xl">{g.term.blurb}</p>
+            </div>
+            <a href={g.href} class="text-sm font-semibold font-display text-navy underline underline-offset-2 hover:text-gold">All {g.term.name.toLowerCase()} →</a>
+          </div>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {g.homes.map(({ home, row }) => (
+              <a href={`/houses/${home.slug}/`} class="group bg-white rounded-2xl overflow-hidden card-shadow card-shadow-hover transition-all duration-300 hover:-translate-y-1 flex flex-col border border-border">
+                <div class="h-40 overflow-hidden bg-light">
+                  <img {...(home.thumb ? responsive(houseImage(home.thumb), SIZES.card) : {})} alt={home.name} loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                </div>
+                <div class="p-4 flex flex-col flex-1">
+                  <h3 class="font-display font-bold text-navy text-base">{home.name}</h3>
+                  <p class="text-xs text-muted mb-3">{home.area} m²{home.bedrooms ? ` · ${home.bedrooms} bed` : ''}</p>
+                  <p class="text-sm mt-auto">
+                    {row ? (
+                      row.onRequest ? <span class="font-semibold text-navy">Price on request</span> : <><span class="text-muted">{row.options[0].label} from </span><span class="font-bold text-navy">{gbp(row.options[0].price)}</span></>
+                    ) : <span class="text-muted">See model page</span>}
+                  </p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    ))}
+
+    {/* How buying works */}
+    <section class="border-t border-border py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <h2 class="font-display font-bold text-navy text-2xl mb-2">How buying a modular home works</h2>
+        <p class="text-muted text-sm mb-8 max-w-2xl">Choose a model, then choose where our work stops and yours begins. Each option contains the one before it; the scope below is the pricing schedule's own wording.</p>
+        <div class="grid md:grid-cols-3 gap-5">
+          {HOUSE_OPTIONS.map((opt, i) => (
+            <div class={`rounded-2xl border p-6 flex flex-col ${i === 2 ? 'bg-navy border-navy' : 'bg-white border-border'}`}>
+              <p class="text-xs font-bold font-display tracking-[0.15em] uppercase mb-2 text-gold">Option {opt.n}</p>
+              <h3 class={`font-display font-bold text-lg mb-3 ${i === 2 ? 'text-white' : 'text-navy'}`}>{opt.label}</h3>
+              <p class={`text-sm leading-relaxed ${i === 2 ? 'text-white/70' : 'text-muted'}`}>{opt.desc}</p>
+            </div>
+          ))}
+        </div>
+        <div class="grid lg:grid-cols-2 gap-8 mt-10">
+          <div class="rounded-2xl border border-border p-6">
+            <h3 class="font-display font-bold text-navy text-lg mb-4">Payment schedule</h3>
+            <dl class="divide-y divide-border">
+              {PAYMENT_SCHEDULE.map(([share, when]) => (
+                <div class="flex justify-between gap-4 py-2.5 text-sm"><dt class="text-navy font-semibold">{share}</dt><dd class="text-body text-right">{when}</dd></div>
+              ))}
+            </dl>
+          </div>
+          <div class="rounded-2xl border border-border p-6 bg-light">
+            <h3 class="font-display font-bold text-navy text-lg mb-3">Before you buy</h3>
+            <ul class="space-y-2 text-sm text-body leading-relaxed">
+              <li>Every model and option is priced side by side in the <a href={routes.prices} class="text-navy underline underline-offset-2 hover:text-gold">modular home price guide</a>.</li>
+              <li>Browse and filter the full range at <a href={routes.catalogue} class="text-navy underline underline-offset-2 hover:text-gold">all homes</a>.</li>
+              <li>Mortgageability rests on BOPAS accreditation; see <a href={routes.bopas} class="text-navy underline underline-offset-2 hover:text-gold">BOPAS and certificates</a>.</li>
+              <li>To buy, <a href={routes.contact} class="text-navy underline underline-offset-2 hover:text-gold">request a quote</a> with the model, the site and the option you have in mind.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* Turnkey handover */}
+    <section class="border-t border-border bg-light py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-10">
+        <div>
+          <h2 class="font-display font-bold text-navy text-2xl mb-4">What you receive at a {turnkey.label} handover</h2>
+          <p class="text-body leading-relaxed">{turnkey.desc}</p>
+        </div>
+        <div class="bg-white rounded-2xl border border-border p-6">
+          <h3 class="font-display font-bold text-navy mb-3">Prefab houses for sale UK-wide</h3>
+          <p class="text-sm text-muted leading-relaxed">
+            We deliver nationwide. Delivery logistics are assessed at the quotation stage alongside confirmation of crane requirements, vehicle access and any restrictions specific to your site. House prices include delivery to Greater London; other destinations are assessed at quotation.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <FaqBlock title="Buying and ordering: common questions" questions={faqQuestions} />
+
+    <CtaBand
+      title="Ready to buy?"
+      body="Tell us the model, the plot and the option you want, and we will come back with a proposal for your site."
+    />
+  </article>
+</BaseLayout>

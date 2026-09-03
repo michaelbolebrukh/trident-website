@@ -22,7 +22,6 @@
  */
 import type { Home } from './homes'
 import { detailFor } from './model-details'
-import { pricingFor } from '../lib/price-options'
 import type { CategoryTerm } from './categories'
 import { modelSeo as modelCopy } from './model-seo'
 
@@ -41,8 +40,6 @@ const withBrand = (title: string): string => {
   const full = `${title} ${TITLE_SEP} ${SITE_NAME}`
   return full.length <= TITLE_MAX ? full : title
 }
-
-const gbp = (n: number): string => `£${n.toLocaleString('en-GB')}`
 
 /**
  * Cut a description to 155 characters, preferring a sentence end and never
@@ -92,6 +89,26 @@ export const seo: Record<string, SeoEntry> = {
     title: 'Modular Home Prices UK 2026 — Full Cost Guide | Trident Modular',
     description:
       'How much a modular home costs in the UK: from-prices for every Trident model across Shell delivered, Shell + Assembly and Turnkey base, with price per m².',
+  },
+  '/modular-homes-for-sale/': {
+    title: 'Modular Homes for Sale UK — Buy a Prefab House | Trident Modular',
+    description:
+      'Buy a factory-built modular home in the UK: the Trident range by class, how the three purchase options work, and what a Turnkey base handover includes.',
+  },
+  '/factory-built-homes/': {
+    title: 'Factory-Built & Ready-Made Homes UK | Trident Modular',
+    description:
+      'What factory-built means at Trident: timber-frame panels made under quality control, ready-made garden buildings, and how they differ from mobile homes.',
+  },
+  '/self-build-modular-homes/': {
+    title: 'Self-Build Modular Homes UK — Build Your Own Prefab | Trident Modular',
+    description:
+      'Self-build with a factory-made shell: what Shell delivered brings to site, what stays with you, which models suit self-builders and how BOPAS helps.',
+  },
+  '/london/': {
+    title: 'Modular Homes & Garden Rooms London | Trident Modular',
+    description:
+      'Trident Modular in London: a registered office in EC4, Greater London delivery included in house prices, and garden rooms built in Chiswick and Wimbledon.',
   },
   '/houses/': {
     title: 'Modular Homes UK: Full Range & Prices | Trident Modular',
@@ -268,14 +285,6 @@ export function floorAreaText(home: Home): string {
   return areas.length > 1 ? `${Math.min(...areas)}–${Math.max(...areas)} m²` : `${areas[0]} m²`
 }
 
-/** The headline "from" price: the first rung of the model's ladder. */
-function fromPriceOf(slug: string): number | undefined {
-  const pricing = pricingFor(slug)
-  if (!pricing || pricing.onRequest) return undefined
-  const first = pricing.options[0]?.price
-  return first === null || first === undefined ? undefined : first
-}
-
 /**
  * "<Model> — <descriptor> | Trident Modular". No price anywhere in the title
  * or description; see model-seo.ts for the per-model copy.
@@ -319,20 +328,17 @@ export function categorySeo(
   term: CategoryTerm,
   homes: Home[],
 ): { title: string; description: string } {
-  const prices = homes.map((h) => fromPriceOf(h.slug)).filter((p): p is number => p !== undefined)
-  const from = prices.length ? Math.min(...prices) : undefined
-  const fromClause = from !== undefined ? `, from ${gbp(from)}` : ''
-
+  // No prices in titles or descriptions, sitewide. The "{from}" slot in the
+  // templates is kept for the day that changes.
   const template = categoryTitles[slug] ?? `${term.name}{from}`
-  const title = withBrand(template.replace('{from}', fromClause))
+  const title = withBrand(template.replace('{from}', ''))
 
   // Areas as the model pages state them: price-guide sizes where a model has
   // them, otherwise the catalogue figure.
   const areas = homes.flatMap((h) => detailFor(h.slug)?.variants.map((v) => v.area) ?? [h.area]).filter(Boolean)
   const areaText = areas.length ? `, ${Math.min(...areas)}–${Math.max(...areas)} m²` : ''
   const count = `${homes.length} ${homes.length === 1 ? 'model' : 'models'}${areaText}`
-  const price = from !== undefined ? `, from ${gbp(from)} excl. VAT` : ''
-  const description = `${categoryLeads[slug] ?? term.blurb} ${count}${price}.`
+  const description = `${categoryLeads[slug] ?? term.blurb} ${count}.`
 
   return { title, description: clampDescription(description) }
 }

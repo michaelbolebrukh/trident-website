@@ -54,15 +54,14 @@ LEGACY_MODEL_TO_INDEX = [
 # Old page path -> where its traffic should now go.
 PAGE_MAP = {
     # Pages the new site serves at their old URL are absent from this map on
-    # purpose: they need no rule. Keeping the URL beats redirecting to a
+    # purpose: they need no rule. /london/ and /self-build-modular-homes/ are
+    # served again since September 2026 and must not be listed here. Keeping the URL beats redirecting to a
     # tidier one, so /about_us/, /contact-us/, /customise-your-build/,
     # /houses-type/ and every /houses/<slug>/ model page stay put.
     '/commercial/': '/customise-your-build/#support',
     '/eco-modular-homes/': '/customise-your-build/#sustainable',
     '/modular-building-company-uk/': '/about_us/',
-    '/self-build-modular-homes/': '/houses/',
     '/modular-home-cost-uk/': '/modular-homes-prices/',
-    '/london/': '/houses/',
     # The catalogue lives at /houses/ alongside the models it lists. The old
     # taxonomy index redirects into it; the per-category pages under it keep
     # their own URLs.

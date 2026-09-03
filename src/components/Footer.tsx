@@ -11,8 +11,12 @@ const homesLinks = [
 
 const modularHomesLinks = [
   { label: 'Modular Homes UK', href: routes.modularHomes },
+  { label: 'Modular Homes for Sale', href: routes.forSale },
+  { label: 'Factory-Built Homes', href: routes.factoryBuilt },
   { label: 'Kit Homes UK', href: routes.kitHomes },
+  { label: 'Self-Build Modular Homes', href: routes.selfBuild },
   { label: 'Modular Home Prices', href: routes.prices },
+  { label: 'London', href: routes.london },
   { label: 'Garden Rooms', href: categoryPath('Garden Rooms') },
   { label: 'Bungalows', href: categoryPath('Bungalows') },
   { label: '1.5 Storey Houses', href: categoryPath('1.5 Storey Houses') },

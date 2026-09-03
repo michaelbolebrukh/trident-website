@@ -2,9 +2,21 @@
 import { seoFor } from '../data/seo'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import { intro, principles, stages, accreditations } from '../data/technology'
-import { factoryPhoto, systemPhoto } from '../data/build-ups'
+import { factoryPhoto, systemPhoto, thicknesses } from '../data/build-ups'
 import BuildUps from '../components/BuildUps'
 import { routes } from '../lib/routes'
+
+// Static summary of the build-up data, so the layer system is in the HTML
+// without waiting for the interactive selector below it.
+const elements = ['External walls', 'Pitched roof', 'Flat roof', 'Floor']
+const insulationFor = (mm: number, element: string) => {
+  const layers = thicknesses.find((t) => t.mm === mm)?.buildUps.find((b) => b.element === element)?.layers ?? []
+  const main = layers.find((l) => l.name === 'Basalt wool insulation')?.spec
+  const counter = layers.find((l) => l.name === 'Counter-insulation basalt wool')?.spec
+  return main ? (counter ? `${main} + ${counter} counter-insulation` : `${main} wool`) : '—'
+}
+const frameFor = (mm: number, element: string) =>
+  thicknesses.find((t) => t.mm === mm)?.buildUps.find((b) => b.element === element)?.layers.find((l) => l.name === 'Load-bearing frame')?.spec ?? '—'
 
 const meta = seoFor('/technology/', 'Our Technology', 'A closed-panel timber frame system built to ISO 9001:2015, using C24 structural timber and non-combustible basalt wool insulation, with quality control in the factory rather than on site.')
 ---
@@ -161,6 +173,59 @@ const meta = seoFor('/technology/', 'Our Technology', 'A closed-panel timber fra
             </div>
           ))}
         </div>
+      </div>
+    </section>
+
+    {/* Layer system, static */}
+    <section class="bg-light border-t border-border py-20 lg:py-24">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <div class="max-w-2xl mb-10">
+          <p class="text-xs font-semibold font-display uppercase tracking-[0.2em] text-gold mb-3">Offsite construction</p>
+          <h2 class="font-display font-bold text-navy text-3xl lg:text-4xl mb-4">Timber frame modular construction UK: the four specifications</h2>
+          <p class="text-muted text-base leading-relaxed">
+            The same layer set runs through the 100, 150 and 200 mm specifications; the 250 mm option adds a counter-insulated layer across the studs. The table shows frame depth and insulation for each element of the envelope.
+          </p>
+        </div>
+        <div class="overflow-x-auto rounded-2xl border border-border bg-white">
+          <table class="w-full text-sm">
+            <thead class="bg-navy text-white text-left">
+              <tr>
+                <th class="px-4 py-3 font-display">Specification</th>
+                <th class="px-4 py-3 font-display">Suited to</th>
+                {elements.map((e) => <th class="px-4 py-3 font-display whitespace-nowrap">{e}</th>)}
+              </tr>
+            </thead>
+            <tbody>
+              {thicknesses.map((t) => (
+                <tr class="border-t border-border align-top">
+                  <td class="px-4 py-3 font-display font-bold text-navy whitespace-nowrap">{t.mm} mm</td>
+                  <td class="px-4 py-3 text-muted min-w-[16rem]">{t.summary}</td>
+                  {elements.map((e) => (
+                    <td class="px-4 py-3 whitespace-nowrap">
+                      <span class="block text-navy font-semibold">{insulationFor(t.mm, e)}</span>
+                      <span class="block text-xs text-muted">{frameFor(t.mm, e)} frame</span>
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div class="grid md:grid-cols-3 gap-5 mt-10">
+          <div class="bg-white rounded-2xl border border-border p-6">
+            <h3 class="font-display font-bold text-navy mb-2">Offsite, then on site</h3>
+            <p class="text-sm text-muted leading-relaxed">Posts, beams, floors and panels are made at the production site with insulation, OSB sheathing, membranes and cladding already in place. On site the work is foundation, assembly and finishing.</p>
+          </div>
+          <div class="bg-white rounded-2xl border border-border p-6">
+            <h3 class="font-display font-bold text-navy mb-2">Closed timber frame panels</h3>
+            <p class="text-sm text-muted leading-relaxed">Load-bearing C24 softwood at 12–15% moisture content, OSB-3 as the stiffening diaphragm, Juta breather and vapour control membranes either side of the insulation.</p>
+          </div>
+          <div class="bg-white rounded-2xl border border-border p-6">
+            <h3 class="font-display font-bold text-navy mb-2">Quality control in the factory</h3>
+            <p class="text-sm text-muted leading-relaxed">Continuous checks at every stage of production and assembly, under ISO 9001:2015, with BOPAS accreditation of the system and a 60-year durability assessment.</p>
+          </div>
+        </div>
+        <p class="text-sm text-muted mt-8">Read the production story on <a href={routes.factoryBuilt} class="text-navy underline underline-offset-2 hover:text-gold">factory-built homes</a>, or see how the shell is bought on <a href={routes.kitHomes} class="text-navy underline underline-offset-2 hover:text-gold">kit homes</a>.</p>
       </div>
     </section>
 
