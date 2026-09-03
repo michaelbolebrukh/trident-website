@@ -1,0 +1,20 @@
+---
+/**
+ * Header band for the static landing pages: eyebrow, H1 and an intro
+ * paragraph, on the same light band the category pages use.
+ */
+interface Props {
+  eyebrow: string
+  title: string
+  intro: string
+}
+const { eyebrow, title, intro } = Astro.props
+---
+
+<div class="bg-light border-b border-border py-12">
+  <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+    <p class="text-xs font-semibold font-display uppercase tracking-[0.2em] text-gold mb-3">{eyebrow}</p>
+    <h1 class="font-display font-bold text-navy text-4xl lg:text-5xl mb-4">{title}</h1>
+    <p class="text-muted text-base max-w-3xl leading-relaxed">{intro}</p>
+  </div>
+</div>

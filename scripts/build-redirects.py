@@ -61,7 +61,7 @@ PAGE_MAP = {
     '/eco-modular-homes/': '/customise-your-build/#sustainable',
     '/modular-building-company-uk/': '/about_us/',
     '/self-build-modular-homes/': '/houses/',
-    '/modular-home-cost-uk/': '/houses/',
+    '/modular-home-cost-uk/': '/modular-homes-prices/',
     '/london/': '/houses/',
     # The catalogue lives at /houses/ alongside the models it lists. The old
     # taxonomy index redirects into it; the per-category pages under it keep

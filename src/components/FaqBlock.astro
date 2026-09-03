@@ -1,0 +1,42 @@
+---
+/**
+ * A subset of the FAQ page's questions, rendered statically with <details>
+ * so the answers are in the HTML and need no JavaScript. Questions are
+ * looked up by their exact text in src/data/faq.ts; a typo here throws at
+ * build time rather than silently dropping the item.
+ */
+import { faqs } from '../data/faq'
+import { routes } from '../lib/routes'
+
+interface Props {
+  title?: string
+  questions: string[]
+}
+const { title = 'Frequently asked questions', questions } = Astro.props
+
+const items = questions.map((q) => {
+  const found = faqs.find((f) => f.q === q)
+  if (!found) throw new Error(`FaqBlock: no FAQ with question "${q}"`)
+  return found
+})
+---
+
+<section class="border-t border-border py-14">
+  <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+    <h2 class="font-display font-bold text-navy text-2xl mb-6">{title}</h2>
+    <div class="space-y-2 max-w-3xl">
+      {items.map((f) => (
+        <details class="rounded-xl border border-border overflow-hidden group">
+          <summary class="cursor-pointer list-none flex items-start justify-between gap-4 px-5 py-4 hover:bg-light transition-colors font-semibold font-display text-navy text-sm leading-snug">
+            {f.q}
+            <span aria-hidden="true" class="text-muted shrink-0 mt-0.5 transition-transform group-open:rotate-180">▾</span>
+          </summary>
+          <p class="px-5 pb-5 bg-light text-sm text-muted leading-relaxed">{f.a}</p>
+        </details>
+      ))}
+    </div>
+    <p class="text-sm text-muted mt-6">
+      More answers on the <a href={routes.faq} class="text-navy underline underline-offset-2 hover:text-gold">full FAQ page</a>.
+    </p>
+  </div>
+</section>

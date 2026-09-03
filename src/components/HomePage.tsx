@@ -157,7 +157,7 @@ export default function HomePage() {
               className="font-display font-bold text-white leading-tight mb-6"
               style={{ fontSize: "clamp(38px, 5vw, 62px)" }}
             >
-              Modern modular homes, built around your vision.
+              Modular homes, built around your vision.
             </h1>
             <p className="text-white/70 text-lg leading-relaxed mb-8 max-w-lg">
               Energy-efficient homes, garden rooms and commercial spaces
@@ -306,6 +306,22 @@ export default function HomePage() {
             </>
             )}
           </div>
+        </div>
+      </section>
+
+      {/* ─── SECTION 1b: MODULAR HOMES UK LINKS ─── */}
+      <section className="bg-light border-b border-border">
+        <div className="max-w-[1280px] mx-auto px-6 lg:px-8 py-8 grid md:grid-cols-3 gap-4">
+          {[
+            { label: "Modular homes UK", desc: "What modular, prefab and pre-built mean, and the range by class.", href: routes.modularHomes },
+            { label: "Kit homes", desc: "The Shell delivered option: the factory-built house, erected by your team.", href: routes.kitHomes },
+            { label: "Prices and cost guide", desc: "From-prices for every model across all three purchase options.", href: routes.prices },
+          ].map((l) => (
+            <a key={l.href} href={l.href} className="group bg-white rounded-2xl border border-border p-5 hover:border-navy transition-colors">
+              <p className="font-display font-bold text-navy mb-1">{l.label} <span aria-hidden="true">→</span></p>
+              <p className="text-sm text-muted leading-relaxed">{l.desc}</p>
+            </a>
+          ))}
         </div>
       </section>
 

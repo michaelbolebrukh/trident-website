@@ -1,0 +1,169 @@
+---
+/**
+ * /kit-homes/ — the Shell delivered option productised.
+ *
+ * Scope wording is HOUSE_OPTIONS[0].desc verbatim; prices come from
+ * src/lib/price-guide.ts, which reads pricing.ts and model-details.ts.
+ */
+import { seoFor } from '../data/seo'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import PageHero from '../components/PageHero.astro'
+import FaqBlock from '../components/FaqBlock.astro'
+import CtaBand from '../components/CtaBand.astro'
+import { HOUSE_OPTIONS, STANDARD_EXCLUSIONS } from '../data/pricing'
+import { houseRows, guideRows, gbp } from '../lib/price-guide'
+import { routes } from '../lib/routes'
+
+const meta = seoFor('/kit-homes/', 'Kit Homes UK', '')
+const shell = HOUSE_OPTIONS[0]
+const priced = houseRows.filter((r) => !r.onRequest)
+const onRequest = houseRows.filter((r) => r.onRequest)
+
+const faqQuestions = [
+  'Do I need to prepare a foundation before you deliver?',
+  'Can I add services to a Base contract separately?',
+  'How long does delivery take after I place an order?',
+  'How far do you deliver?',
+  'Do the prices shown on the website include VAT?',
+]
+---
+
+<BaseLayout title={meta.title} description={meta.description}>
+  <PageHero
+    eyebrow="Option 01 · Shell delivered"
+    title="Kit Homes UK"
+    intro="A Trident kit home is the Shell delivered option: the factory-built house arrives on your site with cladding, roof covering where the model allows, windows and external doors fitted, ready for your own team to erect. If you are searching for a flat pack house or a self-assembly kit for a UK plot, this is the option to compare."
+  />
+
+  <article class="bg-white">
+    {/* Scope */}
+    <section class="max-w-[1280px] mx-auto px-6 lg:px-8 py-14 grid lg:grid-cols-2 gap-10">
+      <div>
+        <h2 class="font-display font-bold text-navy text-2xl mb-4">What a kit home includes</h2>
+        <p class="text-body leading-relaxed mb-4">{shell.desc}</p>
+        <p class="text-body leading-relaxed">
+          Kit houses UK-wide are the same product as the Shell + Assembly and Turnkey base options: the difference is only who unloads, erects and finishes. Every price on this page is a from price, excludes VAT and assumes delivery to Greater London.
+        </p>
+      </div>
+      <div class="rounded-2xl border border-border p-6 bg-light">
+        <h3 class="font-display font-bold text-navy mb-4">Not included in any option</h3>
+        <div class="grid sm:grid-cols-2 gap-5">
+          {STANDARD_EXCLUSIONS.map((g) => (
+            <div>
+              <p class="text-xs font-bold font-display uppercase tracking-widest text-muted mb-2">{g.title}</p>
+              <ul class="space-y-1.5">
+                {g.items.map((i) => <li class="text-sm text-body leading-snug">{i}</li>)}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* Models table */}
+    <section class="border-t border-border bg-light py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <h2 class="font-display font-bold text-navy text-2xl mb-2">Flat pack homes UK: models available as Shell delivered</h2>
+        <p class="text-muted text-sm mb-6 max-w-2xl">Shell delivered from-prices for each house, with the internal area the pricing sheet quotes. Prices exclude VAT.</p>
+        <div class="overflow-x-auto rounded-2xl border border-border bg-white">
+          <table class="w-full text-sm">
+            <thead class="bg-navy text-white text-left">
+              <tr>
+                <th class="px-4 py-3 font-display">Model</th>
+                <th class="px-4 py-3 font-display">Class</th>
+                <th class="px-4 py-3 font-display">Internal area</th>
+                <th class="px-4 py-3 font-display">Shell delivered from</th>
+              </tr>
+            </thead>
+            <tbody>
+              {priced.map((r) => (
+                <tr class="border-t border-border">
+                  <td class="px-4 py-3 font-display font-bold text-navy whitespace-nowrap"><a href={r.href} class="hover:text-gold">{r.home.name}</a></td>
+                  <td class="px-4 py-3 text-muted whitespace-nowrap">{r.home.category}</td>
+                  <td class="px-4 py-3 text-muted whitespace-nowrap">{r.area} m²</td>
+                  <td class="px-4 py-3 font-bold text-navy whitespace-nowrap">{gbp(r.options[0].price)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p class="text-sm text-muted mt-4">
+          Quoted on request: {onRequest.map((r, i) => (
+            <><a href={r.href} class="text-navy underline underline-offset-2 hover:text-gold">{r.home.name}</a>{i < onRequest.length - 1 ? ', ' : '.'}</>
+          ))} We come back with a firm proposal after reviewing the site.
+        </p>
+
+        <h3 class="font-display font-bold text-navy text-xl mt-10 mb-2">Garden buildings and the A-Frame</h3>
+        <p class="text-muted text-sm mb-4 max-w-2xl">These are priced per size from the 2026 price guides on their own ladder. The first rung is the factory kit: for garden buildings, delivered to your driveway to assemble yourself or with your own builder; for the A-Frame, delivered to your plot on three lorries for your team to erect.</p>
+        <div class="overflow-x-auto rounded-2xl border border-border bg-white">
+          <table class="w-full text-sm">
+            <thead class="bg-navy text-white text-left">
+              <tr>
+                <th class="px-4 py-3 font-display">Model</th>
+                <th class="px-4 py-3 font-display">Size priced</th>
+                <th class="px-4 py-3 font-display">Internal area</th>
+                <th class="px-4 py-3 font-display">Kit from</th>
+              </tr>
+            </thead>
+            <tbody>
+              {guideRows.map((r) => (
+                <tr class="border-t border-border">
+                  <td class="px-4 py-3 font-display font-bold text-navy whitespace-nowrap"><a href={r.href} class="hover:text-gold">{r.home.name}</a></td>
+                  <td class="px-4 py-3 text-muted">{r.note ?? 'One size'}</td>
+                  <td class="px-4 py-3 text-muted whitespace-nowrap">{r.area} m²</td>
+                  <td class="px-4 py-3 font-bold text-navy whitespace-nowrap">{gbp(r.options[0].price)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    {/* Comparison */}
+    <section class="border-t border-border py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <h2 class="font-display font-bold text-navy text-2xl mb-2">Self assembly kit homes compared with Shell + Assembly and Turnkey base</h2>
+        <p class="text-muted text-sm mb-8 max-w-2xl">Each option contains the one before it. Choose by how much of the build you want to manage.</p>
+        <div class="grid md:grid-cols-3 gap-5">
+          {HOUSE_OPTIONS.map((opt, i) => (
+            <div class={`rounded-2xl border p-6 flex flex-col ${i === 0 ? 'bg-navy border-navy' : 'bg-white border-border'}`}>
+              <p class="text-xs font-bold font-display tracking-[0.15em] uppercase mb-2 text-gold">Option {opt.n}</p>
+              <h3 class={`font-display font-bold text-lg mb-3 ${i === 0 ? 'text-white' : 'text-navy'}`}>{opt.label}</h3>
+              <p class={`text-sm leading-relaxed ${i === 0 ? 'text-white/70' : 'text-muted'}`}>{opt.desc}</p>
+            </div>
+          ))}
+        </div>
+        <p class="text-sm text-muted mt-6">
+          Prices for all three options are in the <a href={routes.prices} class="text-navy underline underline-offset-2 hover:text-gold">modular home price guide</a>. For the Shell + Assembly and Turnkey base routes see <a href={routes.installation} class="text-navy underline underline-offset-2 hover:text-gold">delivery and installation</a>.
+        </p>
+      </div>
+    </section>
+
+    {/* Delivery notes */}
+    <section class="border-t border-border bg-light py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <h2 class="font-display font-bold text-navy text-2xl mb-4">Delivery notes for kit houses</h2>
+        <div class="grid md:grid-cols-3 gap-5">
+          {[
+            ['Foundation first', 'Foundations are required before delivery. With Shell delivered the foundation, unloading and assembly are yours; floor cassettes are not included.'],
+            ['Where we deliver', 'Nationwide. House prices include delivery to Greater London; access, crane needs and any site restrictions are assessed at quotation.'],
+            ['When', 'Typical lead times from order to delivery are 12–20 weeks, confirmed with the production schedule at quotation stage.'],
+          ].map(([t, b]) => (
+            <div class="bg-white rounded-2xl border border-border p-6">
+              <h3 class="font-display font-bold text-navy mb-2">{t}</h3>
+              <p class="text-sm text-muted leading-relaxed">{b}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <FaqBlock title="Common questions" questions={faqQuestions} />
+
+    <CtaBand
+      title="Ready to price a kit?"
+      body="Pick a model, tell us the plot, and we will confirm the Shell delivered price for your site and delivery address."
+    />
+  </article>
+</BaseLayout>

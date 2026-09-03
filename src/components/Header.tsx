@@ -16,6 +16,14 @@ const homesMegaMenu = [
   { label: '2 Storey Houses', href: categoryPath('2 Storey Houses') },
 ]
 
+/** Second column of the Homes menu: the purchase routes. */
+const buyYourWay = [
+  { label: 'Modular Homes UK', href: routes.modularHomes },
+  { label: 'Kit Homes', href: routes.kitHomes },
+  { label: 'Prices & Cost Guide', href: routes.prices },
+  { label: 'Installation & Turnkey', href: routes.installation },
+]
+
 const bespokeDropdown = [
   { label: 'Bespoke Home Design', href: `${routes.bespoke}#design` },
   { label: 'The Bespoke Process', href: `${routes.bespoke}#process` },
@@ -34,12 +42,14 @@ const aboutDropdown = [
 
 const navLinks = [
   { label: 'Homes', href: routes.catalogue, hasMega: true },
+  { label: 'Prices', href: routes.prices },
   { label: 'Bespoke & Commercial', href: routes.bespoke, hasDropdown: true },
   { label: 'Installation', href: routes.installation },
   { label: 'About us', href: routes.about, hasAbout: true },
 ]
 
 const mobileLinks = [
+  { label: 'Prices', href: routes.prices },
   { label: 'Installation', href: routes.installation },
   { label: 'Contact', href: routes.contact },
 ]
@@ -218,11 +228,25 @@ export default function Header({ currentPath }: HeaderProps) {
                 onMouseEnter={cancelClose}
                 onMouseLeave={scheduleClose}
               >
-                <div className="max-w-[1280px] mx-auto px-8 py-8 grid grid-cols-4 gap-8">
+                <div className="max-w-[1280px] mx-auto px-8 py-8 grid grid-cols-5 gap-8">
                   <div className="col-span-1">
                     <p className="text-xs font-semibold font-display text-muted uppercase tracking-widest mb-4">Homes</p>
                     <div className="space-y-1">
                       {homesMegaMenu.map((item) => (
+                        <a
+                          key={item.label}
+                          href={item.href}
+                          className="block w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-body hover:text-navy hover:bg-light transition-colors"
+                        >
+                          {item.label}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="col-span-1">
+                    <p className="text-xs font-semibold font-display text-muted uppercase tracking-widest mb-4">Buy your way</p>
+                    <div className="space-y-1">
+                      {buyYourWay.map((item) => (
                         <a
                           key={item.label}
                           href={item.href}
@@ -319,6 +343,12 @@ export default function Header({ currentPath }: HeaderProps) {
                 {mobileHomesOpen && (
                   <div className="pl-4 space-y-1 mt-1">
                     {homesMegaMenu.map((item) => (
+                      <a key={item.label} href={item.href} className="block w-full text-left px-3 py-2 rounded-lg text-sm text-body hover:text-navy hover:bg-light transition-colors">
+                        {item.label}
+                      </a>
+                    ))}
+                    <p className="px-3 pt-3 pb-1 text-[10px] font-semibold font-display text-muted uppercase tracking-widest">Buy your way</p>
+                    {buyYourWay.map((item) => (
                       <a key={item.label} href={item.href} className="block w-full text-left px-3 py-2 rounded-lg text-sm text-body hover:text-navy hover:bg-light transition-colors">
                         {item.label}
                       </a>

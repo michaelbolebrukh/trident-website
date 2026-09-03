@@ -7,6 +7,7 @@ import { categoryTerms } from '../../data/categories'
 import { categorySeo } from '../../data/seo'
 import { categoryCrumbs } from '../../lib/breadcrumbs'
 import { breadcrumbSchema } from '../../lib/schema'
+import CategorySections from '../../components/CategorySections.astro'
 
 /**
  * Category pages keep the URL the old site used, /houses-type/<slug>/, so the
@@ -48,4 +49,5 @@ const crumbs = categoryCrumbs(term.name)
     isPrimary={isPrimary}
     client:afterpaint
   />
+  <CategorySections slug={slug} />
 </BaseLayout>

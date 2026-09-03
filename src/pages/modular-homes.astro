@@ -1,0 +1,205 @@
+---
+/**
+ * /modular-homes/ — the "modular homes UK" landing page.
+ *
+ * Every figure and claim is read from the data files: categories.ts and
+ * homes.ts for the range, technology.ts / build-ups.ts / accreditation.ts for
+ * the construction, pricing.ts for the three purchase options and the
+ * programme, faq.ts for the questions.
+ */
+import { seoFor } from '../data/seo'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import PageHero from '../components/PageHero.astro'
+import FaqBlock from '../components/FaqBlock.astro'
+import CtaBand from '../components/CtaBand.astro'
+import { allHomes, PRIMARY_CATEGORIES, houseImage } from '../data/homes'
+import { categoryTerms } from '../data/categories'
+import { principles } from '../data/technology'
+import { thicknesses } from '../data/build-ups'
+import { credentials } from '../data/accreditation'
+import { HOUSE_OPTIONS, PROGRAMME } from '../data/pricing'
+import { categoryPath, routes } from '../lib/routes'
+import { responsive, SIZES } from '../lib/images'
+
+const meta = seoFor('/modular-homes/', 'Modular Homes UK', '')
+
+const categories = Object.entries(categoryTerms)
+  .filter(([, term]) => PRIMARY_CATEGORIES.includes(term.name as (typeof PRIMARY_CATEGORIES)[number]))
+  .map(([slug, term]) => {
+    const homes = allHomes.filter((h) => h.categories.includes(term.name))
+    const areas = homes.map((h) => h.area)
+    return {
+      slug,
+      term,
+      homes,
+      href: categoryPath(term.name),
+      areaText: `${Math.min(...areas)}–${Math.max(...areas)} m²`,
+      cover: homes[0]?.thumb ? houseImage(homes[0].thumb) : undefined,
+    }
+  })
+
+// Basalt wool from 100 mm to 200 mm within the frame; the warmest option adds a
+// 50 mm counter-insulated layer (build-ups.ts, accreditation.ts).
+const inFrame = thicknesses.filter((t) => t.mm <= 200).map((t) => t.mm)
+const insulationRange = `${Math.min(...inFrame)} mm to ${Math.max(...inFrame)} mm`
+
+const faqQuestions = [
+  'What is the difference between a modular home and a frame-built home?',
+  'Can I adapt a standard design to suit my site?',
+  'Do residential homes require full planning permission?',
+  'How far do you deliver?',
+  'Are your buildings suitable for year-round use?',
+  'Do the prices shown on the website include VAT?',
+]
+---
+
+<BaseLayout title={meta.title} description={meta.description}>
+  <PageHero
+    eyebrow="Modular, prefab and pre-built"
+    title="Modular Homes UK"
+    intro={`Factory-built homes for the UK, from a ${Math.min(...allHomes.map((h) => h.area))} m² garden room to a ${Math.max(...allHomes.map((h) => h.area))} m² family house. Trident designs, manufactures and installs modular homes as one engineering system, to ISO 9001:2015, with the assurance lenders look for.`}
+  />
+
+  <article class="bg-white">
+    {/* Terminology */}
+    <section class="max-w-[1280px] mx-auto px-6 lg:px-8 py-14">
+      <div class="grid lg:grid-cols-2 gap-10 items-start">
+        <div>
+          <h2 class="font-display font-bold text-navy text-2xl mb-4">What modular, prefab and pre-built mean</h2>
+          <p class="text-body leading-relaxed mb-4">
+            Modular homes, prefab homes, prefabricated homes and pre-built homes are different names for the same idea: a house whose structure is manufactured in a factory and delivered to the plot, rather than built brick by brick in the weather. Searches for prefab homes UK, prefabricated homes UK or pre built homes UK all lead to the same product.
+          </p>
+          <p class="text-body leading-relaxed mb-4">
+            At Trident the structure is a closed timber-frame panel system. Posts, beams, floors and wall panels are made at the production site, each panel pre-assembled with its insulation, OSB sheathing, membranes and external cladding. The house is then assembled on a prepared foundation on your site.
+          </p>
+          <p class="text-body leading-relaxed">
+            The modular houses UK buyers can choose from at Trident fall into four classes, and each is available at three levels of completion. The <a href={routes.prices} class="text-navy underline underline-offset-2 hover:text-gold">price guide</a> sets out what each level costs.
+          </p>
+        </div>
+        <dl class="grid sm:grid-cols-2 gap-4">
+          {[
+            ['Modular home', 'A house made from factory-built sections or panels, assembled on site.'],
+            ['Prefab home', 'Short for prefabricated: manufactured off site, delivered ready to erect.'],
+            ['Prefabricated home', 'The same thing spelled out. Trident’s panels arrive with cladding, windows and doors fitted where the option includes them.'],
+            ['Pre-built home', 'Built before it reaches the plot. Site work is limited to foundation, assembly and finishing.'],
+          ].map(([term, def]) => (
+            <div class="rounded-2xl border border-border p-5 bg-light">
+              <dt class="font-display font-bold text-navy mb-1">{term}</dt>
+              <dd class="text-sm text-muted leading-relaxed">{def}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </section>
+
+    {/* Range */}
+    <section class="border-t border-border bg-light py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <h2 class="font-display font-bold text-navy text-2xl mb-2">The Trident range of modular houses</h2>
+        <p class="text-muted text-sm mb-8 max-w-2xl">{allHomes.length} models across four classes. Every one is built on the same insulated panel system.</p>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {categories.map((c) => (
+            <a href={c.href} class="group bg-white rounded-2xl overflow-hidden card-shadow card-shadow-hover transition-all duration-300 hover:-translate-y-1 flex flex-col">
+              {c.cover && (
+                <div class="h-40 overflow-hidden bg-light">
+                  <img {...responsive(c.cover, SIZES.card)} alt={c.term.name} loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                </div>
+              )}
+              <div class="p-5 flex flex-col flex-1">
+                <h3 class="font-display font-bold text-navy text-base mb-1">{c.term.name}</h3>
+                <p class="text-xs text-muted mb-3">{c.homes.length} models · {c.areaText}</p>
+                <p class="text-sm text-muted leading-relaxed flex-1">{c.term.blurb}</p>
+                <span class="mt-4 text-xs font-bold font-display text-navy">See {c.term.name.toLowerCase()} →</span>
+              </div>
+            </a>
+          ))}
+        </div>
+        <p class="text-sm text-muted mt-6">
+          Or <a href={routes.catalogue} class="text-navy underline underline-offset-2 hover:text-gold">browse all {allHomes.length} homes</a> and filter by floor area and bedrooms. Some models also carry a secondary tag: <a href={categoryPath('Log Houses')} class="text-navy underline underline-offset-2 hover:text-gold">log houses</a> and <a href={categoryPath('Tiny Homes & Pod Homes')} class="text-navy underline underline-offset-2 hover:text-gold">tiny homes and pod homes</a>.
+        </p>
+      </div>
+    </section>
+
+    {/* Why factory-built */}
+    <section class="border-t border-border py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <h2 class="font-display font-bold text-navy text-2xl mb-2">Why prefabricated homes are built in a factory</h2>
+        <p class="text-muted text-sm mb-8 max-w-2xl">
+          Panels are made to the design dimensions under continuous quality control, so what arrives on site fits first time. Basalt wool insulation runs from {insulationRange} within the frame depending on the specification, and the warmest option adds a 50 mm counter-insulated layer that breaks the thermal bridge through the studs.
+        </p>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {principles.map((p) => (
+            <div class="rounded-2xl border border-border p-6">
+              <h3 class="font-display font-bold text-navy mb-2">{p.title}</h3>
+              <p class="text-sm text-muted leading-relaxed">{p.body}</p>
+            </div>
+          ))}
+        </div>
+        <div class="mt-8 flex flex-wrap gap-3">
+          {credentials.map((c) => (
+            <span class="text-xs font-medium font-display text-navy bg-light border border-border px-3 py-1.5 rounded-full">
+              <strong>{c.label}</strong> · {c.detail}
+            </span>
+          ))}
+        </div>
+        <p class="text-sm text-muted mt-6">
+          Full layer schedules for every thickness are on the <a href={routes.technology} class="text-navy underline underline-offset-2 hover:text-gold">technology page</a>; accreditation on the <a href={routes.bopas} class="text-navy underline underline-offset-2 hover:text-gold">BOPAS page</a>.
+        </p>
+      </div>
+    </section>
+
+    {/* Delivery */}
+    <section class="border-t border-border bg-light py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-10">
+        <div>
+          <h2 class="font-display font-bold text-navy text-2xl mb-4">Pre-built houses delivered across the UK</h2>
+          <p class="text-body leading-relaxed mb-4">
+            We deliver nationwide. Delivery logistics are assessed at the quotation stage alongside crane requirements, vehicle access and any restrictions specific to your site. House prices assume delivery to Greater London; elsewhere is quoted per project.
+          </p>
+          <p class="text-body leading-relaxed">
+            Erection to weathertight takes 10–12 days on the typical programme, and internal fit-out under a Turnkey base contract 6–10 weeks, depending on the specification agreed. Read more on the <a href={routes.installation} class="text-navy underline underline-offset-2 hover:text-gold">delivery and installation page</a>.
+          </p>
+        </div>
+        <div class="bg-white rounded-2xl border border-border p-6">
+          <h3 class="font-display font-bold text-navy mb-4">Typical programme</h3>
+          <dl class="divide-y divide-border">
+            {PROGRAMME.map(([stage, time]) => (
+              <div class="flex justify-between gap-4 py-2.5 text-sm">
+                <dt class="text-body">{stage}</dt>
+                <dd class="text-navy font-semibold shrink-0">{time}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    {/* Three ways to buy */}
+    <section class="border-t border-border py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <h2 class="font-display font-bold text-navy text-2xl mb-2">Three ways to buy</h2>
+        <p class="text-muted text-sm mb-8 max-w-2xl">Same house, same factory. The options differ only in where our work stops and yours begins.</p>
+        <div class="grid md:grid-cols-3 gap-5">
+          {HOUSE_OPTIONS.map((opt, i) => (
+            <div class={`rounded-2xl border p-6 flex flex-col ${i === 2 ? 'bg-navy border-navy' : 'bg-white border-border'}`}>
+              <p class="text-xs font-bold font-display tracking-[0.15em] uppercase mb-2 text-gold">Option {opt.n}</p>
+              <h3 class={`font-display font-bold text-lg mb-3 ${i === 2 ? 'text-white' : 'text-navy'}`}>{opt.label}</h3>
+              <p class={`text-sm leading-relaxed ${i === 2 ? 'text-white/70' : 'text-muted'}`}>{opt.desc}</p>
+            </div>
+          ))}
+        </div>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <a href={routes.kitHomes} class="text-sm font-semibold font-display text-navy underline underline-offset-2 hover:text-gold">Kit homes: the Shell delivered option in detail →</a>
+          <a href={routes.prices} class="text-sm font-semibold font-display text-navy underline underline-offset-2 hover:text-gold">Full price guide for all three options →</a>
+        </div>
+      </div>
+    </section>
+
+    <FaqBlock title="Common questions" questions={faqQuestions} />
+
+    <CtaBand
+      title="Find the right model"
+      body="Browse the full range, or tell us about your plot and we will suggest the model and completion option that fits."
+    />
+  </article>
+</BaseLayout>
