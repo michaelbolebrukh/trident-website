@@ -2,6 +2,7 @@
 import { seoFor } from '../data/seo'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import InstallationPage from '../components/InstallationPage'
+import TurnkeySection from '../components/TurnkeySection.astro'
 
 const meta = seoFor('/installation/', 'Delivery & Installation', 'How a Trident build reaches your site — groundworks, delivery logistics, craning and assembly, through to base, shell or fully finished turnkey handover.')
 ---
@@ -11,4 +12,5 @@ const meta = seoFor('/installation/', 'Delivery & Installation', 'How a Trident 
   description={meta.description}
 >
   <InstallationPage client:afterpaint />
+  <TurnkeySection />
 </BaseLayout>

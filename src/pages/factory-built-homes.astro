@@ -1,0 +1,158 @@
+---
+/**
+ * /factory-built-homes/ — the production story. Layers and thicknesses from
+ * build-ups.ts, principles and stages from technology.ts, credentials from
+ * accreditation.ts, ready-made garden buildings from model-details.ts.
+ */
+import { seoFor } from '../data/seo'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import PageHero from '../components/PageHero.astro'
+import FaqBlock from '../components/FaqBlock.astro'
+import CtaBand from '../components/CtaBand.astro'
+import { thicknesses, factoryPhoto } from '../data/build-ups'
+import { stages, principles } from '../data/technology'
+import { credentials } from '../data/accreditation'
+import { modelDetails } from '../data/model-details'
+import { homeBySlug, houseImage } from '../data/homes'
+import { HOUSE_OPTIONS } from '../data/pricing'
+import { routes, productPath } from '../lib/routes'
+import { responsive, SIZES } from '../lib/images'
+
+const meta = seoFor('/factory-built-homes/', 'Factory-Built Homes UK', '')
+
+// The 100 mm external wall, layer by layer, as the worked example.
+const wall = thicknesses[0].buildUps.find((b) => b.element === 'External walls')!
+
+const gardenBuildings = ['base-model', 'premium-model', 'garden-studio']
+  .map((slug) => ({ slug, home: homeBySlug(slug)!, detail: modelDetails[slug] }))
+
+const faqQuestions = [
+  'Is a Trident modular home the same as a mobile home or static caravan?',
+  'Do you supply mobile homes, park homes or static caravans?',
+  'Can a Trident building be relocated later?',
+  'What is the difference between a modular home and a frame-built home?',
+  'Are your buildings suitable for year-round use?',
+]
+---
+
+<BaseLayout title={meta.title} description={meta.description}>
+  <PageHero
+    eyebrow="Made in the factory, assembled on site"
+    title="Factory-Built Homes UK"
+    intro="Every Trident building starts as closed timber-frame panels made at the production site, each one pre-assembled with its insulation, sheathing, membranes and cladding under continuous quality control. Factory built homes UK buyers receive are then assembled on a prepared foundation on their own plot."
+  />
+
+  <article class="bg-white">
+    {/* What factory-built means */}
+    <section class="max-w-[1280px] mx-auto px-6 lg:px-8 py-14 grid lg:grid-cols-2 gap-10 items-start">
+      <div>
+        <h2 class="font-display font-bold text-navy text-2xl mb-4">What factory-built means at Trident</h2>
+        <div class="space-y-4">
+          {stages.map((s) => (
+            <div class="flex gap-4">
+              <span class="font-display font-bold text-gold text-xl shrink-0 leading-none pt-0.5">{s.n}</span>
+              <div>
+                <h3 class="font-display font-bold text-navy mb-1">{s.title}</h3>
+                <p class="text-sm text-muted leading-relaxed">{s.body}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <figure class="m-0">
+        <div class="rounded-2xl overflow-hidden bg-light h-64 lg:h-80">
+          <img {...responsive(factoryPhoto, SIZES.half)} alt="Trident wall panels being assembled on the factory floor" loading="lazy" decoding="async" class="w-full h-full object-cover" />
+        </div>
+        <figcaption class="text-xs text-muted mt-3">Wall panels squared and sheathed under cover, before delivery.</figcaption>
+      </figure>
+    </section>
+
+    {/* Panel system */}
+    <section class="border-t border-border bg-light py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-10">
+        <div>
+          <h2 class="font-display font-bold text-navy text-2xl mb-4">The panel, layer by layer</h2>
+          <p class="text-muted text-sm mb-5">An external wall at the {thicknesses[0].mm} mm specification, from outside in. Thicker specifications deepen the frame and the insulation within it; the layer set is the same up to 200 mm, and the 250 mm option adds a counter-insulated layer.</p>
+          <ol class="bg-white rounded-2xl border border-border divide-y divide-border">
+            {wall.layers.map((l) => (
+              <li class="flex justify-between gap-4 px-5 py-2.5 text-sm">
+                <span class="text-body"><span class="text-muted mr-2">{l.n}</span>{l.name}</span>
+                <span class="text-navy font-semibold shrink-0">{l.spec}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+        <div>
+          <h2 class="font-display font-bold text-navy text-2xl mb-4">Four specifications</h2>
+          <dl class="space-y-3">
+            {thicknesses.map((t) => (
+              <div class="bg-white rounded-2xl border border-border p-4">
+                <dt class="font-display font-bold text-navy">{t.mm} mm</dt>
+                <dd class="text-sm text-muted leading-relaxed">{t.summary}</dd>
+              </div>
+            ))}
+          </dl>
+          <div class="mt-5 flex flex-wrap gap-2">
+            {credentials.map((c) => (
+              <span class="text-xs font-medium font-display text-navy bg-white border border-border px-3 py-1.5 rounded-full"><strong>{c.label}</strong> · {c.detail}</span>
+            ))}
+          </div>
+          <p class="text-sm text-muted mt-5">Every element at every thickness is on the <a href={routes.technology} class="text-navy underline underline-offset-2 hover:text-gold">technology page</a>.</p>
+        </div>
+      </div>
+    </section>
+
+    {/* Ready-made */}
+    <section class="border-t border-border py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <h2 class="font-display font-bold text-navy text-2xl mb-2">Ready made homes for the garden: quick to install</h2>
+        <p class="text-muted text-sm mb-8 max-w-2xl">The garden buildings are the most ready-made things we sell: a fixed set of sizes, priced per size, delivered as a factory kit, an erected weathertight shell or a finished building.</p>
+        <div class="grid md:grid-cols-3 gap-5">
+          {gardenBuildings.map(({ home, detail, slug }) => (
+            <a href={productPath(slug)} class="group bg-white rounded-2xl overflow-hidden card-shadow card-shadow-hover transition-all duration-300 hover:-translate-y-1 border border-border flex flex-col">
+              <div class="h-40 overflow-hidden bg-light">
+                <img {...(home.thumb ? responsive(houseImage(home.thumb), SIZES.card) : {})} alt={home.name} loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+              </div>
+              <div class="p-5">
+                <h3 class="font-display font-bold text-navy mb-1">{home.name}</h3>
+                <p class="text-xs text-muted mb-2">{detail.variants.length} sizes · {Math.min(...detail.variants.map((v) => v.area))}–{Math.max(...detail.variants.map((v) => v.area))} m² internal</p>
+                <p class="text-sm text-muted leading-relaxed">{detail.tagline}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+        <p class="text-sm text-muted mt-6">The {gardenBuildings[0].detail.packages[1].name} option for a garden building means we deliver and erect the weathertight shell on your site: walls, roof, windows, external door.</p>
+      </div>
+    </section>
+
+    {/* Portable & relocatable */}
+    <section class="border-t border-border bg-light py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-10">
+        <div>
+          <h2 class="font-display font-bold text-navy text-2xl mb-4">Portable and relocatable: what the system allows</h2>
+          <p class="text-body leading-relaxed mb-4">
+            A portable modular home UK buyers picture is usually a unit on wheels. That is not what Trident makes. Our buildings are panel kits assembled into a permanent structure on a foundation, and {HOUSE_OPTIONS[2].label} adds the helical ground screw foundation, basic electrics, plumbing and an air-source heat pump.
+          </p>
+          <p class="text-body leading-relaxed">
+            The nearest thing to a relocatable modular home in the range is a garden building: it sits on a ground screw foundation quoted separately after a site survey, and it arrives as a factory kit or an erected shell rather than as a fixed pour of concrete. Whether a specific building can move later is a question we answer per model and per site.
+          </p>
+        </div>
+        <div class="bg-white rounded-2xl border border-border p-6">
+          <h3 class="font-display font-bold text-navy mb-3">Why the system is rigid, not mobile</h3>
+          <ul class="space-y-3">
+            {principles.filter((p) => ['Spatial stiffness', 'Structural framework', 'Whole-system design'].includes(p.title)).map((p) => (
+              <li class="text-sm text-muted leading-relaxed"><strong class="text-navy">{p.title}.</strong> {p.body}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <FaqBlock title="Modular home or mobile home? Common questions" questions={faqQuestions} />
+
+    <CtaBand
+      title="See the factory-built range"
+      body="Every model, garden room to family house, is built on the same panel system. Browse the range or ask us which specification suits your site."
+    />
+  </article>
+</BaseLayout>

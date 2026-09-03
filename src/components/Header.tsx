@@ -19,7 +19,9 @@ const homesMegaMenu = [
 /** Second column of the Homes menu: the purchase routes. */
 const buyYourWay = [
   { label: 'Modular Homes UK', href: routes.modularHomes },
+  { label: 'For Sale', href: routes.forSale },
   { label: 'Kit Homes', href: routes.kitHomes },
+  { label: 'Self-Build', href: routes.selfBuild },
   { label: 'Prices & Cost Guide', href: routes.prices },
   { label: 'Installation & Turnkey', href: routes.installation },
 ]

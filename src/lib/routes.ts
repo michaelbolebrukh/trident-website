@@ -23,6 +23,10 @@ export const routes = {
   modularHomes: '/modular-homes/',
   kitHomes: '/kit-homes/',
   prices: '/modular-homes-prices/',
+  forSale: '/modular-homes-for-sale/',
+  factoryBuilt: '/factory-built-homes/',
+  selfBuild: '/self-build-modular-homes/',
+  london: '/london/',
 } as const
 
 export type Page = keyof typeof routes

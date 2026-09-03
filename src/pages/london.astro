@@ -1,0 +1,117 @@
+---
+/**
+ * /london/ — local landing page. Everything here is in the repo already:
+ * the registered office (schema.ts CONTACT), Greater London delivery
+ * (pricing.ts), London projects and their photographs (projects.ts), garden
+ * building sizes (model-details.ts) and the site-access wording used by the
+ * FAQ and pricing exclusions.
+ */
+import { seoFor } from '../data/seo'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import PageHero from '../components/PageHero.astro'
+import FaqBlock from '../components/FaqBlock.astro'
+import CtaBand from '../components/CtaBand.astro'
+import { projects } from '../data/projects'
+import { modelDetails } from '../data/model-details'
+import { homeBySlug } from '../data/homes'
+import { HOUSE_OPTIONS, STANDARD_EXCLUSIONS } from '../data/pricing'
+import { CONTACT } from '../lib/schema'
+import { routes, productPath } from '../lib/routes'
+import { responsive, SIZES } from '../lib/images'
+
+const meta = seoFor('/london/', 'Modular Homes in London', '')
+
+const londonProjects = projects.filter((p) => /London/.test(p.location))
+const gardenBuildings = ['base-model', 'premium-model', 'garden-studio'].map((slug) => ({ slug, home: homeBySlug(slug)!, detail: modelDetails[slug] }))
+const siteItems = STANDARD_EXCLUSIONS.find((g) => g.title === 'Site and groundworks')!.items
+
+const faqQuestions = [
+  'Do I need planning permission for a garden room?',
+  'How far do you deliver?',
+  'How long does installation take?',
+  'Do I need to prepare a foundation before you deliver?',
+  'How do I get a price?',
+]
+---
+
+<BaseLayout title={meta.title} description={meta.description}>
+  <PageHero
+    eyebrow="London"
+    title="Modular Homes in London"
+    intro={`Trident Modular is registered at ${CONTACT.address.streetAddress}, ${CONTACT.address.addressLocality} ${CONTACT.address.postalCode}. Our house prices include delivery to Greater London, and our garden rooms have gone into gardens from Chiswick to Wimbledon.`}
+  />
+
+  <article class="bg-white">
+    {/* Projects */}
+    <section class="max-w-[1280px] mx-auto px-6 lg:px-8 py-14">
+      <h2 class="font-display font-bold text-navy text-2xl mb-2">Garden rooms London: our installations</h2>
+      <p class="text-muted text-sm mb-8 max-w-2xl">Real projects from our own site records and commissioned photography. The only claim made about each is where it is.</p>
+      <div class="grid sm:grid-cols-2 gap-6">
+        {londonProjects.map((p) => (
+          <a href={routes.gallery} class="group bg-white rounded-2xl overflow-hidden card-shadow card-shadow-hover transition-all duration-300 hover:-translate-y-1 border border-border">
+            <div class="h-56 overflow-hidden bg-light">
+              <img {...responsive(p.cover, SIZES.half)} alt={`${p.name} — ${p.location}`} loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+            </div>
+            <div class="p-6">
+              <h3 class="font-display font-bold text-navy text-lg">{p.name}</h3>
+              <p class="text-xs font-semibold font-display uppercase tracking-[0.14em] text-gold mt-1 mb-3">{p.location}</p>
+              <p class="text-sm text-muted leading-relaxed">{p.blurb}</p>
+              <p class="text-xs text-muted mt-3">{p.photos.length} photographs in the gallery</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    {/* Garden rooms for London gardens */}
+    <section class="border-t border-border bg-light py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <h2 class="font-display font-bold text-navy text-2xl mb-2">Garden office London: sizes that fit a city garden</h2>
+        <p class="text-muted text-sm mb-8 max-w-2xl">Three insulated garden buildings, each in a fixed set of sizes. External dimensions are as printed in the 2026 price guides; the ground screw foundation is quoted separately after a site survey.</p>
+        <div class="grid md:grid-cols-3 gap-5">
+          {gardenBuildings.map(({ slug, home, detail }) => (
+            <a href={productPath(slug)} class="bg-white rounded-2xl border border-border p-6 hover:border-navy transition-colors">
+              <h3 class="font-display font-bold text-navy mb-1">{home.name}</h3>
+              <p class="text-sm text-muted leading-relaxed mb-3">{detail.tagline}</p>
+              <ul class="text-xs text-muted space-y-1">
+                {detail.variants.map((v) => <li><span class="text-navy font-medium">{v.name}</span> · {v.dimensions} mm · {v.area} m²</li>)}
+              </ul>
+              {detail.foundationFrom && <p class="text-xs text-muted mt-3">Ground screw foundation from £{detail.foundationFrom.toLocaleString('en-GB')}</p>}
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* Homes + delivery */}
+    <section class="border-t border-border py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-10">
+        <div>
+          <h2 class="font-display font-bold text-navy text-2xl mb-4">Modular homes London: delivery is in the price</h2>
+          <p class="text-body leading-relaxed mb-4">
+            Every house price in the range is a from price, excludes VAT and assumes delivery to Greater London. The {HOUSE_OPTIONS[0].label} option states it directly: {HOUSE_OPTIONS[0].desc}
+          </p>
+          <p class="text-body leading-relaxed">
+            See the full range on <a href={routes.forSale} class="text-navy underline underline-offset-2 hover:text-gold">modular homes for sale</a> and every price on the <a href={routes.prices} class="text-navy underline underline-offset-2 hover:text-gold">price guide</a>.
+          </p>
+        </div>
+        <div class="rounded-2xl border border-border p-6 bg-light">
+          <h3 class="font-display font-bold text-navy mb-3">Access and craning on a city site</h3>
+          <p class="text-sm text-body leading-relaxed mb-4">
+            Delivery logistics are assessed at the quotation stage alongside confirmation of crane requirements, vehicle access and any restrictions specific to your site. Our Kensington installation, on a tight central London site, was recorded from the wall panels going up by hand through to the finished building.
+          </p>
+          <p class="text-xs font-bold font-display uppercase tracking-widest text-muted mb-2">Outside the standard price</p>
+          <ul class="space-y-1.5">{siteItems.map((i) => <li class="text-sm text-body">{i}</li>)}</ul>
+          <p class="text-sm text-muted mt-4">More on the <a href={routes.installation} class="text-navy underline underline-offset-2 hover:text-gold">delivery and installation</a> page.</p>
+        </div>
+      </div>
+    </section>
+
+    <FaqBlock title="Common questions" questions={faqQuestions} />
+
+    <CtaBand
+      title="Planning a project in the capital?"
+      body="Tell us the postcode and what you have in mind. We assess access and delivery at quotation and come back with a proposal for your site."
+    />
+  </article>
+</BaseLayout>
