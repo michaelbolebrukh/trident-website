@@ -141,8 +141,18 @@ jobs:
             "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_PATH }}/"
 
       - name: Verify the deployed site responds
+        # The default URL follows the target: a production deploy is checked
+        # against the live domain, not the temporary one — which now serves a
+        # 403 and was failing this step after perfectly good deploys.
+        # A SITE_URL variable on the environment still overrides.
         run: |
-          url="${{ vars.SITE_URL || 'https://moccasin-quail-582986.hostingersite.com' }}"
+          if [ "${{ inputs.target }}" = "production" ]; then
+            default_url="https://tridentmodular.com"
+          else
+            default_url="https://moccasin-quail-582986.hostingersite.com"
+          fi
+          url="${{ vars.SITE_URL }}"
+          url="${url:-$default_url}"
           for attempt in 1 2 3 4 5; do
             code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 "$url/" || echo 000)
             if [ "$code" = "200" ]; then

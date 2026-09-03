@@ -1,7 +1,12 @@
 ---
+import { postImage } from '../../lib/post-image'
+import { seoFor } from '../../data/seo'
 import BaseLayout from '../../layouts/BaseLayout.astro'
+import Breadcrumbs from '../../components/Breadcrumbs.astro'
 import posts from '../../data/posts.json'
-import { routes } from '../../lib/routes'
+import logo from '../../assets/logo__1_.svg'
+import { postCrumbs } from '../../lib/breadcrumbs'
+import { articleSchema, breadcrumbSchema } from '../../lib/schema'
 
 export function getStaticPaths() {
   return posts.map((post) => ({ params: { slug: post.slug }, props: { post } }))
@@ -21,42 +26,30 @@ const readMinutes = Math.max(1, Math.round(post.words / 200))
 const index = posts.findIndex((p) => p.slug === post.slug)
 const more = posts.filter((_, i) => i !== index).slice(0, 3)
 
-// Article schema. Google uses it for the byline and date in results.
-const schema = {
-  '@context': 'https://schema.org',
-  '@type': 'BlogPosting',
-  headline: post.title,
-  datePublished: post.date,
-  dateModified: post.date,
-  description: post.seoDescription || post.excerpt,
-  image: post.image ?? undefined,
-  author: { '@type': 'Organization', name: 'Trident Modular' },
-  publisher: {
-    '@type': 'Organization',
-    name: 'Trident Modular',
-    url: 'https://tridentmodular.com/',
-  },
-  mainEntityOfPage: new URL(`/blog/${post.slug}/`, Astro.site).toString(),
-}
+// Shown only when we hold the file locally; see src/lib/post-image.ts.
+const heroImage = postImage(post.image)
+
+const meta = seoFor(`/blog/${post.slug}/`, post.title, post.seoDescription || post.excerpt)
+
+const crumbs = postCrumbs(post.title, post.slug)
+const schema = [
+  articleSchema(
+    { slug: post.slug, title: post.title, date: post.date, description: meta.description, image: heroImage },
+    logo.src,
+  ),
+  breadcrumbSchema(crumbs),
+]
 ---
 
 <BaseLayout
-  title={post.seoTitle || `${post.title} | Trident Modular`}
-  description={post.seoDescription || post.excerpt}
-  image={post.image ?? undefined}
+  title={meta.title}
+  description={meta.description}
+  image={heroImage}
+  schema={schema}
+  preloadImage={heroImage ? { href: heroImage } : undefined}
 >
-  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
-
   <article class="bg-white">
-    <div class="bg-light border-b border-border py-3">
-      <div class="max-w-[1280px] mx-auto px-6 lg:px-8 flex items-center gap-2 text-xs text-muted">
-        <a href={routes.home} class="hover:text-navy transition-colors">Home</a>
-        <span>/</span>
-        <a href={routes.blog} class="hover:text-navy transition-colors">Blog</a>
-        <span>/</span>
-        <span class="text-navy font-medium">{post.title}</span>
-      </div>
-    </div>
+    <Breadcrumbs crumbs={crumbs} />
 
     <header class="max-w-3xl mx-auto px-6 lg:px-8 pt-12 pb-8">
       <p class="text-xs font-semibold font-display uppercase tracking-[0.2em] text-gold mb-3">
@@ -72,13 +65,14 @@ const schema = {
       </div>
     </header>
 
-    {post.image && (
+    {heroImage && (
       <div class="max-w-4xl mx-auto px-6 lg:px-8 mb-10">
         <img
-          src={post.image}
+          src={heroImage}
           alt={post.title}
           class="w-full rounded-2xl"
           loading="eager"
+          fetchpriority="high"
         />
       </div>
     )}
@@ -96,10 +90,10 @@ const schema = {
               href={`/blog/${p.slug}/`}
               class="group bg-white rounded-2xl overflow-hidden card-shadow card-shadow-hover transition-all duration-300 hover:-translate-y-1"
             >
-              {p.image && (
+              {postImage(p.image) && (
                 <div class="h-40 overflow-hidden bg-light">
                   <img
-                    src={p.image}
+                    src={postImage(p.image)}
                     alt={p.title}
                     loading="lazy"
                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"

@@ -1,23 +1,30 @@
-/** Canonical URL for every page. The Figma Make export routed via React state,
- *  so every page shared a single URL; these paths replace that. */
+/**
+ * Canonical URL for every page. The Figma Make export routed via React state,
+ * so every page shared a single URL; these paths replace that.
+ *
+ * Where tridentmodular.com already had the page, we keep its exact URL rather
+ * than a tidier one and a redirect. A 301 passes most of a page's standing but
+ * not all of it, and these are the pages the business ranks on — so /about_us/
+ * and /customise-your-build/ stay as they are, warts and all.
+ */
 export const routes = {
   home: '/',
-  catalogue: '/catalogue/',
+  catalogue: '/houses/',
   installation: '/installation/',
-  bespoke: '/bespoke/',
+  bespoke: '/customise-your-build/',
   gallery: '/gallery/',
-  about: '/about/',
+  about: '/about_us/',
   technology: '/technology/',
   bopas: '/bopas-and-certificates/',
   blog: '/blog/',
   faq: '/faq/',
-  contact: '/contact/',
+  contact: '/contact-us/',
 } as const
 
 export type Page = keyof typeof routes
 
 /** Product detail pages are generated per model from src/data/homes.ts. */
-export const productPath = (slug: string) => `/catalogue/${slug}/`
+export const productPath = (slug: string) => `/houses/${slug}/`
 
 export const slugify = (name: string) =>
   name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')

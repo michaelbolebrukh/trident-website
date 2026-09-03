@@ -26,8 +26,17 @@ export const IMAGE_PLACEHOLDER = '/images/placeholder.svg'
  * Paths with no local copy fall back to a placeholder rather than a broken
  * image; see docs/missing-images.txt for what still needs supplying.
  */
-export const houseImage = (path: string | null | undefined): string =>
-  (path && (imageMap as Record<string, string>)[path]) || IMAGE_PLACEHOLDER
+export const houseImage = (path: string | null | undefined): string => {
+  if (!path) return IMAGE_PLACEHOLDER
+  // Already a site-absolute path: an override in overrides.ts points straight
+  // at a file we hold, rather than at a path from the WordPress export.
+  if (path.startsWith('/')) return path
+  return (imageMap as Record<string, string>)[path] || IMAGE_PLACEHOLDER
+}
+
+/** True when a path has a local file behind it, however it is written. */
+const resolves = (path: string | null | undefined): boolean =>
+  Boolean(path && (path.startsWith('/') || (imageMap as Record<string, string>)[path]))
 
 /**
  * Bedroom and bathroom counts come from the catalogue's room schedules where
@@ -37,11 +46,16 @@ export const houseImage = (path: string | null | undefined): string =>
 export const allHomes: Home[] = generatedHomes.map((home) => {
   const merged = applyOverride(home)
   const spec = specFor(merged.slug)
-  if (!spec) return merged
+
+  // Drop gallery entries with no local file rather than tiling the strip with
+  // placeholders.
+  const gallery = merged.gallery.filter(resolves)
+
   return {
     ...merged,
-    bedrooms: spec.bedrooms || merged.bedrooms,
-    bathrooms: spec.bathrooms || merged.bathrooms,
+    gallery,
+    bedrooms: spec?.bedrooms || merged.bedrooms,
+    bathrooms: spec?.bathrooms || merged.bathrooms,
   }
 })
 

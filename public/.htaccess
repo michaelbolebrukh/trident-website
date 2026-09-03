@@ -6,6 +6,17 @@
   Header always set X-Frame-Options "SAMEORIGIN"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+
+  # Keep redirects short-lived while the site is migrating.
+  #
+  # A 301 is cacheable indefinitely by default, in the browser and at the
+  # edge. That bites when a URL map changes: staging had served
+  # /houses/<slug>/ -> /catalogue/<slug>/, and once the map was inverted the
+  # cached copies of that redirect met the new /catalogue/ -> /houses/ rule
+  # and looped. Ten minutes is long enough to spare the round trip and short
+  # enough that a correction takes effect the same day.
+  Header always set Cache-Control "max-age=600" \
+    "expr=%{REQUEST_STATUS} >= 300 && %{REQUEST_STATUS} < 400"
 </IfModule>
 
 # ─── Compression ───
@@ -63,37 +74,79 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
-  # 23 models moved from /houses/<slug>/ to /catalogue/<slug>/.
-  RewriteRule ^houses/([^/]+)/?$ /catalogue/$1/ [R=301,L]
+  # All 23 models keep their /houses/<slug>/ URL, so no
+  # rule is needed for them. /catalogue/ was used while the site was in
+  # development and is folded back in here.
+  RewriteRule ^catalogue/([^/]+)/?$ /houses/$1/ [R=301,L]
+  RewriteRule ^catalogue/?$ /houses/ [R=301,L]
+  RewriteRule ^about/?$ /about_us/ [R=301,L]
+  RewriteRule ^contact/?$ /contact-us/ [R=301,L]
+  RewriteRule ^bespoke/?$ /customise-your-build/ [R=301,L]
 
   # 24 blog posts lost their placeholder category segment.
   RewriteRule ^blog/uncategorized-en_gb/(.+)$ /blog/$1 [R=301,L]
 
+  # Model slugs from the pre-2026 site.
+  RewriteRule ^houses/country-house-63/?$ /houses/country/ [R=301,L]
+  RewriteRule ^houses/family-house-60/?$ /houses/family-house/ [R=301,L]
+  RewriteRule ^houses/forest-house-59/?$ /houses/forest-house/ [R=301,L]
+  RewriteRule ^houses/lake-house-72/?$ /houses/lake/ [R=301,L]
+  RewriteRule ^houses/mediterranean-double-52/?$ /houses/mediterranean-double-house/ [R=301,L]
+  RewriteRule ^houses/mediterranean-single-26/?$ /houses/mediterranean-single-house/ [R=301,L]
+  RewriteRule ^houses/mediterraneanhouse-28/?$ /houses/mediterranean-single-house/ [R=301,L]
+  RewriteRule ^houses/self-contained-garden-studio/?$ /houses/garden-studio/ [R=301,L]
+  RewriteRule ^houses/the-residence-140/?$ /houses/the-residence/ [R=301,L]
+  RewriteRule ^houses/granny-annex-44/?$ /houses/ [R=301,L]
+  RewriteRule ^houses/the-urban-loft-cube/?$ /houses/ [R=301,L]
+  RewriteRule ^houses/the-zen-bungalow/?$ /houses/ [R=301,L]
+
   # Pages that moved or were folded into another page.
-  RewriteRule ^about_us/?$ /about/ [R=301,L]
+  RewriteRule ^bopas-and-mortgages/?$ /bopas-and-certificates/ [R=301,L]
+  RewriteRule ^cart/?$ / [R=301,L]
   RewriteRule ^category/?$ /blog/ [R=301,L]
-  RewriteRule ^commercial/?$ /bespoke/#support [R=301,L]
-  RewriteRule ^contact-us/?$ /contact/ [R=301,L]
-  RewriteRule ^customise-your-build/?$ /bespoke/ [R=301,L]
-  RewriteRule ^eco-modular-homes/?$ /bespoke/#sustainable [R=301,L]
-  RewriteRule ^example-product-page/?$ /catalogue/ [R=301,L]
+  RewriteRule ^checkout/?$ / [R=301,L]
+  RewriteRule ^commercial/?$ /customise-your-build/#support [R=301,L]
+  RewriteRule ^cookie-policy-eu/?$ /cookie-policy/ [R=301,L]
+  RewriteRule ^cookie-policy-uk/?$ /cookie-policy/ [R=301,L]
+  RewriteRule ^download/?$ /houses/ [R=301,L]
+  RewriteRule ^eco-modular-homes/?$ /customise-your-build/#sustainable [R=301,L]
+  RewriteRule ^example-product-page/?$ /houses/ [R=301,L]
+  RewriteRule ^get-a-quote/?$ /contact-us/ [R=301,L]
   RewriteRule ^gotovi-proyekty-karkasnyh-budynkiv/?$ /gallery/ [R=301,L]
   RewriteRule ^gotovi-proyekty-modulnyh-budynkiv/?$ /gallery/ [R=301,L]
-  RewriteRule ^houses-type/?$ /catalogue/ [R=301,L]
-  RewriteRule ^installation/garden-office-with-electrics/?$ /catalogue/garden-studio/ [R=301,L]
+  RewriteRule ^homepage/?$ / [R=301,L]
+  RewriteRule ^houses-type/?$ /houses/ [R=301,L]
+  RewriteRule ^installation/garden-office-with-electrics/?$ /houses/garden-studio/ [R=301,L]
+  RewriteRule ^installation/installation-of-a-garden-room-with-electricity/?$ /installation/ [R=301,L]
   RewriteRule ^installation/our-solution/?$ /installation/ [R=301,L]
   RewriteRule ^installation/permissions-for-modular-building/?$ /faq/ [R=301,L]
-  RewriteRule ^london/?$ /catalogue/ [R=301,L]
-  RewriteRule ^modular-building-company-uk/?$ /about/ [R=301,L]
-  RewriteRule ^modular-home-cost-uk/?$ /catalogue/ [R=301,L]
-  RewriteRule ^proyektuvannya/?$ /bespoke/ [R=301,L]
-  RewriteRule ^self-build-modular-homes/?$ /catalogue/ [R=301,L]
+  RewriteRule ^london/?$ /houses/ [R=301,L]
+  RewriteRule ^modular-building-company-uk/?$ /about_us/ [R=301,L]
+  RewriteRule ^modular-home-cost-uk/?$ /houses/ [R=301,L]
+  RewriteRule ^my-account/?$ / [R=301,L]
+  RewriteRule ^proyektuvannya/?$ /customise-your-build/ [R=301,L]
+  RewriteRule ^self-build-modular-homes/?$ /houses/ [R=301,L]
+  RewriteRule ^shop/?$ /houses/ [R=301,L]
   RewriteRule ^tag/?$ /blog/ [R=301,L]
   RewriteRule ^vyrobnycztvo/?$ /technology/ [R=301,L]
 
   # 10 case studies are not carried over individually;
   # the gallery replaces them.
   RewriteRule ^case-study/(.*)$ /gallery/ [R=301,L]
+
+  # The old tag archive under /houses-tag/ has no equivalent.
+  RewriteRule ^houses-tag(/.*)?$ /houses/ [R=301,L]
+
+  # WordPress appended /feed/ to every archive and single. Send each
+  # back to the page it belonged to. (.+) not (.*), so a bare /feed/
+  # cannot produce a doubled slash; it is handled on the line after.
+  RewriteRule ^(.+)/feed/?$ /$1/ [R=301,L]
+  RewriteRule ^feed/?$ / [R=301,L]
+
+  # WordPress internals. These are gone for good rather than moved, so
+  # 410 tells a crawler to drop them instead of retrying a 404.
+  RewriteRule ^wp-content(/.*)?$ - [G,L]
+  RewriteRule ^wp-json(/.*)?$ - [G,L]
 </IfModule>
 # Astro emits the 404 as /404.html, not a directory-style route.
 ErrorDocument 404 /404.html

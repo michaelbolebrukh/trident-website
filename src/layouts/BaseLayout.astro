@@ -3,6 +3,10 @@ import '../styles/global.css'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import CatalogueDownload from '../components/CatalogueDownload'
+import logo from '../assets/logo__1_.svg'
+import montserratLatin from '@fontsource-variable/montserrat/files/montserrat-latin-wght-normal.woff2?url'
+import interLatin from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url'
+import { organizationSchema, webSiteSchema } from '../lib/schema'
 
 interface Props {
   title: string
@@ -11,9 +15,28 @@ interface Props {
   canonical?: string
   image?: string
   noindex?: boolean
+  /**
+   * Page-specific JSON-LD blocks (Product, BreadcrumbList, Article, FAQPage).
+   * Organization and WebSite are emitted on every page regardless.
+   */
+  schema?: unknown[]
+  /**
+   * The page's largest above-the-fold image, for pages that render it in
+   * Astro markup. React 19 emits its own preload for any <img> it renders
+   * with fetchPriority="high", so islands do not need this.
+   */
+  preloadImage?: { href: string; srcSet?: string; sizes?: string }
 }
 
-const { title, description, canonical, image = '/og-default.jpg', noindex = false } = Astro.props
+const {
+  title,
+  description,
+  canonical,
+  image = '/og-default.jpg',
+  noindex = false,
+  schema = [],
+  preloadImage,
+} = Astro.props
 
 const canonicalURL = new URL(canonical ?? Astro.url.pathname, Astro.site)
 const imageURL = new URL(image, Astro.site)
@@ -21,6 +44,8 @@ const imageURL = new URL(image, Astro.site)
 // Staging deploys set PUBLIC_NOINDEX=1 so the temporary Hostinger domain
 // never competes with tridentmodular.com in search results.
 const blockIndexing = noindex || import.meta.env.PUBLIC_NOINDEX === '1'
+
+const jsonLd = [organizationSchema(logo.src), webSiteSchema(), ...schema]
 ---
 
 <!doctype html>
@@ -44,23 +69,77 @@ const blockIndexing = noindex || import.meta.env.PUBLIC_NOINDEX === '1'
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    {/* Fonts are self-hosted (see global.css); preloading the two latin faces
+        lets them arrive alongside the stylesheet instead of after it. */}
+    <link rel="preload" as="font" type="font/woff2" href={montserratLatin} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={interLatin} crossorigin />
+
+    {preloadImage && (
+      <link
+        rel="preload"
+        as="image"
+        href={preloadImage.href}
+        imagesrcset={preloadImage.srcSet}
+        imagesizes={preloadImage.sizes}
+        fetchpriority="high"
+      />
+    )}
+
+    <slot name="head" />
+
+    {jsonLd.map((block) => (
+      <script is:inline type="application/ld+json" set:html={JSON.stringify(block)} />
+    ))}
   </head>
   <body>
     <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:m-2 focus:rounded focus:bg-navy focus:px-4 focus:py-2 focus:text-white">
       Skip to content
     </a>
     <div class="min-h-screen flex flex-col">
-      {/* Interactive: sticky-scroll state, mega menu, mobile drawer. */}
-      <Header currentPath={Astro.url.pathname} client:load />
+      {/* Interactive: sticky-scroll state, mega menu, mobile drawer. Hydrates
+          after the first paint so the React bundle never delays it. */}
+      <Header currentPath={Astro.url.pathname} client:afterpaint />
       <main id="main" class="flex-1">
         <slot />
       </main>
       {/* Static markup, ships no JavaScript. */}
       <Footer />
-      {/* Shared lead-capture dialog for every catalogue download button. */}
-      <CatalogueDownload client:idle />
+      {/* Shared lead-capture dialog for every catalogue download button.
+          After paint, not idle: an idle callback can fire before the first
+          frame, and this island would then pull React in ahead of the hero. */}
+      <CatalogueDownload client:afterpaint />
     </div>
+
+    {/* Statcounter analytics (project 13352535, invisible mode). is:inline
+        keeps Astro from bundling it — the snippet must run as supplied.
+        It sets a first-party cookie for unique-visit counting, which the
+        cookie policy declares. */}
+    <script is:inline type="text/javascript">
+      var sc_project = 13352535;
+      var sc_invisible = 1;
+      var sc_security = "766af23f";
+    </script>
+    <script
+      is:inline
+      type="text/javascript"
+      src="https://www.statcounter.com/counter/counter.js"
+      async
+    ></script>
+    <noscript>
+      <div class="statcounter">
+        <a
+          title="Web Analytics Made Easy - Statcounter"
+          href="https://statcounter.com/"
+          target="_blank"
+        >
+          <img
+            class="statcounter"
+            src="https://c.statcounter.com/13352535/0/766af23f/1/"
+            alt="Web Analytics Made Easy - Statcounter"
+            referrerpolicy="no-referrer-when-downgrade"
+          />
+        </a>
+      </div>
+    </noscript>
   </body>
 </html>

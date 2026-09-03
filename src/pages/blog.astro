@@ -1,11 +1,14 @@
 ---
+import { seoFor } from '../data/seo'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import BlogPage from '../components/BlogPage'
+
+const meta = seoFor('/blog/', 'Blog & Insights', 'Guidance on modular construction, planning permission, build costs and specification, written by the Trident Modular team.')
 ---
 
 <BaseLayout
-  title="Blog & Insights | Trident Modular"
-  description="Guidance on modular construction, planning permission, build costs and specification, written by the Trident Modular team."
+  title={meta.title}
+  description={meta.description}
 >
-  <BlogPage client:load />
+  <BlogPage client:afterpaint />
 </BaseLayout>

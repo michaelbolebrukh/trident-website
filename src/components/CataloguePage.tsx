@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react'
+import { responsive, SIZES } from '../lib/images'
 import { allHomes, houseImage, categories } from '../data/homes'
 import { productPath } from '../lib/routes'
 import { pricingFor, formatShort } from '../lib/price-options'
@@ -156,7 +157,7 @@ export default function CataloguePage() {
                   >
                     {/* Image */}
                     <div className="h-48 overflow-hidden bg-light relative shrink-0">
-                      <img src={home.thumb ? houseImage(home.thumb) : undefined} alt={home.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                      <img {...(home.thumb ? responsive(houseImage(home.thumb), SIZES.card) : {})} alt={home.name} loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                       <div className="absolute top-3 left-3 flex gap-2">
                         <span className="bg-navy text-white text-[10px] font-bold font-display px-2.5 py-1 rounded uppercase tracking-widest">{home.category}</span>
                         
@@ -257,7 +258,7 @@ export default function CataloguePage() {
             <p className="font-display font-bold text-navy text-xl mb-1">Can't find the right layout?</p>
             <p className="text-muted text-sm">Adapt an existing model or create a bespoke design with our team.</p>
           </div>
-          <a href="/bespoke/"
+          <a href="/customise-your-build/"
             className="shrink-0 bg-navy text-white font-semibold font-display px-7 py-3.5 rounded-xl hover:bg-navy-mid transition-colors text-sm">
             Explore Bespoke Design
           </a>

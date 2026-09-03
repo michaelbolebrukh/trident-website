@@ -1,6 +1,7 @@
 import { houseImage, type Home } from '../data/homes'
 import { productPath, routes } from '../lib/routes'
 import { pricingFor, formatShort } from '../lib/price-options'
+import { responsive, SIZES } from '../lib/images'
 
 interface Props {
   name: string
@@ -18,13 +19,6 @@ export default function CategoryPage({ name, blurb, homes, isPrimary }: Props) {
     <div className="bg-white">
       <div className="bg-light border-b border-border py-12">
         <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
-          <div className="flex items-center gap-2 text-xs text-muted mb-4">
-            <a href={routes.home} className="hover:text-navy transition-colors">Home</a>
-            <span>/</span>
-            <a href={routes.catalogue} className="hover:text-navy transition-colors">All Homes</a>
-            <span>/</span>
-            <span className="text-navy font-medium">{name}</span>
-          </div>
           <p className="text-xs font-semibold font-display uppercase tracking-[0.2em] text-gold mb-3">
             {isPrimary ? 'Range' : 'Also available as'}
           </p>
@@ -49,9 +43,10 @@ export default function CategoryPage({ name, blurb, homes, isPrimary }: Props) {
               >
                 <div className="h-48 overflow-hidden bg-light shrink-0">
                   <img
-                    src={home.thumb ? houseImage(home.thumb) : undefined}
+                    {...(home.thumb ? responsive(houseImage(home.thumb), SIZES.card) : {})}
                     alt={home.name}
                     loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                 </div>

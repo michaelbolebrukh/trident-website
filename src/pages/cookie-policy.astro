@@ -1,0 +1,20 @@
+---
+import { seoFor } from '../data/seo'
+import LegalPage from '../layouts/LegalPage.astro'
+import { Content } from '../data/cookie-policy.md'
+
+const meta = seoFor(
+  '/cookie-policy/',
+  'Cookie Policy',
+  'How Trident Modular uses cookies and similar technologies on tridentmodular.com, and how you can control them.',
+)
+---
+
+<LegalPage
+  title="Cookie Policy"
+  metaTitle={meta.title}
+  description={meta.description}
+  updated="Last updated: 29 August 2026"
+>
+  <Content />
+</LegalPage>

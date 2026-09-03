@@ -5,9 +5,8 @@
  * source is Kadence blocks that flatten into hundreds of fragments, so the
  * prose was lifted out and the page rebuilt in the site's own design.
  *
- * Not carried over: the construction build-up diagrams (roof, walls and floor
- * layer specifications). Those are tables in the original and survive
- * extraction only as loose numbers, so they need supplying as artwork.
+ * The construction build-ups that also live on this page (roof, wall and floor
+ * layer specifications, plus their diagrams) are in build-ups.ts.
  */
 
 export const intro =

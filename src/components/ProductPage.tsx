@@ -1,12 +1,13 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { media } from '../data/media'
 import { allHomes, houseImage, type Home } from '../data/homes'
-import { productPath } from '../lib/routes'
+import { productPath, routes } from '../lib/routes'
 import { detailFor, PRICE_NOTE } from '../data/model-details'
 import { specFor } from '../data/catalogue-specs'
 import { pricingFor, formatPrice } from '../lib/price-options'
 import { STANDARD_EXCLUSIONS, AVAILABLE_UPGRADES } from '../data/pricing'
 import { plansFor } from '../data/floor-plans'
+import { responsive, SIZES } from '../lib/images'
 
 const IMGS = {
   ext1: media.heroExterior,
@@ -69,6 +70,39 @@ export default function ProductPage({ home }: { home: Home }) {
     },
   ]
 
+  // The sections this model's page actually renders, in page order. The nav
+  // is built from this rather than a fixed list, since pricing, sizes, plans
+  // and the room schedule are all conditional.
+  const sections = [
+    { id: 'overview', label: 'Overview' },
+    ...(pricing ? [{ id: 'pricing', label: 'Pricing' }] : []),
+    ...(detail ? [{ id: 'sizes', label: 'Sizes' }] : []),
+    ...(plans.length > 0 ? [{ id: 'floor-plans', label: 'Floor plans' }] : []),
+    ...(spec && spec.rooms.length > 1 ? [{ id: 'accommodation', label: 'Accommodation' }] : []),
+    { id: 'features', label: 'Extras' },
+    { id: 'completion', label: 'Completion' },
+    { id: 'specifications', label: 'Specifications' },
+  ]
+  const [activeSection, setActiveSection] = useState('overview')
+
+  useEffect(() => {
+    // Highlight the section whose heading most recently crossed the upper
+    // third of the viewport — steadier than raw intersection for long pages.
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) setActiveSection(entry.target.id)
+        }
+      },
+      { rootMargin: '-30% 0px -60% 0px' },
+    )
+    for (const sec of sections) {
+      const el = document.getElementById(sec.id)
+      if (el) observer.observe(el)
+    }
+    return () => observer.disconnect()
+  }, [])
+
   const [activeImage, setActiveImage] = useState(0)
   const [activeSpec, setActiveSpec] = useState<string | null>(null)
   const [completionTab, setCompletionTab] = useState<'Base' | 'Turnkey'>('Base')
@@ -76,19 +110,16 @@ export default function ProductPage({ home }: { home: Home }) {
 
   const images = home.gallery.map(houseImage)
 
+  // How the three ways to buy are named for this model, straight from its
+  // price source (pricing.ts for houses, the price guides for garden
+  // buildings), so the prose never drifts from the pricing table.
+  const optionNames = pricing
+    ? pricing.options.map((o) => o.label).reduce((acc, label, i, all) =>
+        i === 0 ? label : i === all.length - 1 ? `${acc} or ${label}` : `${acc}, ${label}`, '')
+    : null
+
   return (
     <div className="bg-white">
-
-      {/* Breadcrumb */}
-      <div className="bg-light border-b border-border py-3">
-        <div className="max-w-[1280px] mx-auto px-6 lg:px-8 flex items-center gap-2 text-xs text-muted">
-          <a href="/" className="hover:text-navy transition-colors">Home</a>
-          <span>/</span>
-          <a href="/catalogue/" className="hover:text-navy transition-colors">All Homes</a>
-          <span>/</span>
-          <span className="text-navy font-medium">{home.name}</span>
-        </div>
-      </div>
 
       {/* Main product section */}
       <div className="max-w-[1280px] mx-auto px-6 lg:px-8 py-10">
@@ -103,8 +134,9 @@ export default function ProductPage({ home }: { home: Home }) {
               onClick={() => setLightboxOpen(true)}
             >
               <img
-                src={images[activeImage]}
+                {...responsive(images[activeImage], SIZES.half)}
                 alt={`${home.name} — exterior view`}
+                fetchPriority={activeImage === 0 ? 'high' : undefined}
                 className="w-full h-full object-cover transition-opacity duration-300"
               />
               <div className="absolute top-4 right-4 bg-white/80 backdrop-blur-sm rounded-lg px-3 py-1.5 text-xs font-medium font-display text-navy flex items-center gap-1.5">
@@ -122,7 +154,7 @@ export default function ProductPage({ home }: { home: Home }) {
                     onClick={() => setActiveImage(i)}
                     className={`w-20 h-14 shrink-0 rounded-lg overflow-hidden border-2 transition-all ${i === activeImage ? 'border-gold' : 'border-transparent opacity-60 hover:opacity-100'}`}
                   >
-                    <img src={img} alt="" className="w-full h-full object-cover" />
+                    <img {...responsive(img, SIZES.thumb)} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover" />
                   </button>
                 ))}
               </div>
@@ -172,14 +204,14 @@ export default function ProductPage({ home }: { home: Home }) {
 
             {/* CTAs */}
             <div className="space-y-3">
-              <a href="/contact/"
+              <a href="/contact-us/"
                 className="block w-full text-center bg-gold text-navy font-bold font-display py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm">
                 Request a Quote
               </a>
               <button className="w-full border border-navy text-navy font-semibold font-display py-3.5 rounded-xl hover:bg-light transition-colors text-sm">
                 Download Specification
               </button>
-              <a href="/bespoke/"
+              <a href="/customise-your-build/"
                 className="block w-full text-center text-sm font-semibold font-display text-muted hover:text-navy transition-colors underline underline-offset-2 py-1">
                 Customise this home
               </a>
@@ -188,22 +220,47 @@ export default function ProductPage({ home }: { home: Home }) {
         </div>
       </div>
 
+      {/* ─── Section navigation ───
+          Sticks under the site header and follows the reader down the page.
+          Only sections this model actually has appear, and the one in view is
+          highlighted; see the IntersectionObserver above. */}
+      <nav
+        aria-label="Page sections"
+        className="sticky top-16 z-40 bg-white border-t border-b border-border"
+      >
+        <div className="max-w-[1280px] mx-auto px-6 lg:px-8 flex gap-1 overflow-x-auto">
+          {sections.map((sec) => (
+            <a
+              key={sec.id}
+              href={`#${sec.id}`}
+              className={`shrink-0 px-4 py-3.5 text-sm font-semibold font-display border-b-2 -mb-px transition-colors ${
+                activeSection === sec.id
+                  ? 'border-gold text-navy'
+                  : 'border-transparent text-muted hover:text-navy'
+              }`}
+            >
+              {sec.label}
+            </a>
+          ))}
+        </div>
+      </nav>
+
       {/* ─── A: Overview ─── */}
-      <div className="border-t border-border py-14">
+      <div id="overview" className="scroll-mt-32 border-t border-border py-14">
         <div className="max-w-[1280px] mx-auto px-6 lg:px-8 max-w-3xl">
           <h2 className="font-display font-bold text-navy text-2xl mb-4">Overview</h2>
           <p className="text-body text-base leading-relaxed mb-3">
             {detail?.intro ?? `The ${home.name} is part of our ${home.category.toLowerCase()} range, available from ${home.area} m² of internal floor area. ${home.desc}`}
           </p>
           <p className="text-body text-base leading-relaxed">
-            Available as a kit, weathertight shell or fully finished turnkey build, the {home.name} can be specified with a range of external cladding finishes, glazing configurations and sustainable upgrades including air-source heat pumps and roof-integrated solar panels.
+            {optionNames ? `Available as ${optionNames}, the ${home.name}` : `The ${home.name}`} can be specified with a range of external cladding finishes, glazing configurations and sustainable upgrades including air-source heat pumps and roof-integrated solar panels.
           </p>
         </div>
       </div>
 
       {/* ─── C5: The three packages ─── */}
       {pricing && (
-        <div className="border-t border-border bg-light py-14">
+        <div id="pricing" className="scroll-mt-32 border-t border-border bg-light py-14">
           <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
             <h2 className="font-display font-bold text-navy text-2xl mb-2">Three ways to buy</h2>
             <p className="text-muted text-sm mb-8 max-w-2xl">
@@ -249,29 +306,68 @@ export default function ProductPage({ home }: { home: Home }) {
               All prices from, excl. VAT. Delivery to Greater London included.
             </p>
 
-            <div className="grid md:grid-cols-2 gap-5 mt-8">
-              <details className="bg-white rounded-xl border border-border px-5 py-4">
-                <summary className="cursor-pointer font-display font-bold text-navy text-sm">
-                  What every price excludes
-                </summary>
-                <ul className="mt-3 space-y-1.5">
-                  {STANDARD_EXCLUSIONS.map((x) => (
-                    <li key={x} className="text-xs text-muted">{x}</li>
-                  ))}
-                </ul>
-              </details>
-              <details className="bg-white rounded-xl border border-border px-5 py-4">
-                <summary className="cursor-pointer font-display font-bold text-navy text-sm">
-                  Available upgrades
-                </summary>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {AVAILABLE_UPGRADES.map((u) => (
-                    <span key={u} className="text-xs text-muted bg-light border border-border rounded-full px-3 py-1">
-                      {u}
-                    </span>
+            {/* What the price does and does not cover.
+                Left open rather than folded into <details>: this is the part
+                of a quote buyers most need to see, and collapsing it hid it
+                from search engines too. */}
+            <div className="grid lg:grid-cols-2 gap-5 mt-10">
+              <section className="bg-white rounded-2xl border border-border overflow-hidden">
+                <header className="px-6 py-4 border-b border-border">
+                  <h3 className="font-display font-bold text-navy text-base">Not included</h3>
+                  <p className="text-xs text-muted mt-1">
+                    Applies to every price on this page. Budget for these separately.
+                  </p>
+                </header>
+                <div className="px-6 py-5 space-y-5">
+                  {STANDARD_EXCLUSIONS.map((group) => (
+                    <div key={group.title}>
+                      <h4 className="font-display font-semibold text-[11px] uppercase tracking-[0.14em] text-gold mb-2">
+                        {group.title}
+                      </h4>
+                      <ul className="space-y-1.5">
+                        {group.items.map((item) => (
+                          <li key={item} className="flex gap-2.5 text-sm text-body leading-relaxed">
+                            <span aria-hidden="true" className="text-muted shrink-0 mt-px">—</span>
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   ))}
                 </div>
-              </details>
+              </section>
+
+              <section className="bg-white rounded-2xl border border-border overflow-hidden">
+                <header className="px-6 py-4 border-b border-border">
+                  <h3 className="font-display font-bold text-navy text-base">Available upgrades</h3>
+                  <p className="text-xs text-muted mt-1">
+                    Specified with you and quoted per project.
+                  </p>
+                </header>
+                <div className="px-6 py-5 space-y-5">
+                  {AVAILABLE_UPGRADES.map((group) => (
+                    <div key={group.title}>
+                      <h4 className="font-display font-semibold text-[11px] uppercase tracking-[0.14em] text-gold mb-2">
+                        {group.title}
+                      </h4>
+                      <ul className="space-y-1.5">
+                        {group.items.map((item) => (
+                          <li key={item} className="flex gap-2.5 text-sm text-body leading-relaxed">
+                            <span aria-hidden="true" className="text-gold shrink-0 font-bold">+</span>
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                  <a
+                    href={routes.contact}
+                    className="block text-center border border-navy/20 text-navy font-semibold font-display text-sm rounded-xl px-5 py-3 hover:bg-light transition-colors"
+                  >
+                    Ask us to price your upgrades
+                  </a>
+                </div>
+              </section>
             </div>
           </div>
         </div>
@@ -279,7 +375,7 @@ export default function ProductPage({ home }: { home: Home }) {
 
       {/* ─── C2: Sizes and packages (from the 2026 price guide) ─── */}
       {detail && (
-        <div className="border-t border-border bg-light py-14">
+        <div id="sizes" className="scroll-mt-32 border-t border-border bg-light py-14">
           <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
             <h2 className="font-display font-bold text-navy text-2xl mb-2">Sizes and pricing</h2>
             <p className="text-muted text-sm mb-6">{detail.tagline}</p>
@@ -352,7 +448,7 @@ export default function ProductPage({ home }: { home: Home }) {
 
       {/* ─── C3: Floor plans and room schedule ─── */}
       {plans.length > 0 && (
-        <div className="border-t border-border py-14">
+        <div id="floor-plans" className="scroll-mt-32 border-t border-border py-14">
           <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
             <h2 className="font-display font-bold text-navy text-2xl mb-2">Floor plans</h2>
             <p className="text-muted text-sm mb-6">
@@ -382,7 +478,7 @@ export default function ProductPage({ home }: { home: Home }) {
 
       {/* ─── C4: Room schedule, from the catalogue ─── */}
       {spec && spec.rooms.length > 1 && (
-        <div className="border-t border-border py-14">
+        <div id="accommodation" className="scroll-mt-32 border-t border-border py-14">
           <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
             <h2 className="font-display font-bold text-navy text-2xl mb-2">Accommodation</h2>
             <p className="text-muted text-sm mb-6">
@@ -411,7 +507,7 @@ export default function ProductPage({ home }: { home: Home }) {
       )}
 
       {/* ─── B: Optional extras ─── */}
-      <div className="border-t border-border bg-light py-14">
+      <div id="features" className="scroll-mt-32 border-t border-border bg-light py-14">
         <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
           <h2 className="font-display font-bold text-navy text-2xl mb-2">Additional features</h2>
           <p className="text-muted text-sm mb-8 max-w-2xl">
@@ -438,10 +534,12 @@ export default function ProductPage({ home }: { home: Home }) {
       </div>
 
       {/* ─── D: Completion options ─── */}
-      <div className="border-t border-border py-14">
+      <div id="completion" className="scroll-mt-32 border-t border-border py-14">
         <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
           <h2 className="font-display font-bold text-navy text-2xl mb-2">Completion options</h2>
-          <p className="text-muted text-sm mb-6">The {home.name} is available as a kit, shell or turnkey solution.</p>
+          <p className="text-muted text-sm mb-6">
+            {optionNames ? `The ${home.name} is available as ${optionNames}.` : `Ask us which completion option suits the ${home.name} and your site.`}
+          </p>
           <div className="flex gap-2 mb-7">
             {(['Base', 'Turnkey'] as const).map((tab) => (
               <button
@@ -481,7 +579,7 @@ export default function ProductPage({ home }: { home: Home }) {
                 </ul>
               </div>
             )}
-            <a href="/contact/"
+            <a href="/contact-us/"
               className="mt-5 text-sm font-semibold font-display text-navy underline underline-offset-2 hover:text-gold transition-colors">
               Request the full specification →
             </a>
@@ -498,7 +596,7 @@ export default function ProductPage({ home }: { home: Home }) {
             {sustainableCards.map((c) => (
               <div key={c.title} className="rounded-xl overflow-hidden bg-white card-shadow">
                 <div className="h-36 overflow-hidden">
-                  <img src={c.img} alt={c.title} className="w-full h-full object-cover" />
+                  <img {...responsive(c.img, SIZES.card)} alt={c.title} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                 </div>
                 <div className="p-4">
                   <h4 className="font-display font-bold text-navy text-sm mb-1">{c.title}</h4>
@@ -514,7 +612,7 @@ export default function ProductPage({ home }: { home: Home }) {
               </div>
             ))}
           </div>
-          <a href="/bespoke/"
+          <a href="/customise-your-build/"
             className="text-sm font-semibold font-display text-navy border border-navy rounded-xl px-6 py-3 hover:bg-navy hover:text-white transition-colors">
             Discuss Bespoke Options
           </a>
@@ -522,7 +620,7 @@ export default function ProductPage({ home }: { home: Home }) {
       </div>
 
       {/* ─── F: Technical Specs accordion ─── */}
-      <div className="border-t border-border py-14">
+      <div id="specifications" className="scroll-mt-32 border-t border-border py-14">
         <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
           <h2 className="font-display font-bold text-navy text-2xl mb-6">Technical specifications</h2>
           <div className="max-w-2xl divide-y divide-border rounded-xl border border-border overflow-hidden">
@@ -561,7 +659,7 @@ export default function ProductPage({ home }: { home: Home }) {
                 key={h.name}
                 className="group bg-white rounded-2xl overflow-hidden card-shadow card-shadow-hover text-left transition-all duration-300 hover:-translate-y-1">
                 <div className="h-44 overflow-hidden bg-light">
-                  <img src={h.thumb ? houseImage(h.thumb) : undefined} alt={h.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <img {...(h.thumb ? responsive(houseImage(h.thumb), SIZES.card) : {})} alt={h.name} loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                 </div>
                 <div className="p-4">
                   <div className="flex items-center justify-between">
@@ -582,8 +680,8 @@ export default function ProductPage({ home }: { home: Home }) {
           <h2 className="font-display font-bold text-white text-3xl mb-3">Interested in the {home.name}?</h2>
           <p className="text-white/65 text-base mb-8">Tell us about your site, delivery area and any modifications you have in mind. We'll come back to you with a tailored quotation.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/contact/" className="bg-gold text-navy font-bold font-display px-8 py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm">Request a Quote</a>
-            <a href="/catalogue/" className="border border-white/30 text-white font-semibold font-display px-8 py-3.5 rounded-xl hover:bg-white/10 transition-colors text-sm">Browse all homes</a>
+            <a href="/contact-us/" className="bg-gold text-navy font-bold font-display px-8 py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm">Request a Quote</a>
+            <a href="/houses/" className="border border-white/30 text-white font-semibold font-display px-8 py-3.5 rounded-xl hover:bg-white/10 transition-colors text-sm">Browse all homes</a>
           </div>
         </div>
       </div>
@@ -600,7 +698,7 @@ export default function ProductPage({ home }: { home: Home }) {
 
       {/* Mobile sticky CTA */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-border px-4 py-3 flex gap-3">
-        <a href="/contact/" className="flex-1 bg-gold text-navy font-bold font-display py-3 rounded-xl text-sm">
+        <a href="/contact-us/" className="flex-1 bg-gold text-navy font-bold font-display py-3 rounded-xl text-sm">
           Request a Quote
         </a>
         <button className="flex-1 border border-navy text-navy font-semibold font-display py-3 rounded-xl text-sm">

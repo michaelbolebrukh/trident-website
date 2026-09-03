@@ -1,0 +1,20 @@
+---
+import { seoFor } from '../data/seo'
+import LegalPage from '../layouts/LegalPage.astro'
+import { Content } from '../data/terms-and-conditions.md'
+
+const meta = seoFor(
+  '/terms-and-conditions/',
+  'Terms and Conditions',
+  'The terms on which you may use the Trident Modular website, including how to treat the prices, specifications and imagery shown on it.',
+)
+---
+
+<LegalPage
+  title="Terms and Conditions"
+  metaTitle={meta.title}
+  description={meta.description}
+  updated="Last updated: 26 August 2026"
+>
+  <Content />
+</LegalPage>

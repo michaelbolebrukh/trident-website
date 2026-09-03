@@ -1,5 +1,7 @@
 import { useState } from 'react'
+import { postImage } from '../lib/post-image'
 import postsData from '../data/posts.json'
+import { responsive, SIZES } from '../lib/images'
 
 interface Post {
   slug: string
@@ -17,7 +19,7 @@ const articles = (postsData as Post[]).map((p) => ({
   slug: p.slug,
   title: p.title,
   excerpt: p.excerpt,
-  img: p.image ?? undefined,
+  img: postImage(p.image),
   date: new Date(p.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }),
   readTime: readTime(p.words),
 }))
@@ -68,7 +70,7 @@ export default function BlogPage() {
               className="group w-full bg-white rounded-2xl overflow-hidden card-shadow card-shadow-hover text-left transition-all duration-300 hover:-translate-y-1 grid lg:grid-cols-2"
             >
               <div className="h-60 lg:h-auto overflow-hidden bg-light">
-                <img src={featured.img} alt={featured.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                <img {...(featured.img ? responsive(featured.img, SIZES.half) : {})} alt={featured.title} fetchPriority="high" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
               </div>
               <div className="p-8 flex flex-col justify-center">
                 <div className="flex items-center gap-3 mb-4">
@@ -102,7 +104,7 @@ export default function BlogPage() {
                 className="group bg-white rounded-2xl overflow-hidden card-shadow card-shadow-hover text-left transition-all duration-300 hover:-translate-y-1"
               >
                 <div className="h-44 overflow-hidden bg-light">
-                  <img src={article.img} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <img {...(article.img ? responsive(article.img, SIZES.card) : {})} alt={article.title} loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                 </div>
                 <div className="p-5">
                   <div className="flex items-center gap-2 mb-3">

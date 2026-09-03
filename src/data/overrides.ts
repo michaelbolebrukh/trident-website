@@ -18,7 +18,6 @@ export const overrides: Record<string, HomeOverride> = {
   // ─── Classification ───────────────────────────────────────────────────
   // Had no primary class at all, so fell into "Other" in the catalogue.
   'a-frame': {
-    name: 'A-Frame',
     category: '2 Storey Houses',
     categories: ['2 Storey Houses'],
     desc: 'Your countryside escape, featuring two floors, multiple terraces and panoramic views.',
@@ -49,14 +48,61 @@ export const overrides: Record<string, HomeOverride> = {
     desc: 'The Mediterranean Double House is equally suitable for either rental businesses or your own comfort. It features two bathrooms, two living rooms and three bedrooms, making it a great space for families and social gatherings.',
   },
 
+
+  // ─── Garden room photography ──────────────────────────────────────────
+  // The originals the old site used, supplied by Trident from Drive. The
+  // export points at these same filenames, but tridentmodular.com answers
+  // image requests with a bot-protection challenge, so they had to come
+  // across by hand.
+  //
+  // The set is the product range rather than a set of scenes: two exterior
+  // layouts, three cladding colours, each with and without the wood front,
+  // plus the beam variants. Ordered plain, then colours, then wood front,
+  // then beam, so the gallery reads as a range.
+  //
+  // Site-absolute paths, so they bypass image-map.json; see houseImage in
+  // homes.ts.
+  'base-model': {
+    thumb: '/images/library/garden-base-01.webp',
+    gallery: [
+      '/images/library/garden-base-01.webp',
+      '/images/library/garden-base-02.webp',
+      '/images/library/garden-base-03.webp',
+      '/images/library/garden-base-04.webp',
+      '/images/library/garden-base-05.webp',
+      '/images/library/garden-base-06.webp',
+      '/images/library/garden-base-07.webp',
+      '/images/library/garden-base-08.webp',
+    ],
+  },
+  'premium-model': {
+    thumb: '/images/library/garden-premium-01.webp',
+    gallery: [
+      '/images/library/garden-premium-01.webp',
+      '/images/library/garden-premium-02.webp',
+      '/images/library/garden-premium-03.webp',
+      '/images/library/garden-premium-04.webp',
+      '/images/library/garden-premium-05.webp',
+      '/images/library/garden-premium-06.webp',
+      '/images/library/garden-premium-07.webp',
+      '/images/library/garden-premium-08.webp',
+      '/images/library/garden-premium-09.webp',
+      '/images/library/garden-premium-10.webp',
+      '/images/library/garden-premium-11.webp',
+      '/images/library/garden-premium-12.webp',
+    ],
+  },
+
   // ─── Naming ───────────────────────────────────────────────────────────
-  'garden-studio': { name: 'Garden Studio' },
+  // The customer team's review corrected the capitalisation and accents here
+  // ("Garden studio" -> "Garden Studio", "Cafe" -> "Café", "A-frame" ->
+  // "A-Frame"). Those corrections are held back for now: the brief is that a
+  // model's name must read exactly as it does on tridentmodular.com, so the
+  // page title, H1 and link text all match what is already indexed.
   'garden-cafe': {
-    name: 'Garden Café',
     desc: 'A modern factory-built café, delivered as a turnkey solution and installed in just one day. The garden café includes a quick start-up and minimal energy costs.',
   },
   'modwood-cafe': {
-    name: 'ModWood Café',
     desc: 'A spacious commercial property in a modern prefabricated-frame style with a sizeable terrace and professional zoning, designed for fast construction to progress new business launches.',
   },
 

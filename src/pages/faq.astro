@@ -1,11 +1,17 @@
 ---
+import { seoFor } from '../data/seo'
+import { faqs } from '../data/faq'
+import { faqSchema } from '../lib/schema'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import FaqPage from '../components/FaqPage'
+
+const meta = seoFor('/faq/', 'Frequently Asked Questions', 'Answers on pricing, planning permission, lead times, foundations and insulation.')
 ---
 
 <BaseLayout
-  title="Frequently Asked Questions | Trident Modular"
-  description="Answers on pricing, planning permission, lead times, foundations, insulation and what is included in Trident kit, shell and turnkey packages."
+  title={meta.title}
+  description={meta.description}
+  schema={[faqSchema(faqs)]}
 >
-  <FaqPage client:load />
+  <FaqPage client:afterpaint />
 </BaseLayout>

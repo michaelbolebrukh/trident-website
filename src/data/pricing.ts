@@ -115,35 +115,71 @@ export const housePricing: Record<string, HousePricing> = {
 
 export const housePricingFor = (slug: string): HousePricing | undefined => housePricing[slug]
 
-/** Scope that applies to every house price, shown once. */
-export const STANDARD_EXCLUSIONS = [
-  'Land purchase, legal fees, stamp duty',
-  'Planning application, pre-application advice, planning consultants',
-  'Topographical, tree, ecology, arboricultural and heritage surveys',
-  'Mains connections: water, electricity, gas, comms',
-  'Community Infrastructure Levy, Section 106 and other planning obligations',
-  'Access road, driveway, parking, landscaping',
-  'Site clearance, demolition, removal of existing structures',
-  'Kitchen (units, worktops, appliances, install)',
-  'Furniture, white goods, curtains, blinds',
-  'Abnormal ground conditions',
-  'Restricted crane access uplifts',
-  'VAT at the prevailing rate',
+/**
+ * Scope that applies to every house price, shown once.
+ *
+ * Grouped rather than listed flat: twelve exclusions in a single column reads
+ * as fine print, and this is the part of a quote buyers most need to take in.
+ */
+export interface ScopeGroup {
+  title: string
+  items: string[]
+}
+
+export const STANDARD_EXCLUSIONS: ScopeGroup[] = [
+  {
+    title: 'Land and planning',
+    items: [
+      'Land purchase, legal fees, stamp duty',
+      'Planning application, pre-application advice, planning consultants',
+      'Topographical, tree, ecology, arboricultural and heritage surveys',
+      'Community Infrastructure Levy, Section 106 and other planning obligations',
+    ],
+  },
+  {
+    title: 'Site and groundworks',
+    items: [
+      'Mains connections: water, electricity, gas, comms',
+      'Access road, driveway, parking, landscaping',
+      'Site clearance, demolition, removal of existing structures',
+      'Abnormal ground conditions',
+      'Restricted crane access uplifts',
+    ],
+  },
+  {
+    title: 'Fit-out and finishes',
+    items: [
+      'Kitchen (units, worktops, appliances, install)',
+      'Furniture, white goods, curtains, blinds',
+    ],
+  },
+  {
+    title: 'Tax',
+    items: ['VAT at the prevailing rate'],
+  },
 ]
 
-export const AVAILABLE_UPGRADES = [
-  'Underfloor heating',
-  'MVHR ventilation',
-  'Solar PV + battery',
-  'Aluminium windows',
-  'Engineered wood floors',
-  'Premium tile floors',
-  'Full kitchen (Howdens)',
-  'Premium bathroom',
-  'Stone facade cladding',
-  'Extra bedroom / storey',
-  'Site services and drainage',
-  'Extended warranty',
+/** Upgrades quoted per project, grouped by what they change. */
+export const AVAILABLE_UPGRADES: ScopeGroup[] = [
+  {
+    title: 'Comfort and energy',
+    items: ['Underfloor heating', 'MVHR ventilation', 'Solar PV + battery', 'Extended warranty'],
+  },
+  {
+    title: 'Finishes',
+    items: [
+      'Aluminium windows',
+      'Engineered wood floors',
+      'Premium tile floors',
+      'Full kitchen (Howdens)',
+      'Premium bathroom',
+      'Stone facade cladding',
+    ],
+  },
+  {
+    title: 'Structure and services',
+    items: ['Extra bedroom / storey', 'Site services and drainage'],
+  },
 ]
 
 export const PROGRAMME = [

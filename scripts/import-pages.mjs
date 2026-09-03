@@ -77,11 +77,19 @@ function sanitise(html) {
   // Kadence puts headings in styled divs, so unwrapping leaves them as bare
   // text between elements. Re-wrap those runs rather than lose them: short and
   // unpunctuated reads as a heading, anything longer as a paragraph.
-  out = out.replace(/(^|>)([^<>]{3,})(?=<|$)/g, (whole, before, run) => {
+  //
+  // Only runs that sit between block boundaries qualify. Matching on any '>'
+  // also caught text already inside a <p> or <strong> and wrapped a heading
+  // in it, which is invalid nesting and flattened well-formed pages that did
+  // not need this treatment at all.
+  const BLOCK_END = /(^|<\/(?:p|h2|h3|h4|ul|ol|li|blockquote)>)([^<>]{3,})(?=<|$)/g
+  out = out.replace(BLOCK_END, (whole, before, run) => {
     const t = run.replace(/\s+/g, ' ').trim()
     if (!t) return before
     // Drop Ukrainian fragments: this is the English site.
     if ((t.match(/[\u0400-\u04FF]/g) || []).length > t.length * 0.3) return before
+    // "No Content" is what the page builder emits for an empty header slot.
+    if (/No Content/i.test(t)) return before
     const heading = t.length < 60 && !/[.!?:]$/.test(t)
     return `${before}<${heading ? 'h3' : 'p'}>${t}</${heading ? 'h3' : 'p'}>`
   })

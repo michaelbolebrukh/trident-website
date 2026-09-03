@@ -1,0 +1,38 @@
+---
+import { modelSeo } from '../../data/seo'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import Breadcrumbs from '../../components/Breadcrumbs.astro'
+import ProductPage from '../../components/ProductPage'
+import { allHomes, houseImage } from '../../data/homes'
+import { modelCrumbs } from '../../lib/breadcrumbs'
+import { breadcrumbSchema, productSchema } from '../../lib/schema'
+
+export function getStaticPaths() {
+  return allHomes.map((home) => ({
+    params: { slug: home.slug },
+    props: { home },
+  }))
+}
+
+const { home } = Astro.props
+
+// Title on the model template, description from the model's own data; see
+// modelSeo in src/data/seo.ts.
+const meta = modelSeo(home)
+
+const crumbs = modelCrumbs(home)
+const schema = [productSchema(home, meta.description), breadcrumbSchema(crumbs)]
+
+// Social image: the gallery's opening frame, which is also the page's LCP.
+const lead = home.gallery.length ? houseImage(home.gallery[0]) : undefined
+---
+
+<BaseLayout
+  title={meta.title}
+  description={meta.description}
+  image={lead}
+  schema={schema}
+>
+  <Breadcrumbs crumbs={crumbs} />
+  <ProductPage home={home} client:afterpaint />
+</BaseLayout>
