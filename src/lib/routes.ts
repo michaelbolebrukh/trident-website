@@ -27,6 +27,10 @@ export const routes = {
   factoryBuilt: '/factory-built-homes/',
   selfBuild: '/self-build-modular-homes/',
   london: '/london/',
+  modern: '/modern-modular-homes/',
+  companies: '/modular-building-companies/',
+  commercial: '/commercial/',
+  eco: '/eco-modular-homes/',
 } as const
 
 export type Page = keyof typeof routes

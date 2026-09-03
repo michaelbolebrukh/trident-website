@@ -1,0 +1,129 @@
+---
+/**
+ * /modern-modular-homes/ — the design angle. Featured models are those whose
+ * own catalogue copy (homes.ts, after overrides) speaks of terraces,
+ * panoramic views, two floors or a modern interior. Finishes come from the
+ * FAQ, the pricing notes and AVAILABLE_UPGRADES; the construction from
+ * technology.ts and build-ups.ts.
+ */
+import { seoFor } from '../data/seo'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import PageHero from '../components/PageHero.astro'
+import FaqBlock from '../components/FaqBlock.astro'
+import CtaBand from '../components/CtaBand.astro'
+import { homeBySlug, houseImage } from '../data/homes'
+import { principles } from '../data/technology'
+import { thicknesses } from '../data/build-ups'
+import { AVAILABLE_UPGRADES, housePricing } from '../data/pricing'
+import { faqs } from '../data/faq'
+import { routes, productPath } from '../lib/routes'
+import { responsive, SIZES } from '../lib/images'
+
+const meta = seoFor('/modern-modular-homes/', 'Modern Modular Homes', '')
+
+// Chosen for what their own descriptions say, not for size.
+const featured = ['gothic', 'urban', 'a-frame', 'estate', 'family-house', 'riva', 'loft', 'the-residence']
+  .map((slug) => homeBySlug(slug)!)
+  .filter(Boolean)
+
+const finishes = AVAILABLE_UPGRADES.find((g) => g.title === 'Finishes')!.items
+const claddingFaq = faqs.find((f) => f.q === 'Can I choose different external cladding or colours?')!
+const claddingNotes = [
+  { slug: 'estate', note: housePricing.estate.note! },
+  { slug: 'mediterranean-single-house', note: housePricing['mediterranean-single-house'].note! },
+].map((n) => ({ ...n, home: homeBySlug(n.slug)! }))
+
+const faqQuestions = [
+  'Can I choose different external cladding or colours?',
+  'Can I adapt a standard design to suit my site?',
+  'Can I add a green roof or solar panels?',
+  'Are your buildings suitable for year-round use?',
+]
+---
+
+<BaseLayout title={meta.title} description={meta.description}>
+  <PageHero
+    eyebrow="Design-led models"
+    title="Modern Modular Homes"
+    intro="Modern prefab homes are not a compromise on architecture. The Trident range includes two-storey houses with multiple terraces and panoramic views, a floating home, an A-Frame cabin and a single-storey house with a garage and a modern interior, all built on the same precise closed-panel system and open to bespoke change."
+  />
+
+  <article class="bg-white">
+    {/* Featured models */}
+    <section class="max-w-[1280px] mx-auto px-6 lg:px-8 py-14">
+      <h2 class="font-display font-bold text-navy text-2xl mb-2">Contemporary prefab houses in the range</h2>
+      <p class="text-muted text-sm mb-8 max-w-2xl">The contemporary prefab houses below are picked for what their own catalogue copy says. Open the model page for floor plans, sizes and the three purchase options.</p>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {featured.map((home) => (
+          <a href={productPath(home.slug)} class="group bg-white rounded-2xl overflow-hidden card-shadow card-shadow-hover transition-all duration-300 hover:-translate-y-1 flex flex-col border border-border">
+            <div class="h-44 overflow-hidden bg-light">
+              <img {...(home.thumb ? responsive(houseImage(home.thumb), SIZES.card) : {})} alt={home.name} loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+            </div>
+            <div class="p-4 flex flex-col flex-1">
+              <h3 class="font-display font-bold text-navy text-base">{home.name}</h3>
+              <p class="text-xs text-muted mb-2">{home.category} · {home.area} m²{home.bedrooms ? ` · ${home.bedrooms} bed` : ''}</p>
+              <p class="text-sm text-muted leading-relaxed">{home.desc}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    {/* What makes it modern */}
+    <section class="border-t border-border bg-light py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <h2 class="font-display font-bold text-navy text-2xl mb-2">What makes modern prefab homes different</h2>
+        <p class="text-muted text-sm mb-8 max-w-2xl">Precision comes from the factory. Panels are made to the design dimensions and assembly specification, in {thicknesses.length} specifications from {thicknesses[0].mm} mm insulation upwards, so what arrives on site fits first time.</p>
+        <div class="grid md:grid-cols-3 gap-5">
+          {principles.filter((p) => ['Structural framework', 'Spatial stiffness', 'Factory quality'].includes(p.title)).map((p) => (
+            <div class="bg-white rounded-2xl border border-border p-6">
+              <h3 class="font-display font-bold text-navy mb-2">{p.title}</h3>
+              <p class="text-sm text-muted leading-relaxed">{p.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* Finishes */}
+    <section class="border-t border-border py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-10">
+        <div>
+          <h2 class="font-display font-bold text-navy text-2xl mb-4">Cladding, glazing and finishes</h2>
+          <p class="text-body leading-relaxed mb-4">{claddingFaq.a}</p>
+          <p class="text-body leading-relaxed">Upgrades quoted per project include {finishes.join(', ').replace(/, ([^,]*)$/, ' and $1').toLowerCase()}.</p>
+        </div>
+        <div class="rounded-2xl border border-border p-6 bg-light">
+          <h3 class="font-display font-bold text-navy mb-3">What the shell price already includes</h3>
+          <ul class="space-y-3">
+            {claddingNotes.map((n) => (
+              <li class="text-sm text-muted leading-relaxed"><a href={productPath(n.slug)} class="text-navy font-semibold hover:text-gold">{n.home.name}</a>: {n.note}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    {/* Luxury + bespoke */}
+    <section class="border-t border-border bg-light py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-10">
+        <div>
+          <h2 class="font-display font-bold text-navy text-2xl mb-4">A luxury modular home UK plots can take</h2>
+          <p class="text-body leading-relaxed">The Gothic is the model whose own copy makes the claim, and the one to look at first for a luxury modular home UK plots can take: {homeBySlug('gothic')!.desc} Its architecture as currently drawn needs adapting to our closed panel system, so its price is indicative and firms up once our design team has adapted the drawings.</p>
+        </div>
+        <div>
+          <h2 class="font-display font-bold text-navy text-2xl mb-4">Make it yours</h2>
+          <p class="text-body leading-relaxed mb-4">Most of our standard models can be modified in size, layout, external finish and internal specification. For a fully bespoke design we work from your brief, site and aspirations with the same factory manufacturing process.</p>
+          <a href={routes.bespoke} class="text-sm font-semibold font-display text-navy underline underline-offset-2 hover:text-gold">Bespoke design and the process →</a>
+        </div>
+      </div>
+    </section>
+
+    <FaqBlock title="Design questions" questions={faqQuestions} />
+
+    <CtaBand
+      title="Start with a model, or start from your brief"
+      body="Browse the range for the design that fits, or tell us about your plot and what you want the house to be."
+    />
+  </article>
+</BaseLayout>

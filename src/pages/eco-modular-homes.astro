@@ -1,0 +1,116 @@
+---
+/**
+ * /eco-modular-homes/ — every claim from data: insulation thicknesses and
+ * layers (build-ups.ts), materials (accreditation.ts), the heat pump inside
+ * Turnkey base and the named upgrades (pricing.ts), waste reduction as the
+ * about and installation pages state it, and the FAQ items on the subject.
+ */
+import { seoFor } from '../data/seo'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import PageHero from '../components/PageHero.astro'
+import FaqBlock from '../components/FaqBlock.astro'
+import CtaBand from '../components/CtaBand.astro'
+import { thicknesses } from '../data/build-ups'
+import { materials } from '../data/accreditation'
+import { HOUSE_OPTIONS, AVAILABLE_UPGRADES } from '../data/pricing'
+import posts from '../data/posts.json'
+import { routes } from '../lib/routes'
+
+const meta = seoFor('/eco-modular-homes/', 'Eco Modular Homes', '')
+
+const turnkey = HOUSE_OPTIONS[2]
+const energyUpgrades = AVAILABLE_UPGRADES.find((g) => g.title === 'Comfort and energy')!.items
+const basalt = materials.find((m) => m.title === 'Basalt wool insulation')!
+const membranes = materials.find((m) => m.title === 'Juta membranes')!
+
+const wallInsulation = (mm: number) =>
+  thicknesses.find((t) => t.mm === mm)?.buildUps.find((b) => b.element === 'External walls')?.layers.filter((l) => /basalt wool/i.test(l.name)).map((l) => l.spec).join(' + ') ?? '—'
+
+const reading = ['energy-efficient-modular-homes', 'meeting-sustainability-goals', 'green-roofs-solar-panels-modular-home-options']
+  .map((slug) => posts.find((p) => p.slug === slug)!)
+
+const faqQuestions = [
+  'Are your buildings energy efficient?',
+  'Can I add a green roof or solar panels?',
+  'Are your buildings suitable for year-round use?',
+  'How do I get a price?',
+]
+---
+
+<BaseLayout title={meta.title} description={meta.description}>
+  <PageHero
+    eyebrow="Insulation, heating and the optional extras"
+    title="Eco Modular Homes"
+    intro="An eco modular home UK buyers can verify rather than take on trust: non-combustible basalt wool insulation in four published thicknesses, an air-source heat pump inside the Turnkey base scope, and solar, MVHR and underfloor heating as named upgrades. Every figure on this page comes from the published specification, so the energy efficient prefab claim can be checked line by line."
+  />
+
+  <article class="bg-white">
+    {/* Insulation */}
+    <section class="max-w-[1280px] mx-auto px-6 lg:px-8 py-14">
+      <h2 class="font-display font-bold text-navy text-2xl mb-2">Sustainable modular homes start with the envelope</h2>
+      <p class="text-muted text-sm mb-8 max-w-2xl">For sustainable modular homes the envelope comes first. {basalt.body} {membranes.body}</p>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {thicknesses.map((t) => (
+          <div class="rounded-2xl border border-border p-5">
+            <p class="font-display font-bold text-navy text-xl">{t.mm} mm</p>
+            <p class="text-xs text-muted mb-2">External wall insulation: {wallInsulation(t.mm)}</p>
+            <p class="text-sm text-muted leading-relaxed">{t.summary}</p>
+          </div>
+        ))}
+      </div>
+      <p class="text-sm text-muted mt-6">Every element at every thickness is on the <a href={routes.technology} class="text-navy underline underline-offset-2 hover:text-gold">technology page</a>.</p>
+    </section>
+
+    {/* Heating included */}
+    <section class="border-t border-border bg-light py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-10">
+        <div>
+          <h2 class="font-display font-bold text-navy text-2xl mb-4">The heat pump is in the {turnkey.label} scope</h2>
+          <p class="text-body leading-relaxed mb-4">{turnkey.desc}</p>
+          <p class="text-sm text-muted">Full prices for every model and option are in the <a href={routes.prices} class="text-navy underline underline-offset-2 hover:text-gold">price guide</a>.</p>
+        </div>
+        <div class="bg-white rounded-2xl border border-border p-6">
+          <h2 class="font-display font-bold text-navy text-2xl mb-3">Energy efficient prefab extras: the comfort and energy upgrades</h2>
+          <ul class="space-y-2">{energyUpgrades.map((u) => <li class="text-sm text-body">{u}</li>)}</ul>
+          <p class="text-sm text-muted mt-4">Quoted per project. Kitchen, underfloor heating, MVHR, PV and upgraded finishes are priced separately.</p>
+        </div>
+      </div>
+    </section>
+
+    {/* Factory */}
+    <section class="border-t border-border py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8 grid md:grid-cols-2 gap-8">
+        <div class="rounded-2xl border border-border p-6">
+          <h2 class="font-display font-bold text-navy text-xl mb-2">Eco modular home UK buyers can check: less waste from the factory</h2>
+          <p class="text-sm text-muted leading-relaxed">Factory-controlled manufacture reduces waste, improves quality and shortens on-site programmes, and the controlled production environment reduces weather dependency. Panels arrive with insulation, sheathing, membranes and cladding already in place.</p>
+        </div>
+        <div class="rounded-2xl border border-border p-6">
+          <h2 class="font-display font-bold text-navy text-xl mb-2">Designed for year-round use</h2>
+          <p class="text-sm text-muted leading-relaxed">All Trident buildings are designed for year-round use with full insulation, heating and ventilation, and to meet or exceed current Part L requirements. The 150 mm specification is the one we describe as appropriate for year-round occupation in the UK climate.</p>
+        </div>
+      </div>
+    </section>
+
+    {/* Reading */}
+    <section class="border-t border-border bg-light py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <h2 class="font-display font-bold text-navy text-2xl mb-6">Further reading</h2>
+        <div class="grid sm:grid-cols-3 gap-5">
+          {reading.map((p) => (
+            <a href={`/blog/${p.slug}/`} class="bg-white rounded-2xl border border-border p-5 hover:border-navy transition-colors">
+              <h3 class="font-display font-bold text-navy text-sm leading-snug mb-2">{p.title}</h3>
+              <p class="text-xs text-muted leading-relaxed line-clamp-3">{p.excerpt}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <FaqBlock title="Common questions" questions={faqQuestions} />
+
+    <CtaBand
+      title="Specify the envelope and the extras"
+      body="Tell us the model and the site, and which of the energy options you want priced alongside it."
+    />
+  </article>
+</BaseLayout>

@@ -110,6 +110,26 @@ export const seo: Record<string, SeoEntry> = {
     description:
       'Trident Modular in London: a registered office in EC4, Greater London delivery included in house prices, and garden rooms built in Chiswick and Wimbledon.',
   },
+  '/modern-modular-homes/': {
+    title: 'Modern & Contemporary Modular Homes UK | Trident Modular',
+    description:
+      'Contemporary modular homes from the Trident range: models with terraces, panoramic views and two-storey plans, the cladding choices, and bespoke design.',
+  },
+  '/modular-building-companies/': {
+    title: 'Modular Building Company UK — Manufacturer & Supplier | Trident Modular',
+    description:
+      'Comparing modular building companies? Who Trident is, the closed-panel system, BOPAS and ISO 9001, delivered projects, and how to check any supplier.',
+  },
+  '/commercial/': {
+    title: 'Commercial Modular Buildings UK | Trident Modular',
+    description:
+      'Commercial modular buildings from Trident: café and changing-room models, plus the bespoke route for offices, hospitality and multi-unit schemes.',
+  },
+  '/eco-modular-homes/': {
+    title: 'Eco & Energy-Efficient Modular Homes UK | Trident Modular',
+    description:
+      'What makes a Trident home energy efficient: basalt wool insulation in four thicknesses, the heat pump in Turnkey base, solar, MVHR and underfloor heating.',
+  },
   '/houses/': {
     title: 'Modular Homes UK: Full Range & Prices | Trident Modular',
     description:

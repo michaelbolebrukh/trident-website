@@ -16,6 +16,8 @@ const modularHomesLinks = [
   { label: 'Kit Homes UK', href: routes.kitHomes },
   { label: 'Self-Build Modular Homes', href: routes.selfBuild },
   { label: 'Modular Home Prices', href: routes.prices },
+  { label: 'Modern Modular Homes', href: routes.modern },
+  { label: 'Eco Modular Homes', href: routes.eco },
   { label: 'London', href: routes.london },
   { label: 'Garden Rooms', href: categoryPath('Garden Rooms') },
   { label: 'Bungalows', href: categoryPath('Bungalows') },
@@ -25,13 +27,14 @@ const modularHomesLinks = [
 
 const servicesLinks = [
   { label: 'Bespoke Design', href: routes.bespoke },
-  { label: 'Commercial Buildings', href: routes.bespoke },
+  { label: 'Commercial Buildings', href: routes.commercial },
   { label: 'Installation', href: routes.installation },
   { label: 'Sustainable Upgrades', href: routes.bespoke },
 ]
 
 const infoLinks = [
   { label: 'About Trident', href: routes.about },
+  { label: 'Modular Building Company', href: routes.companies },
   { label: 'Project Gallery', href: routes.gallery },
   { label: 'Blog & Insights', href: routes.blog },
   { label: 'FAQ', href: routes.faq },

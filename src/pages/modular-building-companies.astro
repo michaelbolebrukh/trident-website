@@ -1,0 +1,147 @@
+---
+/**
+ * /modular-building-companies/ — the credibility page. Everything here is
+ * what the site already states about Trident: about-page copy, technology
+ * and build-up data, accreditation.ts, projects.ts, pricing constants. The
+ * checklist is written so it can be applied to any supplier, us included.
+ */
+import { seoFor } from '../data/seo'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import PageHero from '../components/PageHero.astro'
+import FaqBlock from '../components/FaqBlock.astro'
+import { intro as techIntro, stages } from '../data/technology'
+import { thicknesses } from '../data/build-ups'
+import { credentials, explainers } from '../data/accreditation'
+import { projects } from '../data/projects'
+import { HOUSE_OPTIONS, PAYMENT_SCHEDULE } from '../data/pricing'
+import { CONTACT } from '../lib/schema'
+import { routes } from '../lib/routes'
+import { responsive, SIZES } from '../lib/images'
+
+const meta = seoFor('/modular-building-companies/', 'A Modular Building Company You Can Check Up On', '')
+
+const checklist = [
+  { ask: 'Which accreditation covers the system, and is it current?', ours: `${credentials.map((c) => c.label).join(', ')}. See the certificates page.`, href: routes.bopas },
+  { ask: 'What is the build-up, layer by layer, at each thickness?', ours: `${thicknesses.length} published specifications, from ${thicknesses[0].mm} mm to ${thicknesses[thicknesses.length - 1].mm} mm, every element listed.`, href: routes.technology },
+  { ask: 'What exactly does each purchase option include and exclude?', ours: `Three options, ${HOUSE_OPTIONS.map((o) => o.label).join(' / ')}, each with its scope in writing and a from price for most models.`, href: routes.prices },
+  { ask: 'When is money due?', ours: PAYMENT_SCHEDULE.map(([share, when]) => `${share} ${when}`).join(', ') + '.', href: routes.prices },
+  { ask: 'Can you see delivered work, with photographs?', ours: `${projects.length} projects in the gallery, ${projects.reduce((n, p) => n + p.photos.length, 0)} photographs, each named only by where it is.`, href: routes.gallery },
+  { ask: 'Where is the company registered?', ours: `${CONTACT.address.streetAddress}, ${CONTACT.address.addressLocality} ${CONTACT.address.postalCode}.`, href: routes.contact },
+]
+
+const faqQuestions = [
+  'What is the difference between a modular home and a frame-built home?',
+  'Can I adapt a standard design to suit my site?',
+  'How do I get a price?',
+  'How far do you deliver?',
+]
+---
+
+<BaseLayout title={meta.title} description={meta.description}>
+  <PageHero
+    eyebrow="For developers, landowners and self-builders comparing suppliers"
+    title="A Modular Building Company You Can Check Up On"
+    intro="Modular building companies UK buyers compare should be judged on things that can be verified: the accreditation behind the system, the published build-up, the written scope of each option, and delivered work you can look at. This page lays out ours and gives you the same checklist to apply to anyone else."
+  />
+
+  <article class="bg-white">
+    {/* Who we are */}
+    <section class="max-w-[1280px] mx-auto px-6 lg:px-8 py-14 grid lg:grid-cols-2 gap-10">
+      <div>
+        <h2 class="font-display font-bold text-navy text-2xl mb-4">One of the modular building companies UK buyers can verify</h2>
+        <p class="text-body leading-relaxed mb-4">Trident Modular designs and delivers a range of modular and frame-built homes, garden rooms and commercial buildings. We offer both standard catalogue models and fully bespoke designs, with a managed service from initial concept through to completed installation.</p>
+        <p class="text-body leading-relaxed">Our approach combines factory-controlled manufacture to reduce waste, improve quality and shorten on-site programmes, with an experienced project team that works closely with each client from the first site visit to final handover. Registered office: {CONTACT.address.streetAddress}, {CONTACT.address.addressLocality} {CONTACT.address.postalCode}.</p>
+      </div>
+      <div class="rounded-2xl border border-border p-6 bg-light">
+        <h3 class="font-display font-bold text-navy mb-3">The factory and the system</h3>
+        <p class="text-sm text-body leading-relaxed mb-4">{techIntro}</p>
+        <ol class="space-y-2">
+          {stages.map((s) => <li class="text-sm text-muted"><span class="text-gold font-bold font-display mr-2">{s.n}</span><strong class="text-navy">{s.title}.</strong> {s.body}</li>)}
+        </ol>
+      </div>
+    </section>
+
+    {/* Accreditation */}
+    <section class="border-t border-border bg-light py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <h2 class="font-display font-bold text-navy text-2xl mb-2">Accreditation: what modular home builders UK-wide should be able to show</h2>
+        <p class="text-muted text-sm mb-8 max-w-2xl">Accreditation is the part of a supplier's claims that a third party has checked. For modular home builders UK lenders assess, BOPAS is the scheme they look to.</p>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+          {credentials.map((c) => (
+            <div class="bg-white rounded-2xl border border-border p-5">
+              <p class="font-display font-bold text-navy text-xl">{c.label}</p>
+              <p class="text-xs text-muted mt-1">{c.detail}</p>
+            </div>
+          ))}
+        </div>
+        <div class="grid md:grid-cols-3 gap-5">
+          {explainers.map((e) => (
+            <div class="bg-white rounded-2xl border border-border p-6">
+              <h3 class="font-display font-bold text-navy mb-2">{e.title}</h3>
+              <p class="text-sm text-muted leading-relaxed">{e.body}</p>
+            </div>
+          ))}
+        </div>
+        <p class="text-sm text-muted mt-6"><a href={routes.bopas} class="text-navy underline underline-offset-2 hover:text-gold">BOPAS and certificates →</a></p>
+      </div>
+    </section>
+
+    {/* Delivered projects */}
+    <section class="border-t border-border py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <h2 class="font-display font-bold text-navy text-2xl mb-2">Delivered projects</h2>
+        <p class="text-muted text-sm mb-8 max-w-2xl">From our own site records and the photographers' sets. The only claim made about each is where it is.</p>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {projects.map((p) => (
+            <a href={routes.gallery} class="group bg-white rounded-2xl overflow-hidden card-shadow card-shadow-hover transition-all duration-300 hover:-translate-y-1 border border-border">
+              <div class="h-44 overflow-hidden bg-light">
+                <img {...responsive(p.cover, SIZES.card)} alt={`${p.name} — ${p.location}`} loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+              </div>
+              <div class="p-5">
+                <h3 class="font-display font-bold text-navy">{p.name}</h3>
+                <p class="text-xs font-semibold font-display uppercase tracking-[0.14em] text-gold mt-1">{p.location}</p>
+                <p class="text-xs text-muted mt-2">{p.photos.length} photographs</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* Checklist */}
+    <section class="border-t border-border bg-light py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <h2 class="font-display font-bold text-navy text-2xl mb-2">How to evaluate modular construction companies UK-wide</h2>
+        <p class="text-muted text-sm mb-8 max-w-2xl">Six questions to put to any of the modular construction companies UK-wide. The right-hand column is our answer, with a link to where it is published.</p>
+        <div class="overflow-x-auto rounded-2xl border border-border bg-white">
+          <table class="w-full text-sm">
+            <thead class="bg-navy text-white text-left"><tr><th class="px-4 py-3 font-display">Ask any supplier</th><th class="px-4 py-3 font-display">Trident's answer</th></tr></thead>
+            <tbody>
+              {checklist.map((c) => (
+                <tr class="border-t border-border align-top">
+                  <td class="px-4 py-3 font-semibold text-navy min-w-[14rem]">{c.ask}</td>
+                  <td class="px-4 py-3 text-body">{c.ours} <a href={c.href} class="text-navy underline underline-offset-2 hover:text-gold whitespace-nowrap">See it →</a></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <FaqBlock title="Common questions" questions={faqQuestions} />
+
+    <section class="bg-navy text-white py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+        <div class="max-w-2xl">
+          <h2 class="font-display font-bold text-2xl lg:text-3xl mb-3">Developer or commercial enquiry?</h2>
+          <p class="text-white/70 leading-relaxed">Trident Modular works with developers, landowners and commercial clients on a wide range of building types. Tell us the site, the brief and the programme.</p>
+        </div>
+        <div class="flex flex-wrap gap-4 shrink-0">
+          <a href={routes.contact} class="bg-gold text-navy font-semibold font-display px-7 py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm">Start an enquiry</a>
+          <a href={routes.commercial} class="border border-white/30 text-white font-semibold font-display px-7 py-3.5 rounded-xl hover:bg-white/10 transition-colors text-sm">Commercial buildings</a>
+        </div>
+      </div>
+    </section>
+  </article>
+</BaseLayout>
