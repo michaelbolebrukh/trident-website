@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { projects, allPhotos } from '../data/projects'
+import { responsive, SIZES } from '../lib/images'
 
 /** "All" plus one entry per project, so the filter reads as places built. */
 const filterOptions = ['All', ...projects.map((p) => p.name)]
@@ -42,7 +43,7 @@ export default function GalleryPage() {
               className="text-left bg-white border border-border rounded-2xl overflow-hidden card-shadow hover:border-navy/30 transition-colors"
             >
               <img
-                src={p.cover}
+                {...responsive(p.cover, SIZES.card)}
                 alt={`${p.name} — ${p.location}`}
                 loading="lazy"
                 className="w-full h-48 object-cover"
@@ -85,7 +86,7 @@ export default function GalleryPage() {
               onClick={() => setLightbox(i)}
             >
               <img
-                src={img.src}
+                {...responsive(img.src, SIZES.card)}
                 alt={`${img.project} — ${img.location}`}
                 loading="lazy"
                 className="w-full object-cover group-hover:scale-105 transition-transform duration-700"

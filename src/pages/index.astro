@@ -3,12 +3,16 @@ import { seoFor } from '../data/seo'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import HomePage from '../components/HomePage'
 
-const meta = seoFor('/', 'Trident Modular', 'British modular housing — garden rooms, bungalows and frame-built homes, managed from first design through to installation. Browse the range or request a quote.')
+const meta = seoFor('/', 'Trident Modular', 'Factory-built modular homes, garden rooms and commercial buildings for the UK.')
 ---
 
 <BaseLayout
   title={meta.title}
   description={meta.description}
 >
-  <HomePage client:load />
+  {/* Hydrates after the first paint: the hero, the enquiry form and the
+      featured models are all in the server-rendered HTML, so nothing above
+      the fold waits on the React bundle. The hero <img> carries fetchPriority="high", which React
+      turns into a preload link at render time. */}
+  <HomePage client:afterpaint />
 </BaseLayout>

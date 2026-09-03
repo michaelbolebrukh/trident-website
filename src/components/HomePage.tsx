@@ -3,6 +3,7 @@ import { media } from "../data/media"
 import { routes, productPath } from "../lib/routes"
 import { pricingFor, formatShort } from "../lib/price-options"
 import { allHomes, categories, houseImage, type Home } from "../data/homes"
+import { responsive, SIZES } from "../lib/images"
 
 const IMGS = {
   hero: media.heroExterior,
@@ -128,9 +129,13 @@ export default function HomePage() {
       <section className="relative min-h-[92vh] flex items-center bg-navy overflow-hidden">
         {/* Background image */}
         <div className="absolute inset-0">
+          {/* The page's LCP element: eager, high priority, and preloaded from
+              <head> by index.astro. Rendered in the initial HTML with no
+              JS-gated reveal. */}
           <img
-            src={IMGS.hero}
+            {...responsive(IMGS.hero, SIZES.full)}
             alt="Modern modular home"
+            fetchPriority="high"
             className="w-full h-full object-cover opacity-40"
           />
           <div
@@ -386,8 +391,10 @@ export default function HomePage() {
               >
                 <div className="h-56 overflow-hidden bg-light">
                   <img
-                    src={c.img}
+                    {...responsive(c.img, SIZES.card)}
                     alt={c.title}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                 </div>
@@ -476,8 +483,10 @@ export default function HomePage() {
                 {/* Image */}
                 <div className="h-52 overflow-hidden bg-light relative shrink-0">
                   <img
-                    src={home.thumb ? houseImage(home.thumb) : undefined}
+                    {...(home.thumb ? responsive(houseImage(home.thumb), SIZES.card) : {})}
                     alt={home.name}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                   <div className="absolute top-3 left-3">
@@ -568,15 +577,19 @@ export default function HomePage() {
             <div className="relative">
               <div className="rounded-2xl overflow-hidden h-96 lg:h-[480px] bg-navy">
                 <img
-                  src={IMGS.frame}
+                  {...responsive(IMGS.frame, SIZES.half)}
                   alt="Completed bespoke home"
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover"
                 />
               </div>
               <div className="absolute bottom-6 -right-4 lg:-right-8 w-44 h-44 rounded-2xl overflow-hidden shadow-xl border-4 border-white hidden sm:block">
                 <img
-                  src={IMGS.interior2}
+                  {...responsive(IMGS.interior2, '176px')}
                   alt="Interior detail"
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -1013,8 +1026,10 @@ export default function HomePage() {
                 }`}
                 style={{ height: i === 0 ? "460px" : "218px" }}>
                 <img
-                  src={g.img}
+                  {...responsive(g.img, SIZES.card)}
                   alt={g.label}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-navy/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -1034,8 +1049,10 @@ export default function HomePage() {
       <section className="relative bg-navy py-20 lg:py-28 overflow-hidden">
         <div className="absolute inset-0 opacity-20">
           <img
-            src={IMGS.aerial}
+            {...responsive(IMGS.aerial, SIZES.full)}
             alt=""
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-cover"
             aria-hidden="true"
           />

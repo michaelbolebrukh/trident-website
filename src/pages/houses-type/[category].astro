@@ -1,8 +1,12 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro'
+import Breadcrumbs from '../../components/Breadcrumbs.astro'
 import CategoryPage from '../../components/CategoryPage'
 import { allHomes, PRIMARY_CATEGORIES } from '../../data/homes'
 import { categoryTerms } from '../../data/categories'
+import { categorySeo } from '../../data/seo'
+import { categoryCrumbs } from '../../lib/breadcrumbs'
+import { breadcrumbSchema } from '../../lib/schema'
 
 /**
  * Category pages keep the URL the old site used, /houses-type/<slug>/, so the
@@ -20,23 +24,28 @@ export function getStaticPaths() {
     .filter(({ homes }) => homes.length > 0)
     .map(({ slug, term, homes }) => ({
       params: { category: slug },
-      props: { term, homes },
+      props: { slug, term, homes },
     }))
 }
 
-const { term, homes } = Astro.props
+const { slug, term, homes } = Astro.props
 const isPrimary = PRIMARY_CATEGORIES.includes(term.name as (typeof PRIMARY_CATEGORIES)[number])
+
+const meta = categorySeo(slug, term, homes)
+const crumbs = categoryCrumbs(term.name)
 ---
 
 <BaseLayout
-  title={`${term.name} | Trident Modular`}
-  description={`${term.blurb} ${homes.length} ${homes.length === 1 ? 'model' : 'models'} available from Trident Modular.`}
+  title={meta.title}
+  description={meta.description}
+  schema={[breadcrumbSchema(crumbs)]}
 >
+  <Breadcrumbs crumbs={crumbs} />
   <CategoryPage
     name={term.name}
     blurb={term.blurb}
     homes={homes}
     isPrimary={isPrimary}
-    client:load
+    client:afterpaint
   />
 </BaseLayout>

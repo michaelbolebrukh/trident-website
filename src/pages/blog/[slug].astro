@@ -2,8 +2,11 @@
 import { postImage } from '../../lib/post-image'
 import { seoFor } from '../../data/seo'
 import BaseLayout from '../../layouts/BaseLayout.astro'
+import Breadcrumbs from '../../components/Breadcrumbs.astro'
 import posts from '../../data/posts.json'
-import { routes } from '../../lib/routes'
+import logo from '../../assets/logo__1_.svg'
+import { postCrumbs } from '../../lib/breadcrumbs'
+import { articleSchema, breadcrumbSchema } from '../../lib/schema'
 
 export function getStaticPaths() {
   return posts.map((post) => ({ params: { slug: post.slug }, props: { post } }))
@@ -26,44 +29,27 @@ const more = posts.filter((_, i) => i !== index).slice(0, 3)
 // Shown only when we hold the file locally; see src/lib/post-image.ts.
 const heroImage = postImage(post.image)
 
-// Article schema. Google uses it for the byline and date in results.
-const schema = {
-  '@context': 'https://schema.org',
-  '@type': 'BlogPosting',
-  headline: post.title,
-  datePublished: post.date,
-  dateModified: post.date,
-  description: post.seoDescription || post.excerpt,
-  image: heroImage,
-  author: { '@type': 'Organization', name: 'Trident Modular' },
-  publisher: {
-    '@type': 'Organization',
-    name: 'Trident Modular',
-    url: 'https://tridentmodular.com/',
-  },
-  mainEntityOfPage: new URL(`/blog/${post.slug}/`, Astro.site).toString(),
-}
-
 const meta = seoFor(`/blog/${post.slug}/`, post.title, post.seoDescription || post.excerpt)
+
+const crumbs = postCrumbs(post.title, post.slug)
+const schema = [
+  articleSchema(
+    { slug: post.slug, title: post.title, date: post.date, description: meta.description, image: heroImage },
+    logo.src,
+  ),
+  breadcrumbSchema(crumbs),
+]
 ---
 
 <BaseLayout
   title={meta.title}
   description={meta.description}
   image={heroImage}
+  schema={schema}
+  preloadImage={heroImage ? { href: heroImage } : undefined}
 >
-  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
-
   <article class="bg-white">
-    <div class="bg-light border-b border-border py-3">
-      <div class="max-w-[1280px] mx-auto px-6 lg:px-8 flex items-center gap-2 text-xs text-muted">
-        <a href={routes.home} class="hover:text-navy transition-colors">Home</a>
-        <span>/</span>
-        <a href={routes.blog} class="hover:text-navy transition-colors">Blog</a>
-        <span>/</span>
-        <span class="text-navy font-medium">{post.title}</span>
-      </div>
-    </div>
+    <Breadcrumbs crumbs={crumbs} />
 
     <header class="max-w-3xl mx-auto px-6 lg:px-8 pt-12 pb-8">
       <p class="text-xs font-semibold font-display uppercase tracking-[0.2em] text-gold mb-3">
@@ -86,6 +72,7 @@ const meta = seoFor(`/blog/${post.slug}/`, post.title, post.seoDescription || po
           alt={post.title}
           class="w-full rounded-2xl"
           loading="eager"
+          fetchpriority="high"
         />
       </div>
     )}

@@ -7,6 +7,7 @@ import { specFor } from '../data/catalogue-specs'
 import { pricingFor, formatPrice } from '../lib/price-options'
 import { STANDARD_EXCLUSIONS, AVAILABLE_UPGRADES } from '../data/pricing'
 import { plansFor } from '../data/floor-plans'
+import { responsive, SIZES } from '../lib/images'
 
 const IMGS = {
   ext1: media.heroExterior,
@@ -109,19 +110,16 @@ export default function ProductPage({ home }: { home: Home }) {
 
   const images = home.gallery.map(houseImage)
 
+  // How the three ways to buy are named for this model, straight from its
+  // price source (pricing.ts for houses, the price guides for garden
+  // buildings), so the prose never drifts from the pricing table.
+  const optionNames = pricing
+    ? pricing.options.map((o) => o.label).reduce((acc, label, i, all) =>
+        i === 0 ? label : i === all.length - 1 ? `${acc} or ${label}` : `${acc}, ${label}`, '')
+    : null
+
   return (
     <div className="bg-white">
-
-      {/* Breadcrumb */}
-      <div className="bg-light border-b border-border py-3">
-        <div className="max-w-[1280px] mx-auto px-6 lg:px-8 flex items-center gap-2 text-xs text-muted">
-          <a href="/" className="hover:text-navy transition-colors">Home</a>
-          <span>/</span>
-          <a href="/houses/" className="hover:text-navy transition-colors">All Homes</a>
-          <span>/</span>
-          <span className="text-navy font-medium">{home.name}</span>
-        </div>
-      </div>
 
       {/* Main product section */}
       <div className="max-w-[1280px] mx-auto px-6 lg:px-8 py-10">
@@ -136,8 +134,9 @@ export default function ProductPage({ home }: { home: Home }) {
               onClick={() => setLightboxOpen(true)}
             >
               <img
-                src={images[activeImage]}
+                {...responsive(images[activeImage], SIZES.half)}
                 alt={`${home.name} — exterior view`}
+                fetchPriority={activeImage === 0 ? 'high' : undefined}
                 className="w-full h-full object-cover transition-opacity duration-300"
               />
               <div className="absolute top-4 right-4 bg-white/80 backdrop-blur-sm rounded-lg px-3 py-1.5 text-xs font-medium font-display text-navy flex items-center gap-1.5">
@@ -155,7 +154,7 @@ export default function ProductPage({ home }: { home: Home }) {
                     onClick={() => setActiveImage(i)}
                     className={`w-20 h-14 shrink-0 rounded-lg overflow-hidden border-2 transition-all ${i === activeImage ? 'border-gold' : 'border-transparent opacity-60 hover:opacity-100'}`}
                   >
-                    <img src={img} alt="" className="w-full h-full object-cover" />
+                    <img {...responsive(img, SIZES.thumb)} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover" />
                   </button>
                 ))}
               </div>
@@ -254,7 +253,7 @@ export default function ProductPage({ home }: { home: Home }) {
             {detail?.intro ?? `The ${home.name} is part of our ${home.category.toLowerCase()} range, available from ${home.area} m² of internal floor area. ${home.desc}`}
           </p>
           <p className="text-body text-base leading-relaxed">
-            Available as a kit, weathertight shell or fully finished turnkey build, the {home.name} can be specified with a range of external cladding finishes, glazing configurations and sustainable upgrades including air-source heat pumps and roof-integrated solar panels.
+            {optionNames ? `Available as ${optionNames}, the ${home.name}` : `The ${home.name}`} can be specified with a range of external cladding finishes, glazing configurations and sustainable upgrades including air-source heat pumps and roof-integrated solar panels.
           </p>
         </div>
       </div>
@@ -538,7 +537,9 @@ export default function ProductPage({ home }: { home: Home }) {
       <div id="completion" className="scroll-mt-32 border-t border-border py-14">
         <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
           <h2 className="font-display font-bold text-navy text-2xl mb-2">Completion options</h2>
-          <p className="text-muted text-sm mb-6">The {home.name} is available as a kit, shell or turnkey solution.</p>
+          <p className="text-muted text-sm mb-6">
+            {optionNames ? `The ${home.name} is available as ${optionNames}.` : `Ask us which completion option suits the ${home.name} and your site.`}
+          </p>
           <div className="flex gap-2 mb-7">
             {(['Base', 'Turnkey'] as const).map((tab) => (
               <button
@@ -595,7 +596,7 @@ export default function ProductPage({ home }: { home: Home }) {
             {sustainableCards.map((c) => (
               <div key={c.title} className="rounded-xl overflow-hidden bg-white card-shadow">
                 <div className="h-36 overflow-hidden">
-                  <img src={c.img} alt={c.title} className="w-full h-full object-cover" />
+                  <img {...responsive(c.img, SIZES.card)} alt={c.title} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                 </div>
                 <div className="p-4">
                   <h4 className="font-display font-bold text-navy text-sm mb-1">{c.title}</h4>
@@ -658,7 +659,7 @@ export default function ProductPage({ home }: { home: Home }) {
                 key={h.name}
                 className="group bg-white rounded-2xl overflow-hidden card-shadow card-shadow-hover text-left transition-all duration-300 hover:-translate-y-1">
                 <div className="h-44 overflow-hidden bg-light">
-                  <img src={h.thumb ? houseImage(h.thumb) : undefined} alt={h.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <img {...(h.thumb ? responsive(houseImage(h.thumb), SIZES.card) : {})} alt={h.name} loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                 </div>
                 <div className="p-4">
                   <div className="flex items-center justify-between">

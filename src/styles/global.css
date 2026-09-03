@@ -1,4 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+/* Self-hosted variable fonts (one file per family, latin subsets preloaded in
+   BaseLayout). The Google Fonts @import this replaces was render-blocking:
+   the browser could not paint until the CSS bundle, then Google's CSS, then
+   the font files had all arrived. */
+@import '@fontsource-variable/montserrat';
+@import '@fontsource-variable/inter';
 @import 'tailwindcss';
 
 @theme {
@@ -11,8 +16,8 @@
   --color-border: #DCE2E8;
   --color-muted: #6B7A8E;
   --color-body: #1a2d45;
-  --font-display: 'Montserrat', sans-serif;
-  --font-body: 'Inter', sans-serif;
+  --font-display: 'Montserrat Variable', 'Montserrat', sans-serif;
+  --font-body: 'Inter Variable', 'Inter', sans-serif;
   --shadow-card: 0 2px 16px 0 rgba(0,32,74,0.08);
   --shadow-card-hover: 0 8px 32px 0 rgba(0,32,74,0.14);
 }

@@ -1,9 +1,11 @@
 ---
-import { seoFor } from '../../data/seo'
+import { modelSeo } from '../../data/seo'
 import BaseLayout from '../../layouts/BaseLayout.astro'
+import Breadcrumbs from '../../components/Breadcrumbs.astro'
 import ProductPage from '../../components/ProductPage'
-import { allHomes } from '../../data/homes'
-import { detailFor } from '../../data/model-details'
+import { allHomes, houseImage } from '../../data/homes'
+import { modelCrumbs } from '../../lib/breadcrumbs'
+import { breadcrumbSchema, productSchema } from '../../lib/schema'
 
 export function getStaticPaths() {
   return allHomes.map((home) => ({
@@ -14,28 +16,23 @@ export function getStaticPaths() {
 
 const { home } = Astro.props
 
-// The export's area field disagrees with the price guides, so prefer the
-// guide's range wherever we have one.
-const detail = detailFor(home.slug)
-const areas = detail?.variants.map((v) => v.area) ?? []
-const areaText = areas.length
-  ? areas.length > 1
-    ? `${Math.min(...areas)}–${Math.max(...areas)} m²`
-    : `${areas[0]} m²`
-  : `${home.area} m²`
+// Title on the model template, description from the model's own data; see
+// modelSeo in src/data/seo.ts.
+const meta = modelSeo(home)
 
-const description =
-  `${detail?.tagline ?? home.desc} ${areaText} internal floor area. ` +
-  'Available as a kit, weathertight shell or fully finished turnkey build.'
+const crumbs = modelCrumbs(home)
+const schema = [productSchema(home, meta.description), breadcrumbSchema(crumbs)]
 
-// Title and description follow what tridentmodular.com served for this
-// URL; see src/data/seo.ts.
-const meta = seoFor(`/houses/${home.slug}/`, home.name, description)
+// Social image: the gallery's opening frame, which is also the page's LCP.
+const lead = home.gallery.length ? houseImage(home.gallery[0]) : undefined
 ---
 
 <BaseLayout
   title={meta.title}
   description={meta.description}
+  image={lead}
+  schema={schema}
 >
-  <ProductPage home={home} client:load />
+  <Breadcrumbs crumbs={crumbs} />
+  <ProductPage home={home} client:afterpaint />
 </BaseLayout>
