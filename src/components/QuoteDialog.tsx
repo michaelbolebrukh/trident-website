@@ -7,12 +7,11 @@ import { useState, useEffect, useRef } from 'react'
  * to the same /api/contact.php endpoint as the contact page, with the model
  * named in the message so the enquiry arrives with its context.
  */
+/** Why the visitor is getting in touch, optional. */
 export const ENQUIRY_TYPES = [
-  'Garden room or office',
-  'Annexe or guest space',
-  'Permanent home',
-  'Commercial building',
-  'Bespoke project',
+  'I am looking to buy',
+  'I want a price or model details',
+  'I would like a private consultation',
 ]
 
 interface Props {
@@ -77,8 +76,8 @@ export default function QuoteDialog({ open, onClose, modelName, modelSlug }: Pro
           name: form.name,
           phone: form.phone,
           email: form.email,
-          projectType: form.enquiryType || 'Quote request',
-          message: `Quote request for ${modelName} (/houses/${modelSlug}/).`,
+          projectType: form.enquiryType || 'Free quote request',
+          message: `Free quote request for ${modelName} (/houses/${modelSlug}/).`,
           // Sending the form is the consent; the notice under the button says so.
           consent: true,
           company: form.company,
@@ -130,7 +129,7 @@ export default function QuoteDialog({ open, onClose, modelName, modelSlug }: Pro
         ) : (
           <>
             <p className="text-xs font-semibold font-display uppercase tracking-[0.2em] text-gold mb-2">{modelName}</p>
-            <h2 id="quote-title" className="font-display font-bold text-navy text-2xl mb-2">Request a quote</h2>
+            <h2 id="quote-title" className="font-display font-bold text-navy text-2xl mb-2">Get a free quote</h2>
             <p className="text-muted text-sm mb-6">Leave your details and we'll come back with a proposal for your site.</p>
 
             <form onSubmit={handleSubmit} noValidate className="space-y-4">
@@ -151,7 +150,7 @@ export default function QuoteDialog({ open, onClose, modelName, modelSlug }: Pro
               </div>
               <div>
                 <label htmlFor="quote-type" className={label}>
-                  Enquiry type <span className="text-muted font-normal normal-case tracking-normal">(optional)</span>
+                  How can we help? <span className="text-muted font-normal normal-case tracking-normal">(optional)</span>
                 </label>
                 <select id="quote-type" value={form.enquiryType} onChange={(e) => set('enquiryType', e.target.value)} className={`${field} bg-white`}>
                   <option value="">Select…</option>
@@ -170,7 +169,7 @@ export default function QuoteDialog({ open, onClose, modelName, modelSlug }: Pro
               )}
 
               <button type="submit" disabled={sending} className="w-full bg-gold text-navy font-bold font-display py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed">
-                {sending ? 'Sending…' : 'Send request'}
+                {sending ? 'Sending…' : 'Get my free quote'}
               </button>
               <p className="text-xs text-muted leading-relaxed">
                 By sending you agree to Trident Modular contacting you about this enquiry. See our{' '}
