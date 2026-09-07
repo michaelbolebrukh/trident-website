@@ -8,6 +8,7 @@ import { pricingFor, formatPrice } from '../lib/price-options'
 import { STANDARD_EXCLUSIONS, AVAILABLE_UPGRADES } from '../data/pricing'
 import { plansFor } from '../data/floor-plans'
 import { responsive, SIZES } from '../lib/images'
+import QuoteDialog from './QuoteDialog'
 
 const IMGS = {
   ext1: media.heroExterior,
@@ -107,6 +108,7 @@ export default function ProductPage({ home }: { home: Home }) {
   const [activeSpec, setActiveSpec] = useState<string | null>(null)
   const [completionTab, setCompletionTab] = useState<'Base' | 'Turnkey'>('Base')
   const [lightboxOpen, setLightboxOpen] = useState(false)
+  const [quoteOpen, setQuoteOpen] = useState(false)
 
   const images = home.gallery.map(houseImage)
 
@@ -204,13 +206,13 @@ export default function ProductPage({ home }: { home: Home }) {
 
             {/* CTAs */}
             <div className="space-y-3">
-              <a href="/contact-us/"
+              <button
+                type="button"
+                onClick={() => setQuoteOpen(true)}
                 className="block w-full text-center bg-gold text-navy font-bold font-display py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm">
                 Request a Quote
-              </a>
-              <button className="w-full border border-navy text-navy font-semibold font-display py-3.5 rounded-xl hover:bg-light transition-colors text-sm">
-                Download Specification
               </button>
+              {/* "Download Specification" is hidden until there is a document to serve. */}
               <a href="/customise-your-build/"
                 className="block w-full text-center text-sm font-semibold font-display text-muted hover:text-navy transition-colors underline underline-offset-2 py-1">
                 Customise this home
@@ -684,7 +686,7 @@ export default function ProductPage({ home }: { home: Home }) {
           <h2 className="font-display font-bold text-white text-3xl mb-3">Interested in the {home.name}?</h2>
           <p className="text-white/65 text-base mb-8">Tell us about your site, delivery area and any modifications you have in mind. We'll come back to you with a tailored quotation.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/contact-us/" className="bg-gold text-navy font-bold font-display px-8 py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm">Request a Quote</a>
+            <button type="button" onClick={() => setQuoteOpen(true)} className="bg-gold text-navy font-bold font-display px-8 py-3.5 rounded-xl hover:bg-gold-dark transition-colors text-sm">Request a Quote</button>
             <a href="/houses/" className="border border-white/30 text-white font-semibold font-display px-8 py-3.5 rounded-xl hover:bg-white/10 transition-colors text-sm">Browse all homes</a>
           </div>
         </div>
@@ -700,12 +702,15 @@ export default function ProductPage({ home }: { home: Home }) {
         </div>
       )}
 
+      <QuoteDialog open={quoteOpen} onClose={() => setQuoteOpen(false)} modelName={home.name} modelSlug={home.slug} />
+
       {/* Mobile sticky CTA */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-border px-4 py-3 flex gap-3">
-        <a href="/contact-us/" className="flex-1 bg-gold text-navy font-bold font-display py-3 rounded-xl text-sm">
+        <button type="button" onClick={() => setQuoteOpen(true)} className="flex-1 bg-gold text-navy font-bold font-display py-3 rounded-xl text-sm">
           Request a Quote
-        </a>
-        <button className="flex-1 border border-navy text-navy font-semibold font-display py-3 rounded-xl text-sm">
+        </button>
+        {/* "Download Spec" is hidden until there is a document to serve. */}
+        <button hidden className="flex-1 border border-navy text-navy font-semibold font-display py-3 rounded-xl text-sm">
           Download Spec
         </button>
       </div>
