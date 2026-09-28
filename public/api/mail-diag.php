@@ -41,4 +41,19 @@ foreach ($tests as $name => $fn) {
     try { $r = $fn(); } catch (Throwable $e) { $r = 'EXC ' . $e->getMessage(); }
     $out['test_' . $name] = ['result' => $r, 'ms' => round((microtime(true) - $start) * 1000), 'errors' => $errors, 'last' => error_get_last()];
 }
+$log = (string) ini_get('mail.log');
+$out['mail_log_exists'] = $log !== '' && is_file($log);
+if ($out['mail_log_exists']) {
+    $lines = @file($log, FILE_IGNORE_NEW_LINES) ?: [];
+    $out['mail_log_tail'] = array_slice($lines, -40);
+}
+$logDir = dirname($log);
+$out['log_dir'] = is_dir($logDir) ? array_values(array_diff(scandir($logDir) ?: [], ['.', '..'])) : 'missing';
+foreach (['error_log', 'php_error.log', 'error.log'] as $f) {
+    $pth = $logDir . '/' . $f;
+    if (is_file($pth)) { $out['tail_' . $f] = array_slice(@file($pth, FILE_IGNORE_NEW_LINES) ?: [], -20); }
+}
+$h = @popen('/usr/sbin/hsendmail -t 2>&1 <<< "" ; echo "exit=$?"', 'r');
+$out['hsendmail_direct'] = $h ? stream_get_contents($h) : 'popen unavailable';
+if ($h) { pclose($h); }
 echo json_encode($out, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
