@@ -19,7 +19,7 @@ declare(strict_types=1);
 const MAIL_TO         = 'contact@tridentmodular.com, oleg@tridentmodular.com, bolebruch8075@gmail.com';
 const MAIL_FROM       = 'website@tridentmodular.com';
 const CATALOGUE_FILE  = __DIR__ . '/../downloads/trident-catalogue.pdf';
-const CATALOGUE_NAME  = 'Trident Modular Catalogue.pdf';
+const CATALOGUE_NAME  = 'Trident Modular Catalogue 2026.pdf';
 // Outside the deploy path: rsync --delete would wipe a key stored under
 // downloads/ on every release, invalidating live download links.
 const TOKEN_TTL       = 900; // seconds a download link stays valid
