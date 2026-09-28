@@ -54,14 +54,14 @@ secrets, and never commits it:
 
 | Secret | Value |
 | --- | --- |
-| `SMTP_PASS` | Password (or app password) for the sending mailbox. Required; without it the forms fall back to `mail()`. |
-| `SMTP_USER` | Sending mailbox. Defaults to `contact@tridentmodular.com`. |
-| `SMTP_HOST` | Defaults to `smtp.office365.com` (the domain's mail is on Microsoft 365). |
-| `SMTP_PORT` | Defaults to `587` (STARTTLS). `465` uses implicit TLS. |
-| `SMTP_FROM` | From address if different from the user. |
+| `SMTP_PASS` | Gmail app password for the sending account. Required; without it the forms fall back to `mail()`. |
+| `SMTP_USER` | Sending account. Defaults to `tridentmodularhousing@gmail.com`. |
+| `SMTP_HOST` | Defaults to `smtp.gmail.com`. |
+| `SMTP_PORT` | Defaults to `465` (implicit TLS). `587` uses STARTTLS. |
+| `SMTP_FROM` | From address if different from the user. Gmail rewrites it to the account address unless that address is a verified "Send mail as" alias. |
 
-For Microsoft 365 the mailbox needs "Authenticated SMTP" enabled (admin
-centre → user → Mail → Manage email apps), and an app password if MFA is on.
+Gmail only accepts an **app password** (Google Account → Security → 2-Step
+Verification → App passwords), never the normal sign-in password.
 
 **Nothing is lost during an outage.** Every submission is written to
 `domains/tridentmodular.com/enquiries/<YYYY-MM>/` on the server, outside the
