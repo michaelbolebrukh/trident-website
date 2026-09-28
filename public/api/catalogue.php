@@ -168,10 +168,10 @@ $hits[] = $now;
 
 $clean = static fn(string $v): string => str_replace(["\r", "\n"], ' ', $v);
 
-$sent = mail(
-    MAIL_TO,
-    'Catalogue download — ' . $clean($name) . ($consent ? '' : ' [no contact consent]'),
-    implode("\n", [
+require __DIR__ . '/lib/mailer.php';
+
+$subject = 'Catalogue download — ' . $clean($name) . ($consent ? '' : ' [no contact consent]');
+$body    = implode("\n", [
         'Name:  ' . $name,
         'Email: ' . $email,
         'Phone: ' . ($phone !== '' ? $phone : '—'),
@@ -183,20 +183,15 @@ $sent = mail(
         'Sent: ' . date('c'),
         'Page: ' . $clean((string) ($data['page'] ?? 'unknown')),
         'IP:   ' . $ip,
-    ]),
-    implode("\r\n", [
-        'From: Trident Website <' . MAIL_FROM . '>',
-        'Reply-To: ' . $clean($name) . ' <' . $clean($email) . '>',
-        'Content-Type: text/plain; charset=utf-8',
-    ]),
-    // Envelope sender, see contact.php.
-    '-f' . MAIL_FROM
-);
+    ]);
 
-if (!$sent) {
-    // The lead is lost but the visitor asked for a catalogue in good faith —
-    // log it and let the download proceed rather than blocking them.
-    error_log('Catalogue download: mail() failed for ' . $email);
+// Spool first, then send; the download proceeds either way.
+$spooled = trident_spool('catalogue', compact('name', 'email', 'phone', 'interest', 'consent'), $subject, $body);
+if (trident_send(MAIL_TO, $subject, $body, [$name, $email], MAIL_FROM)) {
+    trident_spool_mark($spooled, 'sent');
+    trident_spool_retry(MAIL_TO, MAIL_FROM);
+} else {
+    error_log('Catalogue download: send failed for ' . $email . ($spooled ? ' (spooled)' : ' (NOT spooled)'));
 }
 
 echo json_encode([

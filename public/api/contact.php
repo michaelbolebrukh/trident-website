@@ -127,24 +127,26 @@ $lines = [
     'IP:   ' . $ip,
 ];
 
-$sent = mail(
-    MAIL_TO,
-    'Website enquiry — ' . $header($name) . ' (' . $header($projectType) . ')',
-    implode("\n", $lines),
-    implode("\r\n", [
-        'From: Trident Website <' . MAIL_FROM . '>',
-        'Reply-To: ' . $header($name) . ' <' . $header($email) . '>',
-        'Content-Type: text/plain; charset=utf-8',
-        'X-Mailer: PHP/' . phpversion(),
-    ]),
-    // Envelope sender. Shared hosts reject sendmail calls whose envelope
-    // sender is not a mailbox on the account, and mail() then returns false.
-    '-f' . MAIL_FROM
-);
+require __DIR__ . '/lib/mailer.php';
 
-if (!$sent) {
-    error_log('Trident contact form: mail() failed for ' . $email);
-    fail(500, 'We could not send your enquiry. Please email us directly.');
+$subject = 'Website enquiry — ' . $header($name) . ' (' . $header($projectType) . ')';
+$body    = implode("\n", $lines);
+
+// Spool first, so an outage at the mail transport never loses the lead.
+$spooled = trident_spool('contact', compact('name', 'email', 'phone', 'postcode', 'projectType', 'size', 'space', 'message'), $subject, $body);
+
+$sent = trident_send(MAIL_TO, $subject, $body, [$name, $email], MAIL_FROM);
+if ($sent) {
+    trident_spool_mark($spooled, 'sent');
+    trident_spool_retry(MAIL_TO, MAIL_FROM);
+    echo json_encode(['ok' => true]);
+    exit;
 }
 
-echo json_encode(['ok' => true]);
+error_log('Trident contact form: send failed for ' . $email . ($spooled ? ' (spooled: ' . basename($spooled) . ')' : ' (NOT spooled)'));
+if ($spooled === null) {
+    fail(500, 'We could not send your enquiry. Please email us directly.');
+}
+// The enquiry is safe in the spool and will be delivered when mail is back,
+// so the visitor gets a thank-you rather than an error they cannot act on.
+echo json_encode(['ok' => true, 'queued' => true]);
