@@ -17,7 +17,7 @@ declare(strict_types=1);
 // Enquiries go to the sales inbox, Oleg and Michael. PHP mail() accepts a
 // comma-separated list.
 const MAIL_TO         = 'contact@tridentmodular.com, oleg@tridentmodular.com, bolebruch8075@gmail.com';
-const MAIL_FROM       = 'website@tridentmodular.com';
+const MAIL_FROM       = 'contact@tridentmodular.com';
 const CATALOGUE_FILE  = __DIR__ . '/../downloads/trident-catalogue.pdf';
 const CATALOGUE_NAME  = 'Trident Modular Catalogue 2026.pdf';
 // Outside the deploy path: rsync --delete would wipe a key stored under
@@ -188,7 +188,9 @@ $sent = mail(
         'From: Trident Website <' . MAIL_FROM . '>',
         'Reply-To: ' . $clean($name) . ' <' . $clean($email) . '>',
         'Content-Type: text/plain; charset=utf-8',
-    ])
+    ]),
+    // Envelope sender, see contact.php.
+    '-f' . MAIL_FROM
 );
 
 if (!$sent) {
