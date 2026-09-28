@@ -59,15 +59,15 @@ jobs:
             echo "<?php"
             echo "// Written by the deploy workflow from repository secrets. Not committed."
             echo "return ["
-            echo "  'host' => '$(php_q "${SMTP_HOST:-smtp.office365.com}")',"
-            echo "  'port' => $(printf '%s' "${SMTP_PORT:-587}" | tr -cd '0-9'),"
-            echo "  'user' => '$(php_q "${SMTP_USER:-contact@tridentmodular.com}")',"
+            echo "  'host' => '$(php_q "${SMTP_HOST:-smtp.gmail.com}")',"
+            echo "  'port' => $(printf '%s' "${SMTP_PORT:-465}" | tr -cd '0-9'),"
+            echo "  'user' => '$(php_q "${SMTP_USER:-tridentmodularhousing@gmail.com}")',"
             echo "  'pass' => '$(php_q "$SMTP_PASS")',"
-            echo "  'from' => '$(php_q "${SMTP_FROM:-${SMTP_USER:-contact@tridentmodular.com}}")',"
+            echo "  'from' => '$(php_q "${SMTP_FROM:-${SMTP_USER:-tridentmodularhousing@gmail.com}}")',"
             echo "];"
           } > dist/api/mail-config.php
           php -l dist/api/mail-config.php
-          echo "SMTP settings written for ${SMTP_USER:-contact@tridentmodular.com} via ${SMTP_HOST:-smtp.office365.com}:${SMTP_PORT:-587}"
+          echo "SMTP settings written for ${SMTP_USER:-tridentmodularhousing@gmail.com} via ${SMTP_HOST:-smtp.gmail.com}:${SMTP_PORT:-465}"
 
       - name: Set up SSH
         run: |
