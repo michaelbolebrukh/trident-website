@@ -16,7 +16,7 @@ declare(strict_types=1);
 const MAIL_TO      = 'contact@tridentmodular.com, oleg@tridentmodular.com, bolebruch8075@gmail.com';
 // Must be a mailbox on the sending domain — shared hosts reject or spam-bin
 // mail claiming to be from an address they do not host.
-const MAIL_FROM    = 'website@tridentmodular.com';
+const MAIL_FROM    = 'contact@tridentmodular.com';
 const RATE_LIMIT   = 5;    // max submissions ...
 const RATE_WINDOW  = 3600; // ... per this many seconds, per IP
 
@@ -136,7 +136,10 @@ $sent = mail(
         'Reply-To: ' . $header($name) . ' <' . $header($email) . '>',
         'Content-Type: text/plain; charset=utf-8',
         'X-Mailer: PHP/' . phpversion(),
-    ])
+    ]),
+    // Envelope sender. Shared hosts reject sendmail calls whose envelope
+    // sender is not a mailbox on the account, and mail() then returns false.
+    '-f' . MAIL_FROM
 );
 
 if (!$sent) {
