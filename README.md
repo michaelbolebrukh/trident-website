@@ -41,12 +41,34 @@ Adding a home to `src/data/homes.ts` automatically creates its product page.
   `hello@tridentmodular.com` appear in the header, footer and contact page.
 - **Legal links** (privacy policy, terms) point at `#`.
 
-## Contact form
+## Contact form and catalogue download
 
-`public/api/contact.php` handles enquiry submissions — the only server-side
-code on the site. Set `MAIL_TO` and `MAIL_FROM` at the top of that file before
-launch. `MAIL_FROM` must be a real mailbox on the sending domain or the host
-will reject or spam-bin the mail.
+`public/api/contact.php` and `public/api/catalogue.php` are the only
+server-side code on the site. Both send through `public/api/lib/mailer.php`.
+
+**How mail goes out.** Hostinger's own sendmail relay refuses connections on
+this account (`dial tcp 127.0.0.1:125: connection refused`), so the mailer
+sends over authenticated SMTP when `public/api/mail-config.php` exists. The
+deploy workflow writes that file into the build output from these repository
+secrets, and never commits it:
+
+| Secret | Value |
+| --- | --- |
+| `SMTP_PASS` | Password (or app password) for the sending mailbox. Required; without it the forms fall back to `mail()`. |
+| `SMTP_USER` | Sending mailbox. Defaults to `contact@tridentmodular.com`. |
+| `SMTP_HOST` | Defaults to `smtp.office365.com` (the domain's mail is on Microsoft 365). |
+| `SMTP_PORT` | Defaults to `587` (STARTTLS). `465` uses implicit TLS. |
+| `SMTP_FROM` | From address if different from the user. |
+
+For Microsoft 365 the mailbox needs "Authenticated SMTP" enabled (admin
+centre → user → Mail → Manage email apps), and an app password if MFA is on.
+
+**Nothing is lost during an outage.** Every submission is written to
+`domains/tridentmodular.com/enquiries/<YYYY-MM>/` on the server, outside the
+web root, before any send is attempted. Entries the transport rejected stay
+`pending` and are re-sent, subject prefixed `[Delayed, received …]`, on the
+next successful send. The visitor sees a thank-you either way; the JSON
+response carries `queued: true` when the enquiry was spooled but not sent.
 
 It validates server-side, rate-limits per IP, and uses a honeypot field for
 spam. Requires PHP 8.1+ (Hostinger is on 8.3).

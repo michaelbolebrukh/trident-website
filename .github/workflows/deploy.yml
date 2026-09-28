@@ -37,6 +37,38 @@ jobs:
           PUBLIC_NOINDEX: ${{ (inputs.target == 'production') && '0' || '1' }}
         run: npm run build
 
+      - name: Mail settings for the contact and catalogue forms
+        # The host's own sendmail relay refuses connections, so the forms send
+        # over authenticated SMTP. Credentials come from repository secrets
+        # and are written into the build output as a PHP file, which the web
+        # server executes rather than serves. Without SMTP_PASS the forms
+        # fall back to mail() and spool what they cannot send.
+        env:
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          SMTP_FROM: ${{ secrets.SMTP_FROM }}
+        run: |
+          if [ -z "$SMTP_PASS" ]; then
+            echo "No SMTP_PASS secret: forms will use mail() and the spool."
+            exit 0
+          fi
+          php_q() { printf '%s' "$1" | sed "s/\\\\/\\\\\\\\/g; s/'/\\\\'/g"; }
+          {
+            echo "<?php"
+            echo "// Written by the deploy workflow from repository secrets. Not committed."
+            echo "return ["
+            echo "  'host' => '$(php_q "${SMTP_HOST:-smtp.office365.com}")',"
+            echo "  'port' => $(printf '%s' "${SMTP_PORT:-587}" | tr -cd '0-9'),"
+            echo "  'user' => '$(php_q "${SMTP_USER:-contact@tridentmodular.com}")',"
+            echo "  'pass' => '$(php_q "$SMTP_PASS")',"
+            echo "  'from' => '$(php_q "${SMTP_FROM:-${SMTP_USER:-contact@tridentmodular.com}}")',"
+            echo "];"
+          } > dist/api/mail-config.php
+          php -l dist/api/mail-config.php
+          echo "SMTP settings written for ${SMTP_USER:-contact@tridentmodular.com} via ${SMTP_HOST:-smtp.office365.com}:${SMTP_PORT:-587}"
+
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh
