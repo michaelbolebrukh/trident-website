@@ -24,7 +24,13 @@ If we introduce anything further, we will update this policy and, where the law 
 
 ## 3. Cookies We May Use in Future
 
-Beyond Statcounter, our Privacy Policy sets out the categories of technology we may use as the website develops. They fall into the following groups.
+### Google Analytics
+
+We also use [Google Analytics](https://marketingplatform.google.com/about/analytics/) for the same purpose: to see which pages are read, how visitors arrive and how the site is used, so we can improve it. It sets first-party cookies (named `_ga` and `_ga_` followed by an identifier) that tell one visit apart from another. Google's handling of this data is described in [Google's privacy policy](https://policies.google.com/privacy).
+
+You can opt out with the [Google Analytics opt-out browser add-on](https://tools.google.com/dlpage/gaoptout), or block its cookies in your browser — the site works fully without them.
+
+Beyond Statcounter and Google Analytics, our Privacy Policy sets out the categories of technology we may use as the website develops. They fall into the following groups.
 
 ### Strictly Necessary Cookies
 

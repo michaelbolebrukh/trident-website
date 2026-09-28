@@ -87,6 +87,18 @@ const jsonLd = [organizationSchema(logo.src), webSiteSchema(), ...schema]
 
     <slot name="head" />
 
+    {/* Google Analytics 4 (property G-J46G56W1F7), the snippet as Google
+        supplies it. is:inline keeps Astro from bundling it. It sets
+        first-party _ga cookies, which the cookie policy declares. */}
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-J46G56W1F7"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-J46G56W1F7');
+    </script>
+
     {jsonLd.map((block) => (
       <script is:inline type="application/ld+json" set:html={JSON.stringify(block)} />
     ))}
