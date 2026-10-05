@@ -1,4 +1,5 @@
 import { media } from '../data/media'
+import { responsive, SIZES } from '../lib/images'
 
 const IMGS = {
   hero: media.chaletExterior,
@@ -33,7 +34,7 @@ export default function BespokePage() {
       {/* Hero */}
       <section className="relative bg-navy min-h-[55vh] flex items-center overflow-hidden">
         <div className="absolute inset-0">
-          <img src={IMGS.hero} alt="" className="w-full h-full object-cover opacity-30" />
+          <img {...responsive(IMGS.hero, SIZES.full)} alt="" fetchPriority="high" className="w-full h-full object-cover opacity-30" />
           <div className="absolute inset-0" style={{ background: 'rgba(0,32,74,0.75)' }} />
         </div>
         <div className="relative max-w-[1280px] mx-auto px-6 lg:px-8 py-20">
@@ -62,6 +63,7 @@ export default function BespokePage() {
             {[
               {
                 title: 'Bespoke Residential',
+    alt: 'Estate single-storey modular home with garage, exterior',
                 desc: 'For clients who need more than a catalogue design can offer. We work from your brief, site and aspirations to develop a home designed specifically for your plot. The result uses the same factory manufacturing process, with the flexibility of a fully bespoke design.',
                 features: ['Architect-led design process', 'Planning permission support', 'Structural engineering', 'Any size, layout or specification', 'Full or partial completion available'],
                 img: IMGS.resi,
@@ -69,6 +71,7 @@ export default function BespokePage() {
               },
               {
                 title: 'Commercial & Investment Projects',
+    alt: 'ModWood Cafe factory-built commercial building, exterior',
                 desc: 'Trident Modular works with developers, landowners and commercial clients on a wide range of building types, from offices and workspaces to hospitality buildings, glamping lodges and rental units. Modular construction is particularly well suited to multi-unit and phased commercial schemes.',
                 features: ['Offices and workspaces', 'Hospitality and leisure', 'Rental and investment units', 'Glamping and tourism', 'Phased or multi-unit schemes'],
                 img: IMGS.commercial,
@@ -77,7 +80,7 @@ export default function BespokePage() {
             ].map((route) => (
               <div key={route.title} className="bg-white rounded-2xl overflow-hidden card-shadow">
                 <div className="h-52 overflow-hidden bg-light">
-                  <img src={route.img} alt={route.title} className="w-full h-full object-cover" />
+                  <img {...responsive(route.img, SIZES.half)} alt={route.alt} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                 </div>
                 <div className="p-7">
                   <h3 className="font-display font-bold text-navy text-xl mb-3">{route.title}</h3>

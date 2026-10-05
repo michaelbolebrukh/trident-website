@@ -2,6 +2,7 @@
 import { seoFor } from '../data/seo'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import ContactPage from '../components/ContactPage'
+import { contactPageSchema } from '../lib/schema'
 
 const meta = seoFor('/contact-us/', 'Contact Us', 'Tell us about your project and the Trident team will help identify the most suitable next step. Request a quotation or arrange a call.')
 ---
@@ -9,6 +10,7 @@ const meta = seoFor('/contact-us/', 'Contact Us', 'Tell us about your project an
 <BaseLayout
   title={meta.title}
   description={meta.description}
+  schema={[contactPageSchema(meta.title, meta.description)]}
 >
   <ContactPage client:afterpaint />
 </BaseLayout>

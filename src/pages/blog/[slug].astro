@@ -34,7 +34,7 @@ const meta = seoFor(`/blog/${post.slug}/`, post.title, post.seoDescription || po
 const crumbs = postCrumbs(post.title, post.slug)
 const schema = [
   articleSchema(
-    { slug: post.slug, title: post.title, date: post.date, description: meta.description, image: heroImage },
+    { slug: post.slug, title: post.title, date: post.date, dateModified: (post as { dateModified?: string }).dateModified, description: meta.description, image: heroImage },
     logo.src,
   ),
   breadcrumbSchema(crumbs),

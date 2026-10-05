@@ -24,6 +24,7 @@ import type { Home } from './homes'
 import { detailFor } from './model-details'
 import type { CategoryTerm } from './categories'
 import { modelSeo as modelCopy } from './model-seo'
+import { floorAreaText } from '../lib/area'
 
 export const SITE_NAME = 'Trident Modular'
 
@@ -299,11 +300,7 @@ export function seoFor(
  * "4.4–12.2 m²" from the price guide's size variants where we have them,
  * otherwise the export's single figure. The same rule ProductPage uses.
  */
-export function floorAreaText(home: Home): string {
-  const areas = detailFor(home.slug)?.variants.map((v) => v.area) ?? []
-  if (!areas.length) return `${home.area} m²`
-  return areas.length > 1 ? `${Math.min(...areas)}–${Math.max(...areas)} m²` : `${areas[0]} m²`
-}
+export { floorAreaText }
 
 /**
  * "<Model> — <descriptor> | Trident Modular". No price anywhere in the title

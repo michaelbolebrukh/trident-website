@@ -1,4 +1,5 @@
 import { media } from '../data/media'
+import { responsive, SIZES } from '../lib/images'
 
 const IMGS = {
   hero: media.heroExterior,
@@ -14,7 +15,7 @@ export default function AboutPage() {
       {/* Hero */}
       <section className="relative bg-navy min-h-[50vh] flex items-end overflow-hidden">
         <div className="absolute inset-0">
-          <img src={IMGS.hero} alt="" className="w-full h-full object-cover opacity-35" />
+          <img {...responsive(IMGS.hero, SIZES.full)} alt="" fetchPriority="high" className="w-full h-full object-cover opacity-35" />
           <div className="absolute inset-0" style={{ background: 'rgba(0,32,74,0.7)' }} />
         </div>
         <div className="relative max-w-[1280px] mx-auto px-6 lg:px-8 pb-16 pt-24">
@@ -39,7 +40,7 @@ export default function AboutPage() {
             </p>
           </div>
           <div className="rounded-2xl overflow-hidden h-80 bg-light">
-            <img src={IMGS.build} alt="Trident construction" className="w-full h-full object-cover" />
+            <img {...responsive(IMGS.build, SIZES.half)} alt="Chalet two-storey timber-frame modular home, exterior" loading="lazy" decoding="async" className="w-full h-full object-cover" />
           </div>
         </div>
       </section>
@@ -73,7 +74,7 @@ export default function AboutPage() {
       <section className="py-20 lg:py-28">
         <div className="max-w-[1280px] mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-14 items-center">
           <div className="rounded-2xl overflow-hidden h-80 bg-light">
-            <img src={IMGS.interior} alt="Interior quality" className="w-full h-full object-cover" />
+            <img {...responsive(IMGS.interior, SIZES.half)} alt="Living room interior of a Trident modular home" loading="lazy" decoding="async" className="w-full h-full object-cover" />
           </div>
           <div>
             <p className="text-xs font-semibold font-display uppercase tracking-[0.2em] text-gold mb-4">Our Values</p>

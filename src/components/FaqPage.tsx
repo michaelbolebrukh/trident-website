@@ -64,6 +64,9 @@ export default function FaqPage() {
           <div className="space-y-2 max-w-3xl">
             {filtered.map((faq) => (
               <div key={faq.q} className="rounded-xl border border-border overflow-hidden">
+                {/* The question is a heading so the page outline reads as its
+                    questions; the button inside it keeps the accordion. */}
+                <h2 className="m-0">
                 <button
                   onClick={() => setOpenQuestion(openQuestion === faq.q ? null : faq.q)}
                   className="w-full text-left flex items-start justify-between gap-4 px-5 py-4 hover:bg-light transition-colors"
@@ -78,6 +81,7 @@ export default function FaqPage() {
                     <path d="M7 10l5 5 5-5z"/>
                   </svg>
                 </button>
+                </h2>
                 {/* Always in the DOM, hidden when collapsed: rendering answers
                     conditionally kept them out of the served HTML entirely, so
                     search engines never saw any FAQ content. */}

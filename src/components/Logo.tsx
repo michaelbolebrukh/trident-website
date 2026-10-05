@@ -11,6 +11,7 @@ export default function Logo({ className = '', height = 36, variant = 'default' 
     <img
       src={logoSrc.src}
       alt="Trident Modular"
+      width={Math.round(height * (5088 / 1144))}
       height={height}
       style={{ height: `${height}px`, width: 'auto', filter: variant === 'white' ? 'brightness(0) invert(1)' : 'none' }}
       className={className}

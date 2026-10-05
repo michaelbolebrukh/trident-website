@@ -13,6 +13,7 @@ import { specFor } from '../data/catalogue-specs'
 import { housePricing } from '../data/pricing'
 import posts from '../data/posts.json'
 import { routes, productPath } from '../lib/routes'
+import { floorAreaText } from '../lib/area'
 import { responsive, SIZES } from '../lib/images'
 
 const meta = seoFor('/commercial/', 'Commercial Modular Buildings', '')
@@ -60,7 +61,7 @@ const faqQuestions = [
             </div>
             <div class="p-5 flex flex-col flex-1">
               <h3 class="font-display font-bold text-navy text-lg">{home.name}</h3>
-              <p class="text-xs text-muted mb-2">Catalogue area {home.area} m² · {home.category}</p>
+              <p class="text-xs text-muted mb-2">Floor area {floorAreaText(home)} · {home.category}</p>
               <p class="text-sm text-muted leading-relaxed mb-3">{home.desc}</p>
               {spec && spec.rooms.length > 1 && (
                 <p class="text-xs text-muted mb-3">Room schedule: {spec.rooms.map((r) => `${r.name} ${r.area} m²`).join(', ')}.</p>

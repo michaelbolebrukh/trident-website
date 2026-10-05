@@ -2,6 +2,7 @@ import { houseImage, type Home } from '../data/homes'
 import { productPath, routes } from '../lib/routes'
 import { pricingFor, formatShort } from '../lib/price-options'
 import { responsive, SIZES } from '../lib/images'
+import { floorAreaText, floorAreaMin } from '../lib/area'
 
 interface Props {
   name: string
@@ -13,7 +14,7 @@ interface Props {
 
 export default function CategoryPage({ name, blurb, homes, isPrimary }: Props) {
   const sorted = [...homes].sort((a, b) => a.price - b.price)
-  const areas = sorted.map((h) => h.area).filter(Boolean)
+  const areas = sorted.map((h) => floorAreaMin(h)).filter(Boolean)
 
   return (
     <div className="bg-white">
@@ -54,7 +55,7 @@ export default function CategoryPage({ name, blurb, homes, isPrimary }: Props) {
                 <div className="p-5 flex flex-col flex-1">
                   <div className="flex items-baseline justify-between gap-2 mb-1">
                     <h2 className="font-display font-bold text-navy text-base leading-snug">{home.name}</h2>
-                    <span className="text-muted text-xs font-medium shrink-0">{home.area} m²</span>
+                    <span className="text-muted text-xs font-medium shrink-0">{floorAreaText(home)}</span>
                   </div>
                   <p className="text-xs text-muted leading-snug mb-3">{home.desc}</p>
                   <p className="text-xs text-muted mb-4">

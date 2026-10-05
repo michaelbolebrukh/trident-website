@@ -8,6 +8,7 @@ import { pricingFor, formatPrice } from '../lib/price-options'
 import { STANDARD_EXCLUSIONS, AVAILABLE_UPGRADES } from '../data/pricing'
 import { plansFor } from '../data/floor-plans'
 import { responsive, SIZES } from '../lib/images'
+import { floorAreaText } from '../lib/area'
 import QuoteDialog from './QuoteDialog'
 
 const IMGS = {
@@ -23,15 +24,18 @@ const IMGS = {
 }
 
 
+// The envelope every model shares, stated from the build-ups on the
+// technology page and the purchase-option scopes in pricing.ts. Model
+// specific values (sizes, U-values where published) come from model-details.
 const specs = [
-  { label: 'Wall Structure', content: 'Structural insulated panels (SIPs) with timber frame. 140mm cavity with mineral wool insulation. Rendered or timber-clad external finish.' },
-  { label: 'Roof', content: 'Pitched or flat roof options. EPDM membrane or standing seam metal. Additional options include green roof and solar panel integration.' },
-  { label: 'Floor Structure', content: 'Insulated concrete slab or suspended timber floor. 150mm rigid insulation below slab. Underfloor heating compatible throughout.' },
-  { label: 'Foundation', content: 'Standard ground-bearing slab. Screw pile or pad foundation alternatives available depending on ground conditions and site access.' },
-  { label: 'Insulation', content: 'Wall: 140mm mineral wool (U-value 0.18 W/m²K). Roof: 300mm mineral wool (U-value 0.12 W/m²K). Floor: 150mm rigid PIR (U-value 0.13 W/m²K).' },
-  { label: 'Ventilation', content: 'Mechanical ventilation with heat recovery (MVHR) as standard. Unit located in utility or plant room. All ductwork in ceiling void.' },
-  { label: 'Doors & Windows', content: 'Triple-glazed PVC-U or aluminium frames. Argon-filled low-E glass. U-value 0.8 W/m²K. Bi-fold or sliding door options available.' },
-  { label: 'Internal Finishes', content: 'Plasterboard walls and ceilings. Pre-finished joinery. Kitchen and bathroom specification available separately in turnkey packages.' },
+  { label: 'Wall Structure', content: 'Closed-panel timber frame. Kiln-dried C24 structural timber at 12–15% moisture content, 95, 145 or 195 mm load-bearing frame, OSB-3 sheathing, breather and vapour control membranes. Panels arrive with external cladding fitted at the factory.' },
+  { label: 'Roof', content: 'Pitched or flat roof panels on the same timber frame, insulated to match the walls. Roof covering fitted at the factory where the model allows. Green roof and solar PV options available.' },
+  { label: 'Floor Structure', content: 'Timber floor panels: OSB-3 deck over a 95 to 195 mm load-bearing frame with basalt wool insulation and rodent mesh below. Floor panels are included in the Turnkey base option and excluded from the two Shell options.' },
+  { label: 'Foundation', content: 'Helical ground screw foundation included in the Turnkey base option. With the Shell options the foundation is yours, designed to suit ground conditions and site access.' },
+  { label: 'Insulation', content: 'Non-combustible Class A1 basalt wool throughout, in 100, 150 or 200 mm build-ups for walls, roof and floor. Insulation thickness is agreed per project; see the technology page for each build-up layer by layer.' },
+  { label: 'Ventilation', content: 'Mechanical ventilation with heat recovery (MVHR) is available as a priced upgrade, alongside underfloor heating and solar PV with battery storage. See the upgrades list under pricing.' },
+  { label: 'Doors & Windows', content: 'Windows and external doors are fitted at the factory and included in every option. Aluminium frames and bi-fold or sliding door systems are priced upgrades.' },
+  { label: 'Internal Finishes', content: 'Turnkey base: plasterboard tape-and-joint and paint, LVT flooring, internal doors, one standard bathroom, basic electrics, plumbing and air-source heat pump. Kitchen and upgraded finishes priced separately.' },
 ]
 
 const sustainableCards = [
@@ -67,7 +71,11 @@ export default function ProductPage({ home }: { home: Home }) {
     },
     {
       label: 'Dimensions',
-      value: detail ? `${detail.variants[0].dimensions} mm` : `${home.dimensions} m`,
+      value: detail
+        ? /\d\s*[×x]\s*\d/.test(detail.variants[0].dimensions)
+          ? `${detail.variants[0].dimensions} mm`
+          : detail.variants[0].dimensions
+        : `${home.dimensions} m`,
     },
   ]
 
@@ -252,7 +260,7 @@ export default function ProductPage({ home }: { home: Home }) {
         <div className="max-w-[1280px] mx-auto px-6 lg:px-8 max-w-3xl">
           <h2 className="font-display font-bold text-navy text-2xl mb-4">Overview</h2>
           <p className="text-body text-base leading-relaxed mb-3">
-            {detail?.intro ?? `The ${home.name} is part of our ${home.category.toLowerCase()} range, available from ${home.area} m² of internal floor area. ${home.desc}`}
+            {detail?.intro ?? `The ${home.name} is part of our ${home.category.toLowerCase()} range, available from ${floorAreaText(home)} of internal floor area. ${home.desc}`}
           </p>
           <p className="text-body text-base leading-relaxed">
             {optionNames ? `Available as ${optionNames}, the ${home.name}` : `The ${home.name}`} can be specified with a range of external cladding finishes, glazing configurations and sustainable upgrades including air-source heat pumps and roof-integrated solar panels.
@@ -271,7 +279,29 @@ export default function ProductPage({ home }: { home: Home }) {
               {pricing.fromSmallestOf && ` Prices shown are for the smallest of ${pricing.fromSmallestOf} sizes.`}
             </p>
 
-            <div className="grid md:grid-cols-3 gap-5">
+            <table className="hidden md:table w-full text-sm bg-white rounded-2xl border border-border overflow-hidden mb-8">
+              <caption className="sr-only">Purchase options and from-prices for the {home.name}, excluding VAT</caption>
+              <thead>
+                <tr className="bg-navy text-white text-left">
+                  <th scope="col" className="px-5 py-3 font-display font-bold">Option</th>
+                  <th scope="col" className="px-5 py-3 font-display font-bold">Package</th>
+                  <th scope="col" className="px-5 py-3 font-display font-bold whitespace-nowrap">From (excl. VAT)</th>
+                  <th scope="col" className="px-5 py-3 font-display font-bold">What is included</th>
+                </tr>
+              </thead>
+              <tbody>
+                {pricing.options.map((opt) => (
+                  <tr key={opt.n} className="border-t border-border align-top">
+                    <td className="px-5 py-4 text-xs font-bold font-display tracking-[0.15em] uppercase text-gold whitespace-nowrap">Option {opt.n}</td>
+                    <th scope="row" className="px-5 py-4 font-display font-bold text-navy text-left whitespace-nowrap">{opt.label}</th>
+                    <td className="px-5 py-4 font-display font-bold text-navy whitespace-nowrap">{opt.price === null ? 'On request' : formatPrice(opt.price)}</td>
+                    <td className="px-5 py-4 text-muted text-xs leading-relaxed">{opt.desc}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            <div className="grid gap-5 md:hidden">
               {pricing.options.map((opt, i) => {
                 const last = i === pricing.options.length - 1
                 return (
@@ -465,9 +495,10 @@ export default function ProductPage({ home }: { home: Home }) {
               {plans.map((src, i) => (
                 <figure key={src} className="bg-light rounded-2xl border border-border overflow-hidden">
                   <img
-                    src={src}
+                    {...responsive(src, SIZES.half)}
                     alt={`${home.name} floor plan${plans.length > 1 ? ` ${i + 1}` : ''}`}
                     loading="lazy"
+                    decoding="async"
                     className="w-full h-auto"
                   />
                   {plans.length > 1 && (
@@ -523,11 +554,11 @@ export default function ProductPage({ home }: { home: Home }) {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               { icon: '◎', title: 'Full-height glazing', desc: 'Large fixed and opening sections to the garden elevation. Options for bi-fold or sliding door systems.' },
-              { icon: '◈', title: 'Open-plan living', desc: 'Ground floor combines kitchen, dining and sitting areas beneath a galleried first floor.' },
-              { icon: '◉', title: 'Mezzanine bedroom level', desc: 'Three bedrooms on a half-storey above the main living area with views into the double-height space.' },
               { icon: '◆', title: 'Timber or render finish', desc: 'Standard models available with dark-stained timber cladding or white through-coloured render.' },
               { icon: '◇', title: 'Heat pump ready', desc: 'Pre-designed to accommodate air-source heat pump with underfloor heating throughout.' },
               { icon: '○', title: 'Turnkey available', desc: 'Full internal completion including kitchen, bathrooms, electrical and plumbing works on request.' },
+              { icon: '◈', title: 'Layout changes', desc: 'Room sizes, openings and internal walls can be adjusted to your brief before the panels are manufactured.' },
+              { icon: '◉', title: 'Terraces and canopies', desc: 'Decking, covered terraces and entrance canopies designed and supplied with the building.' },
             ].map((f) => (
               <div key={f.title} className="bg-white rounded-xl p-5 border border-border">
                 <span className="text-gold text-lg">{f.icon}</span>
@@ -672,7 +703,7 @@ export default function ProductPage({ home }: { home: Home }) {
                     <p className="font-display font-bold text-navy">{h.name}</p>
                     <p className="text-sm font-bold text-gold font-display">£{h.price.toLocaleString('en-GB')}</p>
                   </div>
-                  <p className="text-xs text-muted mt-0.5">{h.area} m²</p>
+                  <p className="text-xs text-muted mt-0.5">{floorAreaText(h)}</p>
                 </div>
               </a>
             ))}

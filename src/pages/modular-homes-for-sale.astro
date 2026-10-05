@@ -14,6 +14,7 @@ import { categoryTerms } from '../data/categories'
 import { HOUSE_OPTIONS, PAYMENT_SCHEDULE } from '../data/pricing'
 import { houseRows, guideRows, gbp } from '../lib/price-guide'
 import { categoryPath, routes } from '../lib/routes'
+import { floorAreaText } from '../lib/area'
 import { responsive, SIZES } from '../lib/images'
 
 const meta = seoFor('/modular-homes-for-sale/', 'Modular Homes for Sale UK', '')
@@ -66,7 +67,7 @@ const faqQuestions = [
                 </div>
                 <div class="p-4 flex flex-col flex-1">
                   <h3 class="font-display font-bold text-navy text-base">{home.name}</h3>
-                  <p class="text-xs text-muted mb-3">{home.area} m²{home.bedrooms ? ` · ${home.bedrooms} bed` : ''}</p>
+                  <p class="text-xs text-muted mb-3">{floorAreaText(home)}{home.bedrooms ? ` · ${home.bedrooms} bed` : ''}</p>
                   <p class="text-sm mt-auto">
                     {row ? (
                       row.onRequest ? <span class="font-semibold text-navy">Price on request</span> : <><span class="text-muted">{row.options[0].label} from </span><span class="font-bold text-navy">{gbp(row.options[0].price)}</span></>

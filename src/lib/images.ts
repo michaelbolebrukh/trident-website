@@ -50,8 +50,13 @@ export function responsive(src: string, sizesHint: string = SIZES.full): Respons
     `${src} ${entry.w}w`,
   ]
 
+  // src is the fallback for browsers (and crawlers) that ignore srcset; the
+  // 1024 px copy is plenty for any slot on the site and a fraction of the
+  // original's weight. The original stays in srcset for large displays.
+  const fallback = entry.v.includes(1024) ? `${dir}/r/${base}-1024.webp` : src
+
   return {
-    src,
+    src: fallback,
     srcSet: candidates.join(', '),
     sizes: sizesHint,
     width: entry.w,

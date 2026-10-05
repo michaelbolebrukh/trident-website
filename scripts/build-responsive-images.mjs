@@ -19,7 +19,7 @@ import path from 'node:path'
 
 const ROOT = new URL('../', import.meta.url).pathname
 const PUBLIC = path.join(ROOT, 'public')
-const DIRS = ['images/library', 'images/projects']
+const DIRS = ['images/library', 'images/projects', 'images/plans']
 const WIDTHS = [480, 768, 1024, 1440]
 const MANIFEST = path.join(ROOT, 'src/data/image-sizes.generated.json')
 

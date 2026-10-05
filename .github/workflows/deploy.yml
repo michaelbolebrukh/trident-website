@@ -23,6 +23,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history: the sitemap's <lastmod> comes from git
 
       - uses: actions/setup-node@v4
         with:
@@ -196,6 +198,20 @@ jobs:
           done
           echo "::error::Site did not return 200 after deploy (last status $code)."
           exit 1
+
+      - name: Notify search engines (IndexNow)
+        # Production only. Submits every URL in the sitemap to IndexNow,
+        # which Bing, Yandex and others share, so new and changed pages are
+        # picked up without waiting for a scheduled crawl. The key file at
+        # the site root proves ownership.
+        if: ${{ inputs.target == 'production' }}
+        run: |
+          key="$(cat src/data/indexnow-key.txt | tr -d '[:space:]')"
+          urls="$(grep -o '<loc>[^<]*</loc>' dist/sitemap-0.xml | sed 's/<\/\?loc>//g' | sed 's/.*/"&"/' | paste -sd, -)"
+          body="{\"host\":\"tridentmodular.com\",\"key\":\"$key\",\"keyLocation\":\"https://tridentmodular.com/$key.txt\",\"urlList\":[$urls]}"
+          code=$(curl -s -o /tmp/indexnow.out -w '%{http_code}' -X POST 'https://api.indexnow.org/IndexNow' -H 'Content-Type: application/json; charset=utf-8' --data "$body" || echo 000)
+          echo "IndexNow responded $code"; cat /tmp/indexnow.out || true
+          # 200 and 202 both mean accepted; anything else is logged, not fatal.
 
       - name: Summary
         run: |
