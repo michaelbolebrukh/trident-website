@@ -6,7 +6,8 @@ import CatalogueDownload from '../components/CatalogueDownload'
 import logo from '../assets/logo__1_.svg'
 import montserratLatin from '@fontsource-variable/montserrat/files/montserrat-latin-wght-normal.woff2?url'
 import interLatin from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url'
-import { organizationSchema, webSiteSchema } from '../lib/schema'
+import { organizationSchema, webSiteSchema, breadcrumbSchema } from '../lib/schema'
+import { pageCrumbs } from '../lib/breadcrumbs'
 
 interface Props {
   title: string
@@ -45,7 +46,17 @@ const imageURL = new URL(image, Astro.site)
 // never competes with tridentmodular.com in search results.
 const blockIndexing = noindex || import.meta.env.PUBLIC_NOINDEX === '1'
 
-const jsonLd = [organizationSchema(logo.src), webSiteSchema(), ...schema]
+// Every page below the homepage carries a BreadcrumbList. Pages with a
+// deeper trail (model, category, post) pass their own; the rest get
+// Home › Page from the navigation labels.
+const hasCrumbs = schema.some((b) => (b as { '@type'?: string })?.['@type'] === 'BreadcrumbList')
+const defaultCrumbs = !hasCrumbs ? pageCrumbs(Astro.url.pathname) : undefined
+const jsonLd = [
+  organizationSchema(logo.src),
+  webSiteSchema(),
+  ...schema,
+  ...(defaultCrumbs ? [breadcrumbSchema(defaultCrumbs)] : []),
+]
 ---
 
 <!doctype html>
@@ -146,6 +157,8 @@ const jsonLd = [organizationSchema(logo.src), webSiteSchema(), ...schema]
         >
           <img
             class="statcounter"
+            width="1"
+            height="1"
             src="https://c.statcounter.com/13352535/0/766af23f/1/"
             alt="Web Analytics Made Easy - Statcounter"
             referrerpolicy="no-referrer-when-downgrade"

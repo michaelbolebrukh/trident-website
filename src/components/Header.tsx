@@ -14,6 +14,8 @@ const homesMegaMenu = [
   { label: 'Bungalows', href: categoryPath('Bungalows') },
   { label: '1.5 Storey Houses', href: categoryPath('1.5 Storey Houses') },
   { label: '2 Storey Houses', href: categoryPath('2 Storey Houses') },
+  { label: 'Log Houses', href: categoryPath('Log Houses') },
+  { label: 'Tiny Homes & Pod Homes', href: categoryPath('Tiny Homes & Pod Homes') },
   { label: 'Modern Modular Homes', href: routes.modern },
   { label: 'Eco Modular Homes', href: routes.eco },
 ]

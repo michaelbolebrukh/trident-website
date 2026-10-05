@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback } from 'react'
 import { media } from '../data/media'
+import { responsive, SIZES } from '../lib/images'
 import baseImg from '../assets/image-11.webp'
 import turnkeyImg from '../assets/image-10.webp'
 
@@ -16,8 +17,8 @@ const IMGS = {
 
 const steps = [
   { n: '01', label: 'Site Preparation',    desc: 'Ground conditions assessed, foundation type agreed, and site access confirmed before manufacture begins.',      img: IMGS.site },
-  { n: '02', label: 'Delivery',            desc: 'Modules are transported by specialist logistics to your site. We coordinate delivery windows and crane requirements.', img: IMGS.delivery },
-  { n: '03', label: 'Structural Assembly', desc: 'Modules are craned into position and structurally connected. The building is weather-tight within days.',           img: IMGS.assembly },
+  { n: '02', label: 'Delivery',            desc: 'Wall and roof panels are transported by specialist logistics to your site. We coordinate delivery windows and crane requirements.', img: IMGS.delivery },
+  { n: '03', label: 'Structural Assembly', desc: 'Panels are craned into position on the prepared foundation and connected. The building is weather-tight within days.',           img: IMGS.assembly },
   { n: '04', label: 'Services & Finishing',desc: 'Electrical, plumbing, heating and internal finishes are completed by our installers or your own contractors.',      img: IMGS.finishing },
   { n: '05', label: 'Inspection & Handover',desc: 'Final inspection, commissioning and a full handover pack. You receive keys and full documentation.',               img: IMGS.handover },
 ]
@@ -25,7 +26,7 @@ const steps = [
 // Hotspots: x/y as percentage of the slider container
 // side: 'base' = always visible, 'turnkey' = only visible when slider reveals that area
 const hotspots = [
-  { x: 18, y: 22, side: 'base',    label: 'Structural assembly',                    desc: 'Modules craned and bolted into position. Included in both Base and Turnkey.' },
+  { x: 18, y: 22, side: 'base',    label: 'Structural assembly',                    desc: 'Panels craned into position and connected. Included in both Base and Turnkey.' },
   { x: 28, y: 72, side: 'base',    label: 'Foundation & groundworks',               desc: 'Included in Turnkey. With Base, you arrange groundworks independently.' },
   { x: 44, y: 38, side: 'base',    label: 'External cladding & glazing',            desc: 'All external finishes installed and weather-tight. Included in both options.' },
   { x: 62, y: 28, side: 'turnkey', label: 'Roof & insulation',                      desc: 'Fully insulated roof with MVHR ventilation duct routes installed.' },
@@ -71,6 +72,10 @@ function ComparisonSlider() {
         {/* BASE, same room, pre-plastering: exposed timber frame, foil insulation, OSB floor */}
         <img
           src={baseImg.src}
+          width={baseImg.width}
+          height={baseImg.height}
+          loading="lazy"
+          decoding="async"
           alt="Base solution, exposed timber frame, insulation fitted, pre-plastering"
           className="absolute inset-0 w-full h-full object-cover"
           draggable={false}
@@ -83,6 +88,10 @@ function ComparisonSlider() {
         >
           <img
             src={turnkeyImg.src}
+            width={turnkeyImg.width}
+            height={turnkeyImg.height}
+            loading="lazy"
+            decoding="async"
             alt="Turnkey solution, plastered, furnished and ready to move in"
             className="absolute inset-0 w-full h-full object-cover"
             draggable={false}
@@ -239,7 +248,7 @@ export default function InstallationPage() {
       {/* Hero */}
       <section className="relative bg-navy min-h-[55vh] flex items-center overflow-hidden">
         <div className="absolute inset-0">
-          <img src={IMGS.hero} alt="" className="w-full h-full object-cover opacity-30" />
+          <img {...responsive(IMGS.hero, SIZES.full)} alt="" fetchPriority="high" className="w-full h-full object-cover opacity-30" />
           <div className="absolute inset-0" style={{ background: 'rgba(0,32,74,0.75)' }} />
         </div>
         <div className="relative max-w-[1280px] mx-auto px-6 lg:px-8 py-20">
@@ -296,7 +305,7 @@ export default function InstallationPage() {
           {/* Active step content */}
           <div className="grid lg:grid-cols-2 gap-10 items-center">
             <div className="rounded-2xl overflow-hidden h-72 bg-border">
-              <img src={steps[activeStep].img} alt={steps[activeStep].label} className="w-full h-full object-cover transition-opacity duration-300" />
+              <img {...responsive(steps[activeStep].img, SIZES.half)} alt={steps[activeStep].label} loading="lazy" decoding="async" className="w-full h-full object-cover transition-opacity duration-300" />
             </div>
             <div>
               <p className="text-xs font-bold font-display text-gold uppercase tracking-widest mb-2">{steps[activeStep].n}</p>
@@ -338,7 +347,7 @@ export default function InstallationPage() {
             {[
               {
                 title: 'Energy Efficiency',
-                points: ['High-performance SIP wall construction as standard', 'Triple-glazed windows and doors across the range', 'MVHR ventilation reduces heat loss without draughts', 'Air-source heat pumps and solar available as upgrades', 'Low operational carbon across our standard range'],
+                points: ['Closed-panel timber frame walls with basalt wool insulation as standard', 'Triple-glazed windows and doors across the range', 'MVHR ventilation reduces heat loss without draughts', 'Air-source heat pumps and solar available as upgrades', 'Low operational carbon across our standard range'],
               },
               {
                 title: 'Built with care',
@@ -372,7 +381,7 @@ export default function InstallationPage() {
               { label: 'Site assessment',     desc: 'Ground conditions, access and planning context reviewed before delivery.' },
               { label: 'Foundations',         desc: 'Ground-bearing slab, screw pile or pad options to suit your site.' },
               { label: 'Delivery logistics',  desc: 'Specialist transport coordinated to your site, including crane scheduling.' },
-              { label: 'Structural assembly', desc: 'Modules craned into position and connected by our installation team.' },
+              { label: 'Structural assembly', desc: 'Panels craned into position and connected by our installation team.' },
               { label: 'Electrical work',     desc: 'Full first and second fix electrical installation and certification.' },
               { label: 'Plumbing',            desc: 'Hot and cold water, drainage connections and sanitary ware fitting.' },
               { label: 'Interior completion', desc: 'Internal finishes, joinery, kitchen and bathroom installation.' },

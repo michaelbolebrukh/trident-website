@@ -12,3 +12,4 @@ public/images/projects/r/
 
 # Written by the deploy workflow from repository secrets
 public/api/mail-config.php
+public/images/plans/r/

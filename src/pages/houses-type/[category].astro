@@ -6,7 +6,7 @@ import { allHomes, PRIMARY_CATEGORIES } from '../../data/homes'
 import { categoryTerms } from '../../data/categories'
 import { categorySeo } from '../../data/seo'
 import { categoryCrumbs } from '../../lib/breadcrumbs'
-import { breadcrumbSchema } from '../../lib/schema'
+import { breadcrumbSchema, itemListSchema } from '../../lib/schema'
 import CategorySections from '../../components/CategorySections.astro'
 
 /**
@@ -39,7 +39,7 @@ const crumbs = categoryCrumbs(term.name)
 <BaseLayout
   title={meta.title}
   description={meta.description}
-  schema={[breadcrumbSchema(crumbs)]}
+  schema={[breadcrumbSchema(crumbs), itemListSchema(term.name, [...homes].sort((a, b) => a.price - b.price))]}
 >
   <Breadcrumbs crumbs={crumbs} />
   <CategoryPage

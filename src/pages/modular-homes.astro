@@ -19,6 +19,7 @@ import { thicknesses } from '../data/build-ups'
 import { credentials } from '../data/accreditation'
 import { HOUSE_OPTIONS, PROGRAMME } from '../data/pricing'
 import { categoryPath, routes } from '../lib/routes'
+import { floorAreaMin } from '../lib/area'
 import { responsive, SIZES } from '../lib/images'
 
 const meta = seoFor('/modular-homes/', 'Modular Homes UK', '')
@@ -27,7 +28,7 @@ const categories = Object.entries(categoryTerms)
   .filter(([, term]) => PRIMARY_CATEGORIES.includes(term.name as (typeof PRIMARY_CATEGORIES)[number]))
   .map(([slug, term]) => {
     const homes = allHomes.filter((h) => h.categories.includes(term.name))
-    const areas = homes.map((h) => h.area)
+    const areas = homes.map((h) => floorAreaMin(h))
     return {
       slug,
       term,
@@ -57,7 +58,7 @@ const faqQuestions = [
   <PageHero
     eyebrow="Modular, prefab and pre-built"
     title="Modular Homes UK"
-    intro={`Factory-built homes for the UK, from a ${Math.min(...allHomes.map((h) => h.area))} m² garden room to a ${Math.max(...allHomes.map((h) => h.area))} m² family house. Trident designs, manufactures and installs modular homes as one engineering system, to ISO 9001:2015, with the assurance lenders look for.`}
+    intro={`Factory-built homes for the UK, from a ${Math.min(...allHomes.map((h) => floorAreaMin(h)))} m² garden room to a ${Math.max(...allHomes.map((h) => floorAreaMin(h)))} m² family house. Trident designs, manufactures and installs modular homes as one engineering system, to ISO 9001:2015, with the assurance lenders look for.`}
   />
 
   <article class="bg-white">

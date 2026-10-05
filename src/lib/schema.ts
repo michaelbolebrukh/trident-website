@@ -9,10 +9,11 @@
  */
 import type { Home } from '../data/homes'
 import { houseImage } from '../data/homes'
-import { detailFor } from '../data/model-details'
 import { pricingFor } from './price-options'
 import type { Crumb } from './breadcrumbs'
 import type { Faq } from '../data/faq'
+import { floorAreaMin } from './area'
+import { projects } from '../data/projects'
 
 export const SITE_URL = 'https://tridentmodular.com'
 export const ORG_NAME = 'Trident Modular Housing'
@@ -45,6 +46,8 @@ export function organizationSchema(logoUrl: string) {
     alternateName: 'Trident Modular',
     url: `${SITE_URL}/`,
     logo: { '@type': 'ImageObject', url: abs(logoUrl) },
+    // A delivered project rather than a render: the Chiswick garden room.
+    image: abs(projects[0].cover),
     email: CONTACT.email,
     telephone: CONTACT.telephone,
     address: { '@type': 'PostalAddress', ...CONTACT.address },
@@ -102,17 +105,7 @@ export const homeImages = (home: Home): string[] =>
  * "From" price and the option it buys: the first rung of the model's ladder,
  * which is what the page headline quotes. Undefined where quoted on request.
  */
-export function fromPrice(slug: string): { price: number; label: string } | undefined {
-  const pricing = pricingFor(slug)
-  if (!pricing || pricing.onRequest) return undefined
-  const first = pricing.options[0]
-  if (!first || first.price === null) return undefined
-  return { price: first.price, label: first.label }
-}
-
 export function productSchema(home: Home, pageDescription: string) {
-  const detail = detailFor(home.slug)
-  const from = fromPrice(home.slug)
   const url = abs(`/houses/${home.slug}/`)
   const images = homeImages(home)
 
@@ -128,28 +121,31 @@ export function productSchema(home: Home, pageDescription: string) {
   }
   if (images.length) schema.image = images
 
-  if (from) {
-    schema.offers = {
+  // One Offer per purchase option that has a published price, in the order
+  // the page lists them; models quoted on request carry no offers.
+  const pricing = pricingFor(home.slug)
+  const offers = (pricing && !pricing.onRequest ? pricing.options : [])
+    .filter((o): o is typeof o & { price: number } => o.price !== null)
+    .map((o) => ({
       '@type': 'Offer',
-      name: from.label,
+      name: o.label,
       url,
-      price: from.price,
+      price: o.price,
       priceCurrency: 'GBP',
       priceSpecification: {
         '@type': 'UnitPriceSpecification',
-        price: from.price,
+        price: o.price,
         priceCurrency: 'GBP',
         valueAddedTaxIncluded: false,
       },
-      description: `${from.label}: from £${from.price.toLocaleString('en-GB')} excl. VAT.`,
+      description: `${o.label}: from £${o.price.toLocaleString('en-GB')} excl. VAT. ${o.desc}`,
       seller: { '@id': ORG_ID },
-    }
-  }
+    }))
+  if (offers.length) schema.offers = offers
 
   // Floor area as the page states it: the smallest price-guide size where
   // the model has variants, otherwise the catalogue figure.
-  const areas = detail?.variants.map((v) => v.area) ?? []
-  const area = areas.length ? Math.min(...areas) : home.area
+  const area = floorAreaMin(home)
   schema.additionalProperty = [
     { '@type': 'PropertyValue', name: 'Internal floor area (from)', value: area, unitCode: 'MTK' },
     ...(home.bedrooms ? [{ '@type': 'PropertyValue', name: 'Bedrooms', value: home.bedrooms }] : []),
@@ -163,18 +159,37 @@ export interface ArticleInput {
   slug: string
   title: string
   date: string
+  dateModified?: string
   description: string
   image?: string
 }
 
+/**
+ * A WordPress export time ("2026-07-22T16:17:52", UK local) as an ISO 8601
+ * string with the Europe/London offset that applied on that date.
+ */
+export function londonIso(local: string): string {
+  if (/[Zz]|[+-]\d\d:\d\d$/.test(local)) return local
+  const guess = new Date(local + 'Z')
+  const part = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', timeZoneName: 'longOffset' })
+    .formatToParts(guess)
+    .find((p) => p.type === 'timeZoneName')?.value ?? 'GMT'
+  const offset = part === 'GMT' ? '+00:00' : part.replace('GMT', '')
+  return `${local}${offset}`
+}
+
 export function articleSchema(post: ArticleInput, logoUrl: string) {
   const url = abs(`/blog/${post.slug}/`)
+  const published = londonIso(post.date)
   const schema: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: post.title,
     description: post.description,
-    datePublished: post.date,
+    datePublished: published,
+    // posts.json carries no edit history, so the last substantive change is
+    // the publication itself.
+    dateModified: londonIso(post.dateModified ?? post.date),
     url,
     mainEntityOfPage: { '@type': 'WebPage', '@id': url },
     inLanguage: 'en-GB',
@@ -188,6 +203,34 @@ export function articleSchema(post: ArticleInput, logoUrl: string) {
   }
   if (post.image) schema.image = [abs(post.image)]
   return schema
+}
+
+/** The models a category lists, in the order the page shows them. */
+export function itemListSchema(name: string, homes: Home[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name,
+    numberOfItems: homes.length,
+    itemListElement: homes.map((h, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: h.name,
+      url: abs(`/houses/${h.slug}/`),
+    })),
+  }
+}
+
+export function contactPageSchema(title: string, description: string) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ContactPage',
+    url: abs('/contact-us/'),
+    name: title,
+    description,
+    isPartOf: { '@id': SITE_ID },
+    mainEntity: { '@id': ORG_ID },
+  }
 }
 
 export function faqSchema(faqs: Faq[]) {

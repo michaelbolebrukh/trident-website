@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
 import { responsive, SIZES } from '../lib/images'
+import { floorAreaText, floorAreaMin } from '../lib/area'
 import { allHomes, houseImage, categories } from '../data/homes'
 import { productPath } from '../lib/routes'
 import { pricingFor, formatShort } from '../lib/price-options'
@@ -20,7 +21,7 @@ export default function CataloguePage() {
   const filtered = useMemo(() => {
     let results = allHomes.filter((h) => {
       if (activeCategory !== 'All Homes' && !h.categories.includes(activeCategory)) return false
-      if (h.area < minArea || h.area > maxArea) return false
+      if (floorAreaMin(h) < minArea || floorAreaMin(h) > maxArea) return false
       if (minBeds > 0 && (h.bedrooms ?? 0) < minBeds) return false
       return true
     })
@@ -169,7 +170,7 @@ export default function CataloguePage() {
                       {/* Name + size range */}
                       <div className="flex items-baseline justify-between gap-2 mb-1">
                         <h3 className="font-display font-bold text-navy text-base leading-snug">{home.name}</h3>
-                        <span className="text-muted text-xs font-medium shrink-0">{home.area} m²</span>
+                        <span className="text-muted text-xs font-medium shrink-0">{floorAreaText(home)}</span>
                       </div>
                       {/* Description */}
                       <p className="text-xs text-muted leading-snug mb-2">{home.desc}</p>

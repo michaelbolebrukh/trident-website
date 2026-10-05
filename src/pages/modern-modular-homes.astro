@@ -17,6 +17,7 @@ import { thicknesses } from '../data/build-ups'
 import { AVAILABLE_UPGRADES, housePricing } from '../data/pricing'
 import { faqs } from '../data/faq'
 import { routes, productPath } from '../lib/routes'
+import { floorAreaText } from '../lib/area'
 import { responsive, SIZES } from '../lib/images'
 
 const meta = seoFor('/modern-modular-homes/', 'Modern Modular Homes', '')
@@ -61,7 +62,7 @@ const faqQuestions = [
             </div>
             <div class="p-4 flex flex-col flex-1">
               <h3 class="font-display font-bold text-navy text-base">{home.name}</h3>
-              <p class="text-xs text-muted mb-2">{home.category} · {home.area} m²{home.bedrooms ? ` · ${home.bedrooms} bed` : ''}</p>
+              <p class="text-xs text-muted mb-2">{home.category} · {floorAreaText(home)}{home.bedrooms ? ` · ${home.bedrooms} bed` : ''}</p>
               <p class="text-sm text-muted leading-relaxed">{home.desc}</p>
             </div>
           </a>

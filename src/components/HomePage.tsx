@@ -4,6 +4,7 @@ import { routes, productPath } from "../lib/routes"
 import { pricingFor, formatShort } from "../lib/price-options"
 import { allHomes, categories, houseImage, type Home } from "../data/homes"
 import { responsive, SIZES } from "../lib/images"
+import { floorAreaText } from "../lib/area"
 
 const IMGS = {
   hero: media.heroExterior,
@@ -520,7 +521,7 @@ export default function HomePage() {
                       {home.name}
                     </h4>
                     <span className="text-muted text-xs font-medium shrink-0">
-                      {home.area} m²
+                      {floorAreaText(home)}
                     </span>
                   </div>
                   {/* Description */}
