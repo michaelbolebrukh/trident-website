@@ -184,18 +184,18 @@ export default function HomePage() {
                 <div className="w-14 h-14 rounded-full bg-gold/15 flex items-center justify-center mx-auto mb-4">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className="text-gold"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
                 </div>
-                <h3 className="font-display font-bold text-navy text-xl mb-2">
+                <h2 className="font-display font-bold text-navy text-xl mb-2">
                   Thank you{form.name ? `, ${form.name.split(" ")[0]}` : ""}.
-                </h3>
+                </h2>
                 <p className="text-sm text-muted">
                   We've received your enquiry and will be in touch within one working day.
                 </p>
               </div>
             ) : (
             <>
-            <h3 className="font-display font-bold text-navy text-lg mb-1">
+            <h2 className="font-display font-bold text-navy text-lg mb-1">
               Tell us about your project
-            </h3>
+            </h2>
             <p className="text-sm text-muted mb-5">
               We'll help you identify the best next step.
             </p>
@@ -517,9 +517,9 @@ export default function HomePage() {
                 <div className="p-5 flex flex-col flex-1">
                   {/* Name + size range */}
                   <div className="flex items-baseline justify-between gap-2 mb-1">
-                    <h4 className="font-display font-bold text-navy text-base leading-snug">
+                    <h3 className="font-display font-bold text-navy text-base leading-snug">
                       {home.name}
-                    </h4>
+                    </h3>
                     <span className="text-muted text-xs font-medium shrink-0">
                       {floorAreaText(home)}
                     </span>
@@ -896,9 +896,9 @@ export default function HomePage() {
                       {step.n}
                     </span>
                   </div>
-                  <h4 className="font-display font-bold text-navy text-sm mb-2">
+                  <h3 className="font-display font-bold text-navy text-sm mb-2">
                     {step.label}
-                  </h4>
+                  </h3>
                   <p className="text-xs text-muted leading-relaxed">
                     {step.desc}
                   </p>

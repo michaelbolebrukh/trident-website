@@ -62,7 +62,7 @@ export default function AboutPage() {
               { title: 'Straightforward process', desc: 'Clear quotations, defined specifications and a named project contact throughout your build.' },
             ].map((d) => (
               <div key={d.title} className="bg-white rounded-xl p-6 border border-border">
-                <h4 className="font-display font-bold text-navy text-base mb-2">{d.title}</h4>
+                <h3 className="font-display font-bold text-navy text-base mb-2">{d.title}</h3>
                 <p className="text-sm text-muted leading-relaxed">{d.desc}</p>
               </div>
             ))}

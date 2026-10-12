@@ -7,6 +7,11 @@
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
 
+  # HSTS: once a browser has seen the site over HTTPS it never tries http://
+  # again for a year. No includeSubDomains, since the mail subdomains are not
+  # ours to vouch for.
+  Header always set Strict-Transport-Security "max-age=31536000" env=HTTPS
+
   # Keep redirects short-lived while the site is migrating.
   #
   # A 301 is cacheable indefinitely by default, in the browser and at the
@@ -88,8 +93,18 @@
   RewriteRule ^contact/?$ /contact-us/ [R=301,L]
   RewriteRule ^bespoke/?$ /customise-your-build/ [R=301,L]
 
-  # 24 blog posts lost their placeholder category segment.
+  # 24 blog posts lost their placeholder category segment. The category
+  # archive itself, its pagination and the blog's own /page/N/ go to the index.
+  RewriteRule ^blog/uncategorized-en_gb/?$ /blog/ [R=301,L]
+  RewriteRule ^blog/uncategorized-en_gb/page/\d+/?$ /blog/ [R=301,L]
   RewriteRule ^blog/uncategorized-en_gb/(.+)$ /blog/$1 [R=301,L]
+  RewriteRule ^blog/(page/)?\d+/?$ /blog/ [R=301,L]
+
+  # WordPress attachment pages hung off their parent post or model.
+  RewriteRule ^houses/family-house-60/attachment/.*$ /houses/family-house/ [R=301,L]
+  RewriteRule ^(.+)/attachment/[^/]+/?$ /$1/ [R=301,L]
+  RewriteRule ^houses/premium-model-copy/?$ /houses/premium-model/ [R=301,L]
+  RewriteRule ^houses/page/\d+/?$ /houses/ [R=301,L]
 
   # Model slugs from the pre-2026 site.
   RewriteRule ^houses/country-house-63/?$ /houses/country/ [R=301,L]
@@ -119,16 +134,26 @@
   RewriteRule ^gotovi-proyekty-modulnyh-budynkiv/?$ /gallery/ [R=301,L]
   RewriteRule ^homepage/?$ / [R=301,L]
   RewriteRule ^houses-type/?$ /houses/ [R=301,L]
+  RewriteRule ^houses-type/granny-annexes/?$ /houses-type/garden-rooms/ [R=301,L]
+  RewriteRule ^houses-type/(frame-houses|modulni-budynky|komertsiini)/?$ /houses/ [R=301,L]
+  RewriteRule ^1-5-storey-house/?$ /houses-type/1-5-storey-houses/ [R=301,L]
+  RewriteRule ^about-us/?$ /about_us/ [R=301,L]
+  RewriteRule ^interiors/?$ /customise-your-build/ [R=301,L]
+  RewriteRule ^materials/?$ /technology/ [R=301,L]
+  RewriteRule ^case-studies/?$ /gallery/ [R=301,L]
+  RewriteRule ^sertyfikaty/?$ /bopas-and-certificates/ [R=301,L]
+  RewriteRule ^locations(\.kml|/.*)?$ / [R=301,L]
+  RewriteRule ^author(/.*)?$ / [R=301,L]
   RewriteRule ^installation/garden-office-with-electrics/?$ /houses/garden-studio/ [R=301,L]
   RewriteRule ^installation/installation-of-a-garden-room-with-electricity/?$ /installation/ [R=301,L]
   RewriteRule ^installation/our-solution/?$ /installation/ [R=301,L]
-  RewriteRule ^installation/permissions-for-modular-building/?$ /faq/ [R=301,L]
+  RewriteRule ^installation/permissions-for-modular-building/?$ /planning-permission-modular-homes/ [R=301,L]
   RewriteRule ^modular-building-company-uk/?$ /about_us/ [R=301,L]
   RewriteRule ^modular-home-cost-uk/?$ /modular-homes-prices/ [R=301,L]
   RewriteRule ^my-account/?$ / [R=301,L]
   RewriteRule ^proyektuvannya/?$ /customise-your-build/ [R=301,L]
   RewriteRule ^shop/?$ /houses/ [R=301,L]
-  RewriteRule ^tag/?$ /blog/ [R=301,L]
+  RewriteRule ^tag(/.*)?$ /blog/ [R=301,L]
   RewriteRule ^vyrobnycztvo/?$ /technology/ [R=301,L]
 
   # 10 case studies are not carried over individually;
@@ -148,6 +173,8 @@
   # 410 tells a crawler to drop them instead of retrying a 404.
   RewriteRule ^wp-content(/.*)?$ - [G,L]
   RewriteRule ^wp-json(/.*)?$ - [G,L]
+  # The old catalogue popup. The catalogue is now behind the form on /houses/.
+  RewriteRule ^jet-popup(/.*)?$ - [G,L]
 </IfModule>
 # Astro emits the 404 as /404.html, not a directory-style route.
 ErrorDocument 404 /404.html

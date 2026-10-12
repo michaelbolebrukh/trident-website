@@ -1,0 +1,186 @@
+---
+/**
+ * /building-regulations-modular-homes/ — buyer guide. Regulatory figures are
+ * England's Approved Document L, Volume 1 (2021 edition), linked below; the
+ * Trident facts come from build-ups.ts, accreditation.ts, pricing.ts and
+ * faq.ts. No U-value is claimed for a Trident house: the FAQ explains why.
+ */
+import { seoFor } from '../data/seo'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Breadcrumbs from '../components/Breadcrumbs.astro'
+import PageHero from '../components/PageHero.astro'
+import FaqBlock from '../components/FaqBlock.astro'
+import CtaBand from '../components/CtaBand.astro'
+import { thicknesses } from '../data/build-ups'
+import { materials, credentials } from '../data/accreditation'
+import { HOUSE_OPTIONS, AVAILABLE_UPGRADES } from '../data/pricing'
+import { routes } from '../lib/routes'
+import { pageCrumbs } from '../lib/breadcrumbs'
+import { lastUpdated, lastUpdatedIso } from '../lib/updated'
+
+const meta = seoFor(routes.buildingRegs, 'Building Regulations for Modular Homes', '')
+const crumbs = pageCrumbs(routes.buildingRegs)!
+
+const turnkey = HOUSE_OPTIONS[2]
+const basalt = materials.find((m) => m.title === 'Basalt wool insulation')!
+const timber = materials.find((m) => m.title === 'C24 structural timber')!
+const membranes = materials.find((m) => m.title === 'Juta membranes')!
+const energyUpgrades = AVAILABLE_UPGRADES.find((g) => g.title === 'Comfort and energy')!.items
+
+const wallInsulation = (mm: number) =>
+  thicknesses.find((t) => t.mm === mm)?.buildUps.find((b) => b.element === 'External walls')?.layers.filter((l) => /basalt wool/i.test(l.name)).map((l) => l.spec).join(' + ') ?? '—'
+
+/** Approved Document L, Volume 1: Dwellings, 2021 edition, Table 4.1 (limiting U-values for new dwellings). */
+const partL = [
+  { element: 'External walls', limit: '0.26' },
+  { element: 'Floors', limit: '0.18' },
+  { element: 'Roofs', limit: '0.16' },
+  { element: 'Windows, roof windows and doors', limit: '1.6' },
+]
+
+const parts = [
+  { part: 'Part A', title: 'Structure', body: `The frame carries the loads. ${timber.body}` },
+  { part: 'Part B', title: 'Fire safety', body: `${basalt.body} Separation distances to boundaries and the cladding specified for the site are checked at design stage.` },
+  { part: 'Part C', title: 'Moisture', body: membranes.body },
+  { part: 'Part F', title: 'Ventilation', body: 'Background and extract ventilation to the current requirement; mechanical ventilation with heat recovery (MVHR) is available as a priced upgrade.' },
+  { part: 'Part L', title: 'Conservation of fuel and power', body: 'Fabric U-values, airtightness and the heating system together must meet the target for the dwelling. The air-source heat pump is inside the Turnkey base scope.' },
+  { part: 'Part P', title: 'Electrical safety', body: 'Basic electrics under Turnkey base are installed, tested and certified by a registered electrician.' },
+]
+
+const faqQuestions = [
+  'Are your buildings energy efficient?',
+  'What insulation values do your buildings achieve?',
+  'Do I need planning permission for a garden room?',
+  'Are your buildings suitable for year-round use?',
+]
+
+const sources = [
+  { label: 'GOV.UK: Approved Document L, Volume 1: Dwellings (2021 edition)', href: 'https://www.gov.uk/government/publications/conservation-of-fuel-and-power-approved-document-l' },
+  { label: 'GOV.UK: Building Regulations approval', href: 'https://www.gov.uk/building-regulations-approval' },
+  { label: 'Planning Portal: Building Regulations for outbuildings', href: 'https://www.planningportal.co.uk/permission/common-projects/outbuildings/building-regulations' },
+  { label: 'BOPAS: Buildoffsite Property Assurance Scheme', href: 'https://www.bopas.org/' },
+]
+---
+
+<BaseLayout title={meta.title} description={meta.description}>
+  <Breadcrumbs crumbs={crumbs} />
+  <PageHero
+    eyebrow="Buyer guide"
+    title="Building Regulations and Part L for Modular Homes"
+    intro="Short answer: a modular house must meet the same Building Regulations as any other new home in England, and does. Factory manufacture changes how compliance is demonstrated, not what is required. This page explains the parts that matter most for a factory-built timber-frame house, the Part L fabric limits with their source, which garden rooms are exempt, and what Trident supplies for the application."
+  />
+
+  <article class="bg-white">
+    {/* How compliance works */}
+    <section class="max-w-[1280px] mx-auto px-6 lg:px-8 py-14 grid lg:grid-cols-2 gap-10">
+      <div>
+        <h2 class="font-display font-bold text-navy text-2xl mb-4">Do modular homes have to meet Building Regulations?</h2>
+        <p class="text-body leading-relaxed mb-4">Yes. The Building Regulations apply to the building, wherever its parts were made. A new dwelling needs either a full plans application or a building notice to the local authority or an approved inspector, inspections during the work, and a completion certificate at the end. That certificate is what a solicitor and a lender will ask for.</p>
+        <p class="text-body leading-relaxed mb-4">The difference with a factory-built house is evidence. The wall, roof and floor build-ups are fixed designs with published layers, so their performance is calculated once and documented, rather than depending on what was done on a wet site. Trident supplies those schedules and the material specifications; the site-specific parts, foundations, drainage and the energy calculation for your plot, are done by your designer or ours.</p>
+        <p class="text-sm text-muted">{credentials.map((c) => `${c.label}: ${c.detail}`).join(' · ')}. See <a href={routes.bopas} class="text-navy underline underline-offset-2 hover:text-gold">BOPAS and certificates</a>.</p>
+      </div>
+      <div class="rounded-2xl border border-border p-6 bg-light self-start">
+        <h2 class="font-display font-bold text-navy text-2xl mb-3">Which garden rooms are exempt?</h2>
+        <p class="text-sm text-body leading-relaxed mb-3">A detached building with no sleeping accommodation is exempt from the Building Regulations when its floor area is under 15 m². Between 15 m² and 30 m² it stays exempt if it is at least 1 m from every boundary, or is built substantially of non-combustible materials. Larger buildings, and anything used for sleeping, need an application.</p>
+        <p class="text-sm text-body leading-relaxed">Electrical work in an exempt building still has to comply with Part P. Whether the building also needs planning permission is a separate question, answered on the <a href={routes.planning} class="text-navy underline underline-offset-2 hover:text-gold">planning permission guide</a>.</p>
+        {lastUpdated('buildingRegs') && (
+          <p class="text-xs text-muted mt-4">Guide last reviewed: <time datetime={lastUpdatedIso('buildingRegs')}>{lastUpdated('buildingRegs')}</time>. Summarised for England.</p>
+        )}
+      </div>
+    </section>
+
+    {/* Part L */}
+    <section class="border-t border-border bg-light py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <h2 class="font-display font-bold text-navy text-2xl mb-2">What does Part L require of a new home?</h2>
+        <p class="text-muted text-sm mb-6 max-w-2xl">Part L sets a carbon and energy target for the whole dwelling, calculated with the government's SAP method, plus limiting fabric values that no element may be worse than. The limits below are from Approved Document L, Volume 1, 2021 edition, Table 4.1, in force for new dwellings in England since June 2022.</p>
+        <div class="grid lg:grid-cols-2 gap-8">
+          <div class="overflow-x-auto rounded-2xl border border-border bg-white">
+            <table class="w-full text-sm">
+              <caption class="sr-only">Limiting U-values for new dwellings in England under Approved Document L 2021</caption>
+              <thead>
+                <tr class="bg-navy text-white text-left">
+                  <th scope="col" class="px-4 py-3 font-display font-semibold">Element</th>
+                  <th scope="col" class="px-4 py-3 font-display font-semibold whitespace-nowrap">Limiting U-value (W/m²K)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {partL.map((r) => (
+                  <tr class="border-t border-border">
+                    <th scope="row" class="px-4 py-3 text-left font-display font-semibold text-navy">{r.element}</th>
+                    <td class="px-4 py-3 text-muted">{r.limit}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p class="text-xs text-muted px-4 py-3">Source: Approved Document L, Volume 1: Dwellings, 2021 edition, Table 4.1. Limiting values are a floor, not the target: the notional dwelling the target is based on performs better.</p>
+          </div>
+          <div>
+            <h3 class="font-display font-bold text-navy text-lg mb-3">How a Trident envelope meets it</h3>
+            <p class="text-sm text-body leading-relaxed mb-4">{basalt.body} The thickness is chosen for the building and its use, and the external wall insulation at each published build-up is:</p>
+            <ul class="space-y-1.5 mb-4">
+              {thicknesses.map((t) => <li class="text-sm text-body"><span class="font-semibold text-navy">{t.mm} mm build-up:</span> {wallInsulation(t.mm)} basalt wool</li>)}
+            </ul>
+            <p class="text-sm text-body leading-relaxed mb-4">The U-value of each element is calculated for the build-up agreed at quotation and submitted with the Part L calculation for your house. Garden buildings and the A-Frame publish theirs on the model page. {turnkey.label} includes the air-source heat pump; {energyUpgrades.slice(0, 3).join(', ').toLowerCase()} are priced upgrades.</p>
+            <p class="text-sm text-muted">Every layer of every build-up is on the <a href={routes.technology} class="text-navy underline underline-offset-2 hover:text-gold">technology page</a>; the energy options are on <a href={routes.eco} class="text-navy underline underline-offset-2 hover:text-gold">eco modular homes</a>.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* The other parts */}
+    <section class="border-t border-border py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <h2 class="font-display font-bold text-navy text-2xl mb-2">Which other parts matter for a timber-frame modular house?</h2>
+        <p class="text-muted text-sm mb-8 max-w-2xl">The Approved Documents are lettered A to S. These are the ones a factory-built timber-frame home is most often asked about, and how the Trident system answers each.</p>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {parts.map((p) => (
+            <div class="rounded-2xl border border-border p-6">
+              <p class="text-xs font-semibold font-display uppercase tracking-[0.2em] text-gold mb-1">{p.part}</p>
+              <h3 class="font-display font-bold text-navy mb-2">{p.title}</h3>
+              <p class="text-sm text-muted leading-relaxed">{p.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* What we provide */}
+    <section class="border-t border-border bg-light py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-10">
+        <div>
+          <h2 class="font-display font-bold text-navy text-2xl mb-4">What does Trident provide for the application?</h2>
+          <ul class="space-y-2 text-body">
+            <li>Build-up schedules for external walls, roof and floor at the agreed insulation thickness</li>
+            <li>Material specifications: C24 timber, basalt wool, OSB-3, Juta membranes</li>
+            <li>Floor plans and elevations of the model, adapted where the design changes</li>
+            <li>BOPAS and ISO 9001:2015 certificates for the lender and the warranty provider</li>
+            <li>Under {turnkey.label}: installation, testing and handover of the services, with the certificates</li>
+          </ul>
+        </div>
+        <div class="bg-white rounded-2xl border border-border p-6">
+          <h2 class="font-display font-bold text-navy text-2xl mb-3">What stays with you or your designer</h2>
+          <p class="text-sm text-body leading-relaxed mb-3">The Building Regulations application itself, the SAP calculation for your plot, foundation design where you are not taking the Turnkey base foundation, drainage, and the inspector's fees. These sit outside every purchase option, alongside planning and surveys; the full list is on the <a href={routes.prices} class="text-navy underline underline-offset-2 hover:text-gold">price guide</a>.</p>
+          <p class="text-sm text-body leading-relaxed">If you are building the shell yourself, the <a href={routes.selfBuild} class="text-navy underline underline-offset-2 hover:text-gold">self-build page</a> sets out the split in detail.</p>
+        </div>
+      </div>
+    </section>
+
+    {/* Sources */}
+    <section class="border-t border-border py-10">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <h2 class="font-display font-bold text-navy text-lg mb-3">Official sources</h2>
+        <ul class="space-y-1.5">
+          {sources.map((s) => <li class="text-sm"><a href={s.href} rel="noopener" target="_blank" class="text-navy underline underline-offset-2 hover:text-gold">{s.label}</a></li>)}
+        </ul>
+      </div>
+    </section>
+
+    <FaqBlock title="Regulations and performance: common questions" questions={faqQuestions} />
+
+    <CtaBand
+      title="Need the technical pack for an application?"
+      body="Tell us the model and the plot. We will send the build-up schedules and certificates your designer or building control inspector will ask for."
+    />
+  </article>
+</BaseLayout>

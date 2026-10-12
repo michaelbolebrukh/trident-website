@@ -169,7 +169,7 @@ export default function CataloguePage() {
                     <div className="p-5 flex flex-col flex-1">
                       {/* Name + size range */}
                       <div className="flex items-baseline justify-between gap-2 mb-1">
-                        <h3 className="font-display font-bold text-navy text-base leading-snug">{home.name}</h3>
+                        <h2 className="font-display font-bold text-navy text-base leading-snug">{home.name}</h2>
                         <span className="text-muted text-xs font-medium shrink-0">{floorAreaText(home)}</span>
                       </div>
                       {/* Description */}

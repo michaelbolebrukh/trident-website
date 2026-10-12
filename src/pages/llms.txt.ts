@@ -33,6 +33,8 @@ export const GET: APIRoute = ({ site }) => {
     `- [Delivery and installation](${url(routes.installation)}): from groundworks to handover, including the Turnkey base scope`,
     `- [BOPAS and certificates](${url(routes.bopas)}): accreditation, mortgageability`,
     `- [Technology](${url(routes.technology)}): the panel system and build-ups`,
+    `- [Planning permission](${url(routes.planning)}): garden rooms under permitted development, when a home needs full permission`,
+    `- [Building Regulations](${url(routes.buildingRegs)}): Part L fabric limits, fire and ventilation, garden-room exemptions`,
     `- [FAQ](${url(routes.faq)})`,
     `- [Contact](${url(routes.contact)})`,
     '',

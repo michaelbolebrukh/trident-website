@@ -12,9 +12,10 @@ export interface Crumb {
 
 const HOME: Crumb = { name: 'Home', href: routes.home }
 
-/** Home › Category › Model */
+/** Home › Homes › Category › Model, the same depth as the category pages. */
 export const modelCrumbs = (home: Home): Crumb[] => [
   HOME,
+  { name: 'Homes', href: routes.catalogue },
   { name: home.category, href: categoryPath(home.category) },
   { name: home.name, href: productPath(home.slug) },
 ]
@@ -52,6 +53,8 @@ export const PAGE_LABELS: Record<string, string> = {
   [routes.companies]: 'Modular Building Company',
   [routes.commercial]: 'Commercial Modular Buildings',
   [routes.eco]: 'Eco Modular Homes',
+  [routes.planning]: 'Planning Permission',
+  [routes.buildingRegs]: 'Building Regulations',
   '/privacy-policy/': 'Privacy Policy',
   '/cookie-policy/': 'Cookie Policy',
   '/terms-and-conditions/': 'Terms & Conditions',

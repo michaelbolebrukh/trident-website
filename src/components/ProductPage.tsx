@@ -45,7 +45,13 @@ const sustainableCards = [
 ]
 
 
-export default function ProductPage({ home }: { home: Home }) {
+interface Props {
+  home: Home
+  /** 'August 2026': when the price or specification data last changed. */
+  updated?: string
+}
+
+export default function ProductPage({ home, updated }: Props) {
   const relatedHomes = allHomes.filter((h) => h.slug !== home.slug).slice(0, 3)
   const detail = detailFor(home.slug)
   const spec = specFor(home.slug)
@@ -145,7 +151,7 @@ export default function ProductPage({ home }: { home: Home }) {
             >
               <img
                 {...responsive(images[activeImage], SIZES.half)}
-                alt={`${home.name} — exterior view`}
+                alt={`${home.name} — ${activeImage === 0 ? 'exterior view' : `photo ${activeImage + 1} of ${images.length}`}`}
                 fetchPriority={activeImage === 0 ? 'high' : undefined}
                 className="w-full h-full object-cover transition-opacity duration-300"
               />
@@ -161,10 +167,13 @@ export default function ProductPage({ home }: { home: Home }) {
                 {images.map((img, i) => (
                   <button
                     key={i}
+                    type="button"
                     onClick={() => setActiveImage(i)}
+                    aria-label={`Show photo ${i + 1} of ${images.length}`}
+                    aria-pressed={i === activeImage}
                     className={`w-20 h-14 shrink-0 rounded-lg overflow-hidden border-2 transition-all ${i === activeImage ? 'border-gold' : 'border-transparent opacity-60 hover:opacity-100'}`}
                   >
-                    <img {...responsive(img, SIZES.thumb)} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover" />
+                    <img {...responsive(img, SIZES.thumb)} alt={`${home.name} — ${i === 0 ? 'exterior view' : `photo ${i + 1} of ${images.length}`}`} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                   </button>
                 ))}
               </div>
@@ -273,11 +282,12 @@ export default function ProductPage({ home }: { home: Home }) {
         <div id="pricing" className="scroll-mt-32 border-t border-border bg-light py-14">
           <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
             <h2 className="font-display font-bold text-navy text-2xl mb-2">Three ways to buy</h2>
-            <p className="text-muted text-sm mb-8 max-w-2xl">
+            <p className="text-muted text-sm mb-2 max-w-2xl">
               Each option is a defined package. Numbers move with your site and finishes, so treat
               these as the honest floor of today&rsquo;s cost.
               {pricing.fromSmallestOf && ` Prices shown are for the smallest of ${pricing.fromSmallestOf} sizes.`}
             </p>
+            {updated && <p className="text-xs text-muted mb-8">Prices and specifications last updated: {updated}.</p>}
 
             <table className="hidden md:table w-full text-sm bg-white rounded-2xl border border-border overflow-hidden mb-8">
               <caption className="sr-only">Purchase options and from-prices for the {home.name}, excluding VAT</caption>
@@ -562,7 +572,7 @@ export default function ProductPage({ home }: { home: Home }) {
             ].map((f) => (
               <div key={f.title} className="bg-white rounded-xl p-5 border border-border">
                 <span className="text-gold text-lg">{f.icon}</span>
-                <h4 className="font-display font-bold text-navy text-sm mt-2 mb-1">{f.title}</h4>
+                <h3 className="font-display font-bold text-navy text-sm mt-2 mb-1">{f.title}</h3>
                 <p className="text-xs text-muted leading-relaxed">{f.desc}</p>
               </div>
             ))}
@@ -636,7 +646,7 @@ export default function ProductPage({ home }: { home: Home }) {
                   <img {...responsive(c.img, SIZES.card)} alt={c.title} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                 </div>
                 <div className="p-4">
-                  <h4 className="font-display font-bold text-navy text-sm mb-1">{c.title}</h4>
+                  <h3 className="font-display font-bold text-navy text-sm mb-1">{c.title}</h3>
                   <p className="text-xs text-muted">{c.desc}</p>
                 </div>
               </div>
@@ -665,6 +675,7 @@ export default function ProductPage({ home }: { home: Home }) {
               <div key={s.label}>
                 <button
                   onClick={() => setActiveSpec(activeSpec === s.label ? null : s.label)}
+                  aria-expanded={activeSpec === s.label}
                   className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-light transition-colors"
                 >
                   <span className="font-semibold font-display text-navy text-sm">{s.label}</span>
@@ -675,11 +686,9 @@ export default function ProductPage({ home }: { home: Home }) {
                     <path d="M7 10l5 5 5-5z"/>
                   </svg>
                 </button>
-                {activeSpec === s.label && (
-                  <div className="px-5 pb-4">
-                    <p className="text-sm text-muted leading-relaxed">{s.content}</p>
-                  </div>
-                )}
+                <div className="px-5 pb-4" hidden={activeSpec !== s.label}>
+                  <p className="text-sm text-muted leading-relaxed">{s.content}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -729,7 +738,7 @@ export default function ProductPage({ home }: { home: Home }) {
           <button className="absolute top-5 right-5 text-white/70 hover:text-white">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
           </button>
-          <img src={images[activeImage]} alt="" className="max-w-full max-h-full rounded-xl object-contain" onClick={(e) => e.stopPropagation()} />
+          <img src={images[activeImage]} alt={`${home.name} — photo ${activeImage + 1} of ${images.length}, full size`} className="max-w-full max-h-full rounded-xl object-contain" onClick={(e) => e.stopPropagation()} />
         </div>
       )}
 

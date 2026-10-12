@@ -191,7 +191,7 @@ function ComparisonSlider() {
           <div className="flex items-center gap-2 mb-3">
             <span className="bg-navy text-white text-[10px] font-bold font-display tracking-widest uppercase px-3 py-1 rounded-full">Base</span>
           </div>
-          <h4 className="font-display font-bold text-navy text-base mb-2">Supply to specification</h4>
+          <h3 className="font-display font-bold text-navy text-base mb-2">Supply to specification</h3>
           <p className="text-xs text-muted leading-relaxed mb-4">
             Your building manufactured and delivered to the agreed spec. Suitable for clients managing groundworks or completion works independently.
           </p>
@@ -210,7 +210,7 @@ function ComparisonSlider() {
           <div className="flex items-center gap-2 mb-3">
             <span className="bg-gold text-navy text-[10px] font-bold font-display tracking-widest uppercase px-3 py-1 rounded-full">Turnkey</span>
           </div>
-          <h4 className="font-display font-bold text-white text-base mb-2">Fully managed, ready to move in</h4>
+          <h3 className="font-display font-bold text-white text-base mb-2">Fully managed, ready to move in</h3>
           <p className="text-xs leading-relaxed mb-4" style={{ color: 'rgba(255,255,255,0.65)' }}>
             We manage every stage, from site preparation and foundations to internal finishing, heating, kitchen and bathroom installation.
           </p>
