@@ -9,6 +9,7 @@ import { seoFor } from '../data/seo'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import PageHero from '../components/PageHero.astro'
 import FaqBlock from '../components/FaqBlock.astro'
+import { pageFaqsFor } from '../data/page-faqs'
 import { intro as techIntro, stages } from '../data/technology'
 import { thicknesses } from '../data/build-ups'
 import { credentials, explainers } from '../data/accreditation'
@@ -29,12 +30,6 @@ const checklist = [
   { ask: 'Where is the company registered?', ours: `${CONTACT.address.streetAddress}, ${CONTACT.address.addressLocality} ${CONTACT.address.postalCode}.`, href: routes.contact },
 ]
 
-const faqQuestions = [
-  'What is the difference between a modular home and a frame-built home?',
-  'Can I adapt a standard design to suit my site?',
-  'How do I get a price?',
-  'How far do you deliver?',
-]
 ---
 
 <BaseLayout title={meta.title} description={meta.description}>
@@ -129,7 +124,7 @@ const faqQuestions = [
       </div>
     </section>
 
-    <FaqBlock title="Common questions" questions={faqQuestions} />
+    <FaqBlock title="Common questions" items={pageFaqsFor(routes.companies)} />
 
     <section class="bg-navy text-white py-14">
       <div class="max-w-[1280px] mx-auto px-6 lg:px-8 flex flex-col lg:flex-row lg:items-center justify-between gap-8">

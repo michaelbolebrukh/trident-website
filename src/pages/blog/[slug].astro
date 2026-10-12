@@ -2,6 +2,7 @@
 import { seoFor, SITE_NAME, TITLE_SEP } from '../../data/seo'
 import { heroFor } from '../../data/post-heroes'
 import { responsive, SIZES } from '../../lib/images'
+import { nofollowExternal } from '../../lib/external-links'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import Breadcrumbs from '../../components/Breadcrumbs.astro'
 import posts from '../../data/posts.json'
@@ -86,7 +87,7 @@ const schema = [
 
     {/* Body comes straight from WordPress, so it is styled here rather than
         rewritten into components — a like-for-like migration. */}
-    <div class="max-w-3xl mx-auto px-6 lg:px-8 pb-16 post-body" set:html={post.html} />
+    <div class="max-w-3xl mx-auto px-6 lg:px-8 pb-16 post-body" set:html={nofollowExternal(post.html)} />
 
     <div class="border-t border-border bg-light py-14">
       <div class="max-w-[1280px] mx-auto px-6 lg:px-8">

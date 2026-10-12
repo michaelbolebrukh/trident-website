@@ -6,7 +6,8 @@ import ProductPage from '../../components/ProductPage'
 import { lastUpdated } from '../../lib/updated'
 import { allHomes, houseImage } from '../../data/homes'
 import { modelCrumbs } from '../../lib/breadcrumbs'
-import { breadcrumbSchema, productSchema } from '../../lib/schema'
+import { breadcrumbSchema, productSchema, faqSchema } from '../../lib/schema'
+import { modelFaqs } from '../../lib/model-faq'
 
 export function getStaticPaths() {
   return allHomes.map((home) => ({
@@ -22,7 +23,7 @@ const { home } = Astro.props
 const meta = modelSeo(home)
 
 const crumbs = modelCrumbs(home)
-const schema = [productSchema(home, meta.description), breadcrumbSchema(crumbs)]
+const schema = [productSchema(home, meta.description), breadcrumbSchema(crumbs), faqSchema(modelFaqs(home))]
 
 // Social image: the gallery's opening frame, which is also the page's LCP.
 const lead = home.gallery.length ? houseImage(home.gallery[0]) : undefined

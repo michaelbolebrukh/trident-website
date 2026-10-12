@@ -14,15 +14,19 @@ import { faqSchema } from '../lib/schema'
 
 interface Props {
   title?: string
-  questions: string[]
+  /** Questions from the master list in faq.ts, matched by exact text. */
+  questions?: string[]
+  /** Or the page's own items, see src/data/page-faqs.ts. */
+  items?: { q: string; a: string }[]
 }
-const { title = 'Frequently asked questions', questions } = Astro.props
+const { title = 'Frequently asked questions', questions = [], items: own } = Astro.props
 
-const items = questions.map((q) => {
+const items = own ?? questions.map((q) => {
   const found = faqs.find((f) => f.q === q)
   if (!found) throw new Error(`FaqBlock: no FAQ with question "${q}"`)
   return found
 })
+if (!items.length) throw new Error('FaqBlock: no questions or items given')
 ---
 
 <section class="border-t border-border py-14">

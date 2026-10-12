@@ -39,6 +39,8 @@ export interface ModelDetail {
   uValueWalls: string
   uValueRoof: string
   accreditations: string[]
+  /** Lead time from order, where the price guide states one. */
+  leadTime?: string
 }
 
 const GARDEN_PACKAGES: Package[] = [

@@ -5,6 +5,25 @@ import tailwindcss from '@tailwindcss/vite'
 import { lastmodFor } from './scripts/lastmod.mjs'
 
 /**
+ * Outbound links in the Markdown pages (privacy, cookies, terms) get
+ * rel="nofollow noopener" and open in a new tab, as blog bodies do through
+ * src/lib/external-links.ts.
+ */
+const externalLinks = () => (tree) => {
+  const visit = (node) => {
+    if (node.type === 'element' && node.tagName === 'a') {
+      const href = node.properties?.href ?? ''
+      if (/^(https?:)?\/\//i.test(href) && !/^(https?:)?\/\/(www\.)?tridentmodular\.com(\/|$)/i.test(href)) {
+        node.properties.rel = ['nofollow', 'noopener']
+        node.properties.target = '_blank'
+      }
+    }
+    node.children?.forEach(visit)
+  }
+  visit(tree)
+}
+
+/**
  * `client:afterpaint`: hydrate once the first frame is on screen. Used for
  * the page islands so the React bundle never delays the largest paint; see
  * src/lib/client-after-paint.ts.
@@ -35,5 +54,6 @@ export default defineConfig({
     afterPaintDirective,
   ],
   vite: { plugins: [tailwindcss()] },
+  markdown: { rehypePlugins: [externalLinks] },
   build: { format: 'directory' },
 })

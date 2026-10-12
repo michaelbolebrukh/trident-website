@@ -8,6 +8,7 @@ import { seoFor } from '../data/seo'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import PageHero from '../components/PageHero.astro'
 import FaqBlock from '../components/FaqBlock.astro'
+import { pageFaqsFor } from '../data/page-faqs'
 import CtaBand from '../components/CtaBand.astro'
 import { thicknesses, factoryPhoto } from '../data/build-ups'
 import { stages, principles } from '../data/technology'
@@ -26,13 +27,6 @@ const wall = thicknesses[0].buildUps.find((b) => b.element === 'External walls')
 const gardenBuildings = ['base-model', 'premium-model', 'garden-studio']
   .map((slug) => ({ slug, home: homeBySlug(slug)!, detail: modelDetails[slug] }))
 
-const faqQuestions = [
-  'Is a Trident modular home the same as a mobile home or static caravan?',
-  'Do you supply mobile homes, park homes or static caravans?',
-  'Can a Trident building be relocated later?',
-  'What is the difference between a modular home and a frame-built home?',
-  'Are your buildings suitable for year-round use?',
-]
 ---
 
 <BaseLayout title={meta.title} description={meta.description}>
@@ -148,7 +142,7 @@ const faqQuestions = [
       </div>
     </section>
 
-    <FaqBlock title="Modular home or mobile home? Common questions" questions={faqQuestions} />
+    <FaqBlock title="Modular home or mobile home? Common questions" items={pageFaqsFor(routes.factoryBuilt)} />
 
     <CtaBand
       title="See the factory-built range"

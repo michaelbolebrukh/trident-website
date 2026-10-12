@@ -9,6 +9,7 @@ import { seoFor } from '../data/seo'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import PageHero from '../components/PageHero.astro'
 import FaqBlock from '../components/FaqBlock.astro'
+import { pageFaqsFor } from '../data/page-faqs'
 import CtaBand from '../components/CtaBand.astro'
 import { HOUSE_OPTIONS, STANDARD_EXCLUSIONS } from '../data/pricing'
 import { houseRows, guideRows, gbp } from '../lib/price-guide'
@@ -19,13 +20,6 @@ const shell = HOUSE_OPTIONS[0]
 const priced = houseRows.filter((r) => !r.onRequest)
 const onRequest = houseRows.filter((r) => r.onRequest)
 
-const faqQuestions = [
-  'Do I need to prepare a foundation before you deliver?',
-  'Can I add services to a Base contract separately?',
-  'How long does delivery take after I place an order?',
-  'How far do you deliver?',
-  'Do the prices shown on the website include VAT?',
-]
 ---
 
 <BaseLayout title={meta.title} description={meta.description}>
@@ -159,7 +153,7 @@ const faqQuestions = [
       </div>
     </section>
 
-    <FaqBlock title="Common questions" questions={faqQuestions} />
+    <FaqBlock title="Common questions" items={pageFaqsFor(routes.kitHomes)} />
 
     <CtaBand
       title="Ready to price a kit?"

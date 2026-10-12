@@ -7,6 +7,7 @@ import { seoFor } from '../data/seo'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import PageHero from '../components/PageHero.astro'
 import FaqBlock from '../components/FaqBlock.astro'
+import { pageFaqsFor } from '../data/page-faqs'
 import CtaBand from '../components/CtaBand.astro'
 import { HOUSE_OPTIONS, STANDARD_EXCLUSIONS } from '../data/pricing'
 import { intro as bopasIntro } from '../data/accreditation'
@@ -25,13 +26,6 @@ const aFrameDetail = detailFor('a-frame')
 const arrives = ['Structural panel kit', 'External cladding fitted at the factory', 'Roof covering where the model allows', 'Windows and external doors', 'Delivery to Greater London']
 const yours = ['Foundation', 'Unloading', 'Assembly', 'Floor cassettes (not included)']
 
-const faqQuestions = [
-  'Do I need to prepare a foundation before you deliver?',
-  'Can I add services to a Base contract separately?',
-  'Can I adapt a standard design to suit my site?',
-  'Do residential homes require full planning permission?',
-  'Is finance available?',
-]
 ---
 
 <BaseLayout title={meta.title} description={meta.description}>
@@ -114,7 +108,7 @@ const faqQuestions = [
         <div class="rounded-2xl border border-border p-6 bg-light">
           <h2 class="font-display font-bold text-navy text-2xl mb-3">VAT when you build your own home</h2>
           <p class="text-sm text-body leading-relaxed mb-3">Our prices are quoted excluding VAT. If the building is a new dwelling that you will live in, HMRC's DIY Housebuilders Scheme lets you reclaim the VAT paid on building materials, including a factory-made shell, after completion. Labour-only services for constructing a new dwelling are zero-rated and should not carry VAT in the first place.</p>
-          <p class="text-sm text-body leading-relaxed mb-3">The scheme does not cover garden rooms, annexes that are not self-contained dwellings, or professional fees, and the claim has a deadline after the completion certificate. Check the current rules on <a href="https://www.gov.uk/vat-building-new-home" rel="noopener" target="_blank" class="text-navy underline underline-offset-2 hover:text-gold">GOV.UK: VAT refunds for DIY housebuilders</a> and confirm your own position with an accountant before relying on a refund in the budget.</p>
+          <p class="text-sm text-body leading-relaxed mb-3">The scheme does not cover garden rooms, annexes that are not self-contained dwellings, or professional fees, and the claim has a deadline after the completion certificate. Check the current rules on <a href="https://www.gov.uk/vat-building-new-home" rel="nofollow noopener" target="_blank" class="text-navy underline underline-offset-2 hover:text-gold">GOV.UK: VAT refunds for DIY housebuilders</a> and confirm your own position with an accountant before relying on a refund in the budget.</p>
           <p class="text-xs text-muted">We will confirm how VAT applies to your project at quotation stage.</p>
         </div>
         <div class="rounded-2xl border border-border p-6 bg-light">
@@ -127,7 +121,7 @@ const faqQuestions = [
       </div>
     </section>
 
-    <FaqBlock title="Common questions" questions={faqQuestions} />
+    <FaqBlock title="Common questions" items={pageFaqsFor(routes.selfBuild)} />
 
     <CtaBand
       title="Price a shell for your own build"

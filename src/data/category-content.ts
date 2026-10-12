@@ -3,7 +3,7 @@
  *
  * Every figure is read from the model data at build time by
  * CategorySections.astro; the prose here only says what the data supports.
- * FAQ items are referenced by their exact question in faq.ts.
+ * FAQ items are the category's own, in page-faqs.ts.
  */
 export interface CategoryContent {
   /** H2 of the intro block, carrying the page's search phrase naturally. */
@@ -12,7 +12,6 @@ export interface CategoryContent {
   choosingTitle: string
   choosing: { title: string; body: string }[]
   faqTitle: string
-  faq: string[]
 }
 
 export const categoryContent: Record<string, CategoryContent> = {
@@ -43,13 +42,6 @@ export const categoryContent: Record<string, CategoryContent> = {
       },
     ],
     faqTitle: 'Common questions',
-    faq: [
-      'What is the smallest building you supply?',
-      'Do residential homes require full planning permission?',
-      'What is the difference between Base and Turnkey?',
-      'How far do you deliver?',
-      'Is finance available?',
-    ],
   },
 
   bungalows: {
@@ -78,13 +70,6 @@ export const categoryContent: Record<string, CategoryContent> = {
       },
     ],
     faqTitle: 'Single-storey modular homes: common questions',
-    faq: [
-      'Do residential homes require full planning permission?',
-      'What is the difference between Base and Turnkey?',
-      'How long does installation take?',
-      'How far do you deliver?',
-      'Is finance available?',
-    ],
   },
 
   '2-storey-houses': {
@@ -114,13 +99,6 @@ export const categoryContent: Record<string, CategoryContent> = {
       },
     ],
     faqTitle: 'Two-storey modular houses: common questions',
-    faq: [
-      'Do residential homes require full planning permission?',
-      'Can I adapt a standard design to suit my site?',
-      'How long does delivery take after I place an order?',
-      'Are your buildings energy efficient?',
-      'Is finance available?',
-    ],
   },
 
   'log-houses': {
@@ -149,13 +127,6 @@ export const categoryContent: Record<string, CategoryContent> = {
       },
     ],
     faqTitle: 'Log houses: common questions',
-    faq: [
-      'Do residential homes require full planning permission?',
-      'Can I choose different external cladding or colours?',
-      'How do I get a price?',
-      'Are your buildings suitable for year-round use?',
-      'How far do you deliver?',
-    ],
   },
 
   '1-5-storey-houses': {
@@ -184,13 +155,6 @@ export const categoryContent: Record<string, CategoryContent> = {
       },
     ],
     faqTitle: '1.5 storey homes: common questions',
-    faq: [
-      'Do residential homes require full planning permission?',
-      'What is the difference between Base and Turnkey?',
-      'How long does installation take?',
-      'Do the prices shown on the website include VAT?',
-      'Is finance available?',
-    ],
   },
 
   'garden-rooms': {
@@ -220,12 +184,5 @@ export const categoryContent: Record<string, CategoryContent> = {
       },
     ],
     faqTitle: 'Common questions',
-    faq: [
-      'Do I need planning permission for a garden room?',
-      'What is the smallest building you supply?',
-      'Can I add services to a Base contract separately?',
-      'How far do you deliver?',
-      'Do the prices shown on the website include VAT?',
-    ],
   },
 }

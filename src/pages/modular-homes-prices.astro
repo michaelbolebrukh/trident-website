@@ -10,6 +10,7 @@ import { seoFor } from '../data/seo'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import PageHero from '../components/PageHero.astro'
 import FaqBlock from '../components/FaqBlock.astro'
+import { pageFaqsFor } from '../data/page-faqs'
 import CtaBand from '../components/CtaBand.astro'
 import { HOUSE_OPTIONS, STANDARD_EXCLUSIONS, AVAILABLE_UPGRADES, PAYMENT_SCHEDULE, PROGRAMME } from '../data/pricing'
 import { PRICE_NOTE } from '../data/model-details'
@@ -23,13 +24,6 @@ const onRequest = houseRows.filter((r) => r.onRequest)
 const cheapest = priced.reduce((a, b) => (a.options[0].price! < b.options[0].price! ? a : b))
 const dearest = priced.reduce((a, b) => (a.options[2].price! > b.options[2].price! ? a : b))
 
-const faqQuestions = [
-  'How do I get a price?',
-  'Do the prices shown on the website include VAT?',
-  'Is finance available?',
-  'What is the difference between Base and Turnkey?',
-  'Do I need to prepare a foundation before you deliver?',
-]
 ---
 
 <BaseLayout title={meta.title} description={meta.description}>
@@ -209,7 +203,7 @@ const faqQuestions = [
       </div>
     </section>
 
-    <FaqBlock title="How much does a modular home cost? Common questions" questions={faqQuestions} />
+    <FaqBlock title="How much does a modular home cost? Common questions" items={pageFaqsFor(routes.prices)} />
 
     <CtaBand
       title="Get a firm price for your plot"

@@ -9,6 +9,7 @@ import { STANDARD_EXCLUSIONS, AVAILABLE_UPGRADES } from '../data/pricing'
 import { plansFor } from '../data/floor-plans'
 import { responsive, SIZES } from '../lib/images'
 import { floorAreaText } from '../lib/area'
+import { modelFaqs } from '../lib/model-faq'
 import QuoteDialog from './QuoteDialog'
 
 const IMGS = {
@@ -97,7 +98,9 @@ export default function ProductPage({ home, updated }: Props) {
     { id: 'features', label: 'Extras' },
     { id: 'completion', label: 'Completion' },
     { id: 'specifications', label: 'Specifications' },
+    { id: 'faq', label: 'FAQ' },
   ]
+  const faqs = modelFaqs(home)
   const [activeSection, setActiveSection] = useState('overview')
 
   useEffect(() => {
@@ -717,6 +720,27 @@ export default function ProductPage({ home, updated }: Props) {
               </a>
             ))}
           </div>
+        </div>
+      </div>
+
+      {/* ─── FAQ: five answers from this model's own data ─── */}
+      <div id="faq" className="scroll-mt-32 border-t border-border py-14">
+        <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
+          <h2 className="font-display font-bold text-navy text-2xl mb-6">{home.name}: your questions answered</h2>
+          <div className="space-y-2 max-w-3xl">
+            {faqs.map((f) => (
+              <details key={f.q} className="rounded-xl border border-border overflow-hidden group">
+                <summary className="cursor-pointer list-none flex items-start justify-between gap-4 px-5 py-4 hover:bg-light transition-colors">
+                  <h3 className="font-semibold font-display text-navy text-sm leading-snug m-0">{f.q}</h3>
+                  <span aria-hidden="true" className="text-muted shrink-0 mt-0.5 transition-transform group-open:rotate-180">▾</span>
+                </summary>
+                <p className="px-5 pb-5 bg-light text-sm text-muted leading-relaxed">{f.a}</p>
+              </details>
+            ))}
+          </div>
+          <p className="text-sm text-muted mt-6">
+            General questions are answered on the <a href={routes.faq} className="text-navy underline underline-offset-2 hover:text-gold">FAQ page</a>; planning rules on the <a href={routes.planning} className="text-navy underline underline-offset-2 hover:text-gold">planning permission guide</a>.
+          </p>
         </div>
       </div>
 

@@ -9,6 +9,7 @@ import { seoFor } from '../data/seo'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import PageHero from '../components/PageHero.astro'
 import FaqBlock from '../components/FaqBlock.astro'
+import { pageFaqsFor } from '../data/page-faqs'
 import CtaBand from '../components/CtaBand.astro'
 import { thicknesses } from '../data/build-ups'
 import { materials } from '../data/accreditation'
@@ -29,12 +30,6 @@ const wallInsulation = (mm: number) =>
 const reading = ['energy-efficient-modular-homes', 'meeting-sustainability-goals', 'green-roofs-solar-panels-modular-home-options']
   .map((slug) => posts.find((p) => p.slug === slug)!)
 
-const faqQuestions = [
-  'Are your buildings energy efficient?',
-  'Can I add a green roof or solar panels?',
-  'Are your buildings suitable for year-round use?',
-  'How do I get a price?',
-]
 ---
 
 <BaseLayout title={meta.title} description={meta.description}>
@@ -106,7 +101,7 @@ const faqQuestions = [
       </div>
     </section>
 
-    <FaqBlock title="Common questions" questions={faqQuestions} />
+    <FaqBlock title="Common questions" items={pageFaqsFor(routes.eco)} />
 
     <CtaBand
       title="Specify the envelope and the extras"

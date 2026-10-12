@@ -10,6 +10,7 @@ import { seoFor } from '../data/seo'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import PageHero from '../components/PageHero.astro'
 import FaqBlock from '../components/FaqBlock.astro'
+import { pageFaqsFor } from '../data/page-faqs'
 import CtaBand from '../components/CtaBand.astro'
 import { homeBySlug, houseImage } from '../data/homes'
 import { principles } from '../data/technology'
@@ -34,12 +35,6 @@ const claddingNotes = [
   { slug: 'mediterranean-single-house', note: housePricing['mediterranean-single-house'].note! },
 ].map((n) => ({ ...n, home: homeBySlug(n.slug)! }))
 
-const faqQuestions = [
-  'Can I choose different external cladding or colours?',
-  'Can I adapt a standard design to suit my site?',
-  'Can I add a green roof or solar panels?',
-  'Are your buildings suitable for year-round use?',
-]
 ---
 
 <BaseLayout title={meta.title} description={meta.description}>
@@ -120,7 +115,7 @@ const faqQuestions = [
       </div>
     </section>
 
-    <FaqBlock title="Design questions" questions={faqQuestions} />
+    <FaqBlock title="Design questions" items={pageFaqsFor(routes.modern)} />
 
     <CtaBand
       title="Start with a model, or start from your brief"
