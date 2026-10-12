@@ -3,6 +3,7 @@ import { modelSeo } from '../../data/seo'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import Breadcrumbs from '../../components/Breadcrumbs.astro'
 import ProductPage from '../../components/ProductPage'
+import { lastUpdated } from '../../lib/updated'
 import { allHomes, houseImage } from '../../data/homes'
 import { modelCrumbs } from '../../lib/breadcrumbs'
 import { breadcrumbSchema, productSchema } from '../../lib/schema'
@@ -34,5 +35,5 @@ const lead = home.gallery.length ? houseImage(home.gallery[0]) : undefined
   schema={schema}
 >
   <Breadcrumbs crumbs={crumbs} />
-  <ProductPage home={home} client:afterpaint />
+  <ProductPage home={home} updated={lastUpdated('model')} client:afterpaint />
 </BaseLayout>

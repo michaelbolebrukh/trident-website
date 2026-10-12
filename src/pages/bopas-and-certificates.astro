@@ -4,6 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import { intro, explainers, credentials, materials } from '../data/accreditation'
 import { factoryPhoto } from '../data/build-ups'
 import { routes } from '../lib/routes'
+import { lastUpdated, lastUpdatedIso } from '../lib/updated'
 
 const meta = seoFor('/bopas-and-certificates/', 'BOPAS and Certificates', 'Trident Modular is BOPAS accredited and ISO 9001:2015 certified, with a 60-year durability assessment — the assurances lenders and warranty providers look for.')
 ---
@@ -138,6 +139,52 @@ const meta = seoFor('/bopas-and-certificates/', 'BOPAS and Certificates', 'Tride
             not on a wet site.
           </figcaption>
         </figure>
+      </div>
+    </section>
+
+    {/* Mortgages */}
+    <section class="bg-white border-t border-border py-20 lg:py-24">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8 grid lg:grid-cols-[minmax(0,1fr)_380px] gap-12 items-start">
+        <div>
+          <p class="text-xs font-semibold font-display uppercase tracking-[0.2em] text-gold mb-3">Mortgages</p>
+          <h2 class="font-display font-bold text-navy text-3xl lg:text-4xl mb-4">Getting a mortgage on a modular home</h2>
+          <p class="text-muted text-base leading-relaxed mb-6 max-w-2xl">
+            Lenders class timber-frame and factory-built houses as non-standard construction, and a
+            valuer will ask how the building was made and who stands behind it. The BOPAS accreditation
+            answers that question: it is the scheme the major UK banks and building societies recognise
+            for offsite construction, with a durability assessment of sixty years, so a Trident home is
+            assessed on the same terms as a brick-built one.
+          </p>
+          <div class="grid sm:grid-cols-3 gap-5">
+            <div class="rounded-2xl border border-border p-5">
+              <h3 class="font-display font-bold text-navy mb-2">What the lender sees</h3>
+              <p class="text-sm text-muted leading-relaxed">The BOPAS certificate for the manufacturer and the building system, the ISO 9001:2015 certificate for the factory, and the technical documentation for the build-ups.</p>
+            </div>
+            <div class="rounded-2xl border border-border p-5">
+              <h3 class="font-display font-bold text-navy mb-2">Self-build and stage payments</h3>
+              <p class="text-sm text-muted leading-relaxed">A house bought as a shell is usually funded with a self-build mortgage released in stages. The purchase options on each model page map onto those stages: shell, weathertight, fit-out.</p>
+            </div>
+            <div class="rounded-2xl border border-border p-5">
+              <h3 class="font-display font-bold text-navy mb-2">Garden rooms and annexes</h3>
+              <p class="text-sm text-muted leading-relaxed">A garden building is not mortgaged on its own. Buyers typically use savings, a further advance on an existing mortgage or specialist finance; we can recommend providers.</p>
+            </div>
+          </div>
+          <p class="text-sm text-muted mt-6">
+            Every model's from-prices across the three purchase options are in the <a href={routes.prices} class="text-navy underline underline-offset-2 hover:text-gold">price guide</a>; the <a href={routes.selfBuild} class="text-navy underline underline-offset-2 hover:text-gold">self-build page</a> covers VAT on a new dwelling.
+          </p>
+        </div>
+        <aside class="rounded-2xl bg-light border border-border p-6">
+          <h3 class="font-display font-bold text-navy mb-3">Documents we send to your lender</h3>
+          <ul class="space-y-2 text-sm text-body">
+            <li>BOPAS accreditation certificate</li>
+            <li>ISO 9001:2015 certificate</li>
+            <li>Build-up schedules for walls, roof and floor</li>
+            <li>Specification of the materials used</li>
+          </ul>
+          {lastUpdated('bopas') && (
+            <p class="text-xs text-muted mt-5">Accreditation details last updated: <time datetime={lastUpdatedIso('bopas')}>{lastUpdated('bopas')}</time>.</p>
+          )}
+        </aside>
       </div>
     </section>
 

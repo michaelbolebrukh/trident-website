@@ -110,11 +110,19 @@ const faqQuestions = [
             ))}
           </div>
         </div>
-        <div class="rounded-2xl border border-border p-6 bg-light self-start">
+        <div class="space-y-6 self-start">
+        <div class="rounded-2xl border border-border p-6 bg-light">
+          <h2 class="font-display font-bold text-navy text-2xl mb-3">VAT when you build your own home</h2>
+          <p class="text-sm text-body leading-relaxed mb-3">Our prices are quoted excluding VAT. If the building is a new dwelling that you will live in, HMRC's DIY Housebuilders Scheme lets you reclaim the VAT paid on building materials, including a factory-made shell, after completion. Labour-only services for constructing a new dwelling are zero-rated and should not carry VAT in the first place.</p>
+          <p class="text-sm text-body leading-relaxed mb-3">The scheme does not cover garden rooms, annexes that are not self-contained dwellings, or professional fees, and the claim has a deadline after the completion certificate. Check the current rules on <a href="https://www.gov.uk/vat-building-new-home" rel="noopener" target="_blank" class="text-navy underline underline-offset-2 hover:text-gold">GOV.UK: VAT refunds for DIY housebuilders</a> and confirm your own position with an accountant before relying on a refund in the budget.</p>
+          <p class="text-xs text-muted">We will confirm how VAT applies to your project at quotation stage.</p>
+        </div>
+        <div class="rounded-2xl border border-border p-6 bg-light">
           <h2 class="font-display font-bold text-navy text-2xl mb-3">Mortgages for a factory-made shell</h2>
           <p class="text-sm text-body leading-relaxed mb-4">{bopasIntro}</p>
           <a href={routes.bopas} class="text-sm font-semibold font-display text-navy underline underline-offset-2 hover:text-gold">BOPAS accreditation and certificates →</a>
           <p class="text-sm text-muted mt-4">If the build grows beyond what you want to manage, the same shell is available as <a href={routes.installation} class="text-navy underline underline-offset-2 hover:text-gold">Shell + Assembly or Turnkey base</a>; see the <a href={routes.prices} class="text-navy underline underline-offset-2 hover:text-gold">price guide</a> for both.</p>
+        </div>
         </div>
       </div>
     </section>

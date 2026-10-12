@@ -132,6 +132,8 @@ export function productSchema(home: Home, pageDescription: string) {
       url,
       price: o.price,
       priceCurrency: 'GBP',
+      availability: 'https://schema.org/InStock',
+      itemCondition: 'https://schema.org/NewCondition',
       priceSpecification: {
         '@type': 'UnitPriceSpecification',
         price: o.price,
@@ -150,6 +152,7 @@ export function productSchema(home: Home, pageDescription: string) {
     { '@type': 'PropertyValue', name: 'Internal floor area (from)', value: area, unitCode: 'MTK' },
     ...(home.bedrooms ? [{ '@type': 'PropertyValue', name: 'Bedrooms', value: home.bedrooms }] : []),
     ...(home.bathrooms ? [{ '@type': 'PropertyValue', name: 'Bathrooms', value: home.bathrooms }] : []),
+    { '@type': 'PropertyValue', name: 'Storeys', value: home.floors },
   ]
 
   return schema

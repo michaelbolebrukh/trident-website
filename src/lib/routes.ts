@@ -31,6 +31,9 @@ export const routes = {
   companies: '/modular-building-companies/',
   commercial: '/commercial/',
   eco: '/eco-modular-homes/',
+  /** Buyer guides, October 2026. */
+  planning: '/planning-permission-modular-homes/',
+  buildingRegs: '/building-regulations-modular-homes/',
 } as const
 
 export type Page = keyof typeof routes

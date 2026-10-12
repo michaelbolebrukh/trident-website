@@ -126,6 +126,16 @@ export const seo: Record<string, SeoEntry> = {
     description:
       'Commercial modular buildings from Trident: café and changing-room models, plus the bespoke route for offices, hospitality and multi-unit schemes.',
   },
+  '/planning-permission-modular-homes/': {
+    title: 'Planning Permission for Modular Homes & Garden Rooms',
+    description:
+      'When a garden room is permitted development, when a modular home needs full planning permission, and how Trident supports the application. UK rules explained.',
+  },
+  '/building-regulations-modular-homes/': {
+    title: 'Building Regulations & Part L for Modular Homes UK',
+    description:
+      'How factory-built modular homes meet Building Regulations: Part L fabric limits, fire and ventilation, when a garden room is exempt, and what Trident provides.',
+  },
   '/eco-modular-homes/': {
     title: 'Eco & Energy-Efficient Modular Homes UK | Trident Modular',
     description:

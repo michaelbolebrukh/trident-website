@@ -1,0 +1,172 @@
+---
+/**
+ * /planning-permission-modular-homes/ — buyer guide. The rules are England's
+ * permitted development limits for outbuildings (Planning Portal, GOV.UK,
+ * linked below) and the Building Regulations exemptions for small detached
+ * buildings. Trident's own position comes from faq.ts and pricing.ts.
+ *
+ * Replaces the old /installation/permissions-for-modular-building/ page,
+ * which redirects here.
+ */
+import { seoFor } from '../data/seo'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Breadcrumbs from '../components/Breadcrumbs.astro'
+import PageHero from '../components/PageHero.astro'
+import FaqBlock from '../components/FaqBlock.astro'
+import CtaBand from '../components/CtaBand.astro'
+import { allHomes } from '../data/homes'
+import { HOUSE_OPTIONS } from '../data/pricing'
+import { routes, productPath, categoryPath } from '../lib/routes'
+import { floorAreaText } from '../lib/area'
+import { pageCrumbs } from '../lib/breadcrumbs'
+import { lastUpdated, lastUpdatedIso } from '../lib/updated'
+
+const meta = seoFor(routes.planning, 'Planning Permission for Modular Homes', '')
+const crumbs = pageCrumbs(routes.planning)!
+
+const gardenRooms = allHomes.filter((h) => h.categories.includes('Garden Rooms')).sort((a, b) => a.price - b.price)
+const houses = allHomes.filter((h) => !h.categories.includes('Garden Rooms') && h.bedrooms).sort((a, b) => a.price - b.price).slice(0, 4)
+const turnkey = HOUSE_OPTIONS[2]
+
+const faqQuestions = [
+  'Do I need planning permission for a garden room?',
+  'Do residential homes require full planning permission?',
+  'Can a Trident building be relocated later?',
+  'Do I need to prepare a foundation before you deliver?',
+]
+
+const sources = [
+  { label: 'Planning Portal: outbuildings and permitted development', href: 'https://www.planningportal.co.uk/permission/common-projects/outbuildings/' },
+  { label: 'GOV.UK: Permitted development rights for householders, technical guidance', href: 'https://www.gov.uk/government/publications/permitted-development-rights-for-householders-technical-guidance' },
+  { label: 'Planning Portal: lawful development certificates', href: 'https://www.planningportal.co.uk/permission/responsibilities/planning-permission/lawful-development-certificates' },
+  { label: 'Planning Portal: Building Regulations for outbuildings', href: 'https://www.planningportal.co.uk/permission/common-projects/outbuildings/building-regulations' },
+]
+---
+
+<BaseLayout title={meta.title} description={meta.description}>
+  <Breadcrumbs crumbs={crumbs} />
+  <PageHero
+    eyebrow="Buyer guide"
+    title="Planning Permission for Modular Homes and Garden Rooms"
+    intro="Short answer: a garden room usually does not need planning permission, because most fall within permitted development, and a modular house always does, because it is a new dwelling. This page sets out the rules that decide which side of the line a building falls on, with the official sources, and what Trident does to help with an application."
+  />
+
+  <article class="bg-white">
+    {/* Direct answer */}
+    <section class="max-w-[1280px] mx-auto px-6 lg:px-8 py-14">
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="rounded-2xl border border-border p-6 bg-light">
+          <p class="text-xs font-semibold font-display uppercase tracking-[0.2em] text-gold mb-2">Garden rooms</p>
+          <h2 class="font-display font-bold text-navy text-2xl mb-3">Usually no application</h2>
+          <p class="text-sm text-body leading-relaxed">A detached garden building used for purposes incidental to the house, such as an office, studio, gym or hobby room, is permitted development in England if it keeps within the size and position limits below. No application is needed, though a lawful development certificate is worth having for a later sale.</p>
+        </div>
+        <div class="rounded-2xl border border-border p-6 bg-light">
+          <p class="text-xs font-semibold font-display uppercase tracking-[0.2em] text-gold mb-2">Modular homes</p>
+          <h2 class="font-display font-bold text-navy text-2xl mb-3">Always full planning permission</h2>
+          <p class="text-sm text-body leading-relaxed">A house, an annexe someone will sleep in, or a holiday let is a new dwelling, and permitted development does not cover it. The application is made to your local planning authority and judged on the local plan. We provide planning support and work with your architect or planning consultant.</p>
+        </div>
+      </div>
+      {lastUpdated('planning') && (
+        <p class="text-xs text-muted mt-6">Guide last reviewed: <time datetime={lastUpdatedIso('planning')}>{lastUpdated('planning')}</time>. Rules are summarised for England; Scotland, Wales and Northern Ireland have their own, and your council can confirm what applies to your plot.</p>
+      )}
+    </section>
+
+    {/* Garden room rules */}
+    <section class="border-t border-border bg-light py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <h2 class="font-display font-bold text-navy text-2xl mb-2">When is a garden room permitted development?</h2>
+        <p class="text-muted text-sm mb-8 max-w-2xl">These are the limits for outbuildings under Class E of the General Permitted Development Order in England, as published by the Planning Portal. Every one of them must be met.</p>
+        <div class="grid md:grid-cols-2 gap-5">
+          {[
+            { title: 'Single storey, with a height limit', body: 'Maximum eaves height 2.5 m. Overall height no more than 4 m with a dual-pitched roof, or 3 m for any other roof. Within 2 m of a boundary the whole building must be no taller than 2.5 m.' },
+            { title: 'Behind the front of the house', body: 'No outbuilding forward of the principal elevation, meaning the wall that faces the road. On designated land (National Parks, the Broads, Areas of Outstanding Natural Beauty, World Heritage Sites) nothing at the side of the house either.' },
+            { title: 'Half the garden stays open', body: 'Outbuildings and extensions together may cover no more than 50 per cent of the land around the original house. Pre-existing sheds and extensions count towards the total.' },
+            { title: 'No balconies or raised platforms', body: 'No verandas, balconies or platforms more than 30 cm above ground level. A deck at that height or below is fine.' },
+            { title: 'Incidental use only', body: 'Offices, studios, gyms, playrooms and stores are incidental. Sleeping accommodation is not: a garden room used as a bedroom or a self-contained annexe needs planning permission.' },
+            { title: 'Not for every property', body: 'Permitted development applies to houses, not flats or maisonettes, and not to listed buildings. Councils can remove it locally with an Article 4 direction, and new estates sometimes carry conditions, so check the deeds and the council’s website.' },
+          ].map((c) => (
+            <div class="bg-white rounded-2xl border border-border p-6">
+              <h3 class="font-display font-bold text-navy mb-2">{c.title}</h3>
+              <p class="text-sm text-muted leading-relaxed">{c.body}</p>
+            </div>
+          ))}
+        </div>
+        <div class="mt-8 bg-white rounded-2xl border border-border p-6">
+          <h3 class="font-display font-bold text-navy mb-2">Do garden rooms need Building Regulations approval?</h3>
+          <p class="text-sm text-muted leading-relaxed">Separately from planning: a detached building under 15 m² of floor area with no sleeping accommodation is exempt from the Building Regulations. Between 15 m² and 30 m² it is exempt if it has no sleeping accommodation and is either at least 1 m from every boundary or built substantially of non-combustible materials. Anything larger, or anything slept in, needs an application. Electrical work must still meet Part P. The <a href={routes.buildingRegs} class="text-navy underline underline-offset-2 hover:text-gold">Building Regulations guide</a> covers the full house.</p>
+        </div>
+      </div>
+    </section>
+
+    {/* Which models */}
+    <section class="border-t border-border py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <h2 class="font-display font-bold text-navy text-2xl mb-2">Which Trident buildings sit inside the limits?</h2>
+        <p class="text-muted text-sm mb-6 max-w-2xl">Floor areas below are from the price guide. Height depends on the roof and base specified for your site, so confirm it on the model page and with your council before ordering.</p>
+        <div class="overflow-x-auto rounded-2xl border border-border">
+          <table class="w-full text-sm">
+            <caption class="sr-only">Garden room models with floor area and the planning route that usually applies</caption>
+            <thead>
+              <tr class="bg-navy text-white text-left">
+                <th scope="col" class="px-4 py-3 font-display font-semibold">Model</th>
+                <th scope="col" class="px-4 py-3 font-display font-semibold">Floor area</th>
+                <th scope="col" class="px-4 py-3 font-display font-semibold">Usual route</th>
+              </tr>
+            </thead>
+            <tbody>
+              {gardenRooms.map((h) => (
+                <tr class="border-t border-border">
+                  <th scope="row" class="px-4 py-3 text-left font-display font-semibold text-navy"><a href={productPath(h.slug)} class="hover:text-gold">{h.name}</a></th>
+                  <td class="px-4 py-3 text-muted whitespace-nowrap">{floorAreaText(h)}</td>
+                  <td class="px-4 py-3 text-muted">Permitted development for incidental use, subject to the limits above</td>
+                </tr>
+              ))}
+              {houses.map((h) => (
+                <tr class="border-t border-border">
+                  <th scope="row" class="px-4 py-3 text-left font-display font-semibold text-navy"><a href={productPath(h.slug)} class="hover:text-gold">{h.name}</a></th>
+                  <td class="px-4 py-3 text-muted whitespace-nowrap">{floorAreaText(h)}</td>
+                  <td class="px-4 py-3 text-muted">Full planning permission: a dwelling</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p class="text-sm text-muted mt-4">All <a href={categoryPath('Garden Rooms')} class="text-navy underline underline-offset-2 hover:text-gold">garden rooms</a> and the full <a href={routes.catalogue} class="text-navy underline underline-offset-2 hover:text-gold">range of homes</a>.</p>
+      </div>
+    </section>
+
+    {/* The application */}
+    <section class="border-t border-border bg-light py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-10">
+        <div>
+          <h2 class="font-display font-bold text-navy text-2xl mb-4">How does a planning application for a modular home work?</h2>
+          <p class="text-body leading-relaxed mb-4">A factory-built house is assessed exactly as a site-built one: on its size, siting, appearance and effect on neighbours, not on how it is made. The application needs location and block plans, elevations and floor plans, and a design statement. The council has eight weeks to decide a householder or minor application once it is validated.</p>
+          <p class="text-body leading-relaxed mb-4">Trident supplies the drawings of the chosen model and the technical description of the building system, and works with your architect or planning consultant on the site-specific parts. Where a plot is tight, the compact houses in the range help: the smallest full home in the catalogue is {floorAreaText(allHomes.filter((h) => h.bedrooms).sort((a, b) => a.area - b.area)[0])}.</p>
+          <p class="text-sm text-muted">Planning fees, consultants and surveys sit outside every purchase option; see what is excluded on the <a href={routes.prices} class="text-navy underline underline-offset-2 hover:text-gold">price guide</a>.</p>
+        </div>
+        <div class="bg-white rounded-2xl border border-border p-6">
+          <h2 class="font-display font-bold text-navy text-2xl mb-3">What about an annexe for a relative?</h2>
+          <p class="text-sm text-body leading-relaxed mb-3">A garden annexe with a bedroom, bathroom and kitchen is treated as residential accommodation and needs planning permission, usually with a condition tying it to the main house. Councils tend to look favourably on an annexe that is ancillary to the house rather than a separate dwelling, so the application should say who will live there and why.</p>
+          <p class="text-sm text-body leading-relaxed">The single-storey homes in the <a href={categoryPath('Bungalows')} class="text-navy underline underline-offset-2 hover:text-gold">bungalow range</a> are the usual starting point. Under the {turnkey.label} option the foundation, fit-out and services are included, so the annexe is delivered ready to occupy.</p>
+        </div>
+      </div>
+    </section>
+
+    {/* Sources */}
+    <section class="border-t border-border py-10">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <h2 class="font-display font-bold text-navy text-lg mb-3">Official sources</h2>
+        <ul class="space-y-1.5">
+          {sources.map((s) => <li class="text-sm"><a href={s.href} rel="noopener" target="_blank" class="text-navy underline underline-offset-2 hover:text-gold">{s.label}</a></li>)}
+        </ul>
+      </div>
+    </section>
+
+    <FaqBlock title="Planning: common questions" questions={faqQuestions} />
+
+    <CtaBand
+      title="Not sure which route your plot needs?"
+      body="Send us the address and what you want to build. We will say whether it looks like permitted development or an application, and what the next step is."
+    />
+  </article>
+</BaseLayout>

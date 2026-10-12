@@ -11,20 +11,19 @@ const homesLinks = [
   { label: 'Tiny Homes & Pod Homes', href: categoryPath('Tiny Homes & Pod Homes') },
 ]
 
-const modularHomesLinks = [
+// Guides to buying, as distinct from the Homes column of model categories.
+const buyingGuides = [
   { label: 'Modular Homes UK', href: routes.modularHomes },
   { label: 'Modular Homes for Sale', href: routes.forSale },
-  { label: 'Factory-Built Homes', href: routes.factoryBuilt },
+  { label: 'Modular Home Prices', href: routes.prices },
   { label: 'Kit Homes UK', href: routes.kitHomes },
   { label: 'Self-Build Modular Homes', href: routes.selfBuild },
-  { label: 'Modular Home Prices', href: routes.prices },
+  { label: 'Factory-Built Homes', href: routes.factoryBuilt },
   { label: 'Modern Modular Homes', href: routes.modern },
   { label: 'Eco Modular Homes', href: routes.eco },
+  { label: 'Planning Permission', href: routes.planning },
+  { label: 'Building Regulations', href: routes.buildingRegs },
   { label: 'London', href: routes.london },
-  { label: 'Garden Rooms', href: categoryPath('Garden Rooms') },
-  { label: 'Bungalows', href: categoryPath('Bungalows') },
-  { label: '1.5 Storey Houses', href: categoryPath('1.5 Storey Houses') },
-  { label: '2 Storey Houses', href: categoryPath('2 Storey Houses') },
 ]
 
 const servicesLinks = [
@@ -36,10 +35,13 @@ const servicesLinks = [
 
 const infoLinks = [
   { label: 'About Trident', href: routes.about },
+  { label: 'Our Technology', href: routes.technology },
+  { label: 'BOPAS & Certificates', href: routes.bopas },
   { label: 'Modular Building Company', href: routes.companies },
   { label: 'Project Gallery', href: routes.gallery },
   { label: 'Blog & Insights', href: routes.blog },
   { label: 'FAQ', href: routes.faq },
+  { label: 'Contact Us', href: routes.contact },
 ]
 
 export default function Footer() {
@@ -85,11 +87,11 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Modular Homes UK */}
+          {/* Buying guides */}
           <div>
-            <p className="text-xs font-semibold font-display uppercase tracking-widest mb-4" style={{ color: 'rgba(255,255,255,0.45)' }}>Modular Homes UK</p>
+            <p className="text-xs font-semibold font-display uppercase tracking-widest mb-4" style={{ color: 'rgba(255,255,255,0.45)' }}>Buying Guides</p>
             <ul className="space-y-2.5">
-              {modularHomesLinks.map((l) => (
+              {buyingGuides.map((l) => (
                 <li key={l.label}>
                   <a href={l.href} className="text-sm hover:text-gold transition-colors" style={{ color: 'rgba(255,255,255,0.7)' }}>
                     {l.label}
@@ -127,8 +129,9 @@ export default function Footer() {
             </ul>
             <p className="text-xs font-semibold font-display uppercase tracking-widest mb-3" style={{ color: 'rgba(255,255,255,0.45)' }}>Contact</p>
             <ul className="space-y-2" style={{ color: 'rgba(255,255,255,0.7)' }}>
-              <li className="text-sm">+44 7443 285068</li>
-              <li className="text-sm">contact@tridentmodular.com</li>
+              <li className="text-sm"><a href="tel:+447443285068" className="hover:text-gold transition-colors">+44 7443 285068</a></li>
+              <li className="text-sm"><a href="mailto:contact@tridentmodular.com" className="hover:text-gold transition-colors">contact@tridentmodular.com</a></li>
+              <li className="text-sm"><a href={routes.contact} className="hover:text-gold transition-colors">Contact form and office address</a></li>
               <li className="text-sm leading-snug">Mon–Fri 8.30am–5.30pm</li>
             </ul>
           </div>

@@ -123,6 +123,76 @@ export const categoryContent: Record<string, CategoryContent> = {
     ],
   },
 
+  'log-houses': {
+    introTitle: 'Log houses UK: the log-cabin look on an insulated panel system',
+    intro: [
+      'A Trident log house gives you the look of a log cabin without the drawbacks of solid-log construction. The walls are the same closed-panel timber frame used across the range, with C24 structural timber, non-combustible basalt wool insulation and OSB-3 sheathing, finished externally in horizontal timber cladding with a log profile. Solid logs shrink, settle and need regular re-sealing; a panel with the insulation inside the frame holds its shape and its thermal performance.',
+      'Two models carry the log character. Loft is a substantial single-storey home with two bedrooms, a home office, a large terrace and an integrated garage, designed for country living. Match Point is a sports and leisure building with two changing rooms, two bathrooms and a communal area, so a club can add facilities beside a pitch or court without a conventional build. Both are quoted on request as site-adapted models.',
+    ],
+    choosingTitle: 'Choosing a log-style modular home',
+    choosing: [
+      {
+        title: 'Decide what the building is for',
+        body: 'Loft is a permanent home; Match Point is a commercial building for sports and leisure use. The comparison table below lists floor area, bedrooms, bathrooms and storeys for each, taken from the catalogue room schedules.',
+      },
+      {
+        title: 'Log character is a cladding choice',
+        body: 'The log profile is the external finish, not the structure. The same model can be specified with the other standard finishes, and the price guide applies regardless of cladding. Open the technology page to see the wall build-up layer by layer.',
+      },
+      {
+        title: 'Site-adapted pricing',
+        body: 'Neither model has a published from-price yet: both are adapted to the plot, so we return a firm proposal within five working days of an enquiry, across the same three purchase options as the rest of the range.',
+      },
+      {
+        title: 'Planning and foundations',
+        body: 'A permanent home needs full planning permission, and a commercial building is assessed on its own merits. Foundations are needed before delivery; the Turnkey base option includes helical ground screws. We can provide planning support.',
+      },
+    ],
+    faqTitle: 'Log houses: common questions',
+    faq: [
+      'Do residential homes require full planning permission?',
+      'Can I choose different external cladding or colours?',
+      'How do I get a price?',
+      'Are your buildings suitable for year-round use?',
+      'How far do you deliver?',
+    ],
+  },
+
+  '1-5-storey-houses': {
+    introTitle: '1.5 storey modular homes UK: a half-storey of bedrooms over the living space',
+    intro: [
+      'A 1.5 storey house puts the bedrooms in the roof. The ground floor carries the kitchen, living space and a bathroom, and a staircase leads to rooms under the pitched roof, so the plot stays as compact as a bungalow while the accommodation grows. Both Trident models in this class are built on the closed-panel timber frame described on the technology page, with C24 structural timber and non-combustible basalt wool insulation, and arrive with combined timber and metal cladding and a metal standing seam roof included in the shell price.',
+      'Mediterranean Single House is the compact option: one bedroom, one bathroom, a kitchen-living room and a separate living room on a plot that would suit a garden annexe or a rental unit. Mediterranean Double House scales the same idea up to three bedrooms, two bathrooms and a sauna, for a family home or a holiday let. Both are published with from-prices across the three purchase options, Shell delivered, Shell + Assembly and Turnkey base.',
+    ],
+    choosingTitle: 'Choosing a 1.5 storey modular home',
+    choosing: [
+      {
+        title: 'Count the rooms, not just the area',
+        body: 'The room schedules in the comparison table come from the catalogue. A 1.5 storey layout gives more rooms for its footprint than a bungalow of the same area, because the roof space works as a floor.',
+      },
+      {
+        title: 'Check the staircase and headroom in the plans',
+        body: 'Rooms under a pitched roof have sloping ceilings at the edges. Open the floor plans on each model page to see where the full-height space falls and where the stair lands.',
+      },
+      {
+        title: 'Weathertight is included',
+        body: 'For both models the cladding and the standing seam roof are in the Shell delivered price, so nothing further is needed to make the shell weathertight. Compare the three options on the model page or in the full price guide.',
+      },
+      {
+        title: 'Planning and foundations',
+        body: 'A residential home needs full planning permission; we can provide planning support. Foundations are required before delivery, and the Turnkey base option includes helical ground screws and the internal fit-out.',
+      },
+    ],
+    faqTitle: '1.5 storey homes: common questions',
+    faq: [
+      'Do residential homes require full planning permission?',
+      'What is the difference between Base and Turnkey?',
+      'How long does installation take?',
+      'Do the prices shown on the website include VAT?',
+      'Is finance available?',
+    ],
+  },
+
   'garden-rooms': {
     introTitle: 'Insulated garden rooms UK: office, studio or guest space',
     intro: [

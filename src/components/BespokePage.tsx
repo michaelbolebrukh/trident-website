@@ -119,7 +119,7 @@ export default function BespokePage() {
                   <div className="w-20 h-20 rounded-full bg-navy flex items-center justify-center mb-4 relative z-10">
                     <span className="font-display font-bold text-gold text-lg">{step.n}</span>
                   </div>
-                  <h4 className="font-display font-bold text-navy text-sm mb-2">{step.label}</h4>
+                  <h3 className="font-display font-bold text-navy text-sm mb-2">{step.label}</h3>
                   <p className="text-xs text-muted leading-relaxed">{step.desc}</p>
                 </div>
               ))}
@@ -140,7 +140,7 @@ export default function BespokePage() {
             {sustainableOptions.map((opt) => (
               <div key={opt.label} className="bg-light rounded-xl p-5 border border-border">
                 <span className="text-gold text-lg mb-3 block">◉</span>
-                <h4 className="font-display font-bold text-navy text-sm mb-1">{opt.label}</h4>
+                <h3 className="font-display font-bold text-navy text-sm mb-1">{opt.label}</h3>
                 <p className="text-xs text-muted leading-relaxed">{opt.desc}</p>
               </div>
             ))}

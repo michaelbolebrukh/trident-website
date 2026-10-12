@@ -4,6 +4,7 @@ import { faqs } from '../data/faq'
 import { faqSchema } from '../lib/schema'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import FaqPage from '../components/FaqPage'
+import { lastUpdated, lastUpdatedIso } from '../lib/updated'
 
 const meta = seoFor('/faq/', 'Frequently Asked Questions', 'Answers on pricing, planning permission, lead times, foundations and insulation.')
 ---
@@ -14,4 +15,9 @@ const meta = seoFor('/faq/', 'Frequently Asked Questions', 'Answers on pricing, 
   schema={[faqSchema(faqs)]}
 >
   <FaqPage client:afterpaint />
+  {lastUpdated('faq') && (
+    <p class="max-w-[1280px] mx-auto px-6 lg:px-8 pb-10 text-xs text-muted">
+      Answers last reviewed: <time datetime={lastUpdatedIso('faq')}>{lastUpdated('faq')}</time>.
+    </p>
+  )}
 </BaseLayout>

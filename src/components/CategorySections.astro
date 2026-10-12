@@ -6,13 +6,37 @@
  */
 import { categoryContent } from '../data/category-content'
 import FaqBlock from './FaqBlock.astro'
-import { routes } from '../lib/routes'
+import { routes, productPath } from '../lib/routes'
+import { floorAreaText } from '../lib/area'
+import { pricingFor, formatPrice } from '../lib/price-options'
+import { specFor } from '../data/catalogue-specs'
+import type { Home } from '../data/homes'
 
 interface Props {
   slug: string
+  /** The category's models, for the comparison table. */
+  homes?: Home[]
 }
-const { slug } = Astro.props
+const { slug, homes = [] } = Astro.props
 const content = categoryContent[slug]
+
+// The models side by side, from the same data the model pages use.
+const rows = [...homes]
+  .sort((a, b) => a.price - b.price)
+  .map((h) => {
+    const pricing = pricingFor(h.slug)
+    const shell = pricing && !pricing.onRequest ? pricing.options[0].price : null
+    const spec = specFor(h.slug)
+    return {
+      name: h.name,
+      href: productPath(h.slug),
+      area: floorAreaText(h),
+      bedrooms: spec?.bedrooms ?? h.bedrooms,
+      bathrooms: spec?.bathrooms ?? h.bathrooms,
+      floors: h.floors,
+      from: shell === null ? 'On request' : `from ${formatPrice(shell)}`,
+    }
+  })
 ---
 
 {content && (
@@ -25,6 +49,42 @@ const content = categoryContent[slug]
         </div>
       </div>
     </section>
+
+    {rows.length > 0 && (
+      <section class="border-t border-border py-14">
+        <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+          <h2 class="font-display font-bold text-navy text-2xl mb-2">Compare the models</h2>
+          <p class="text-sm text-muted mb-6 max-w-2xl">Floor areas, room counts and storeys from the catalogue; the from-price is the Shell delivered option, excluding VAT.</p>
+          <div class="overflow-x-auto rounded-2xl border border-border">
+            <table class="w-full text-sm">
+              <caption class="sr-only">Models in this category compared by area, bedrooms, bathrooms, storeys and from-price</caption>
+              <thead>
+                <tr class="bg-navy text-white text-left">
+                  <th scope="col" class="px-4 py-3 font-display font-semibold">Model</th>
+                  <th scope="col" class="px-4 py-3 font-display font-semibold">Floor area</th>
+                  <th scope="col" class="px-4 py-3 font-display font-semibold">Bedrooms</th>
+                  <th scope="col" class="px-4 py-3 font-display font-semibold">Bathrooms</th>
+                  <th scope="col" class="px-4 py-3 font-display font-semibold">Storeys</th>
+                  <th scope="col" class="px-4 py-3 font-display font-semibold whitespace-nowrap">Shell delivered</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((r) => (
+                  <tr class="border-t border-border">
+                    <th scope="row" class="px-4 py-3 text-left font-display font-semibold text-navy"><a href={r.href} class="hover:text-gold">{r.name}</a></th>
+                    <td class="px-4 py-3 text-muted whitespace-nowrap">{r.area}</td>
+                    <td class="px-4 py-3 text-muted">{r.bedrooms || '—'}</td>
+                    <td class="px-4 py-3 text-muted">{r.bathrooms || '—'}</td>
+                    <td class="px-4 py-3 text-muted">{r.floors}</td>
+                    <td class="px-4 py-3 text-navy font-semibold whitespace-nowrap">{r.from}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    )}
 
     <section class="border-t border-border bg-light py-14">
       <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
