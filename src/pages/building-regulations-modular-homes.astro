@@ -7,19 +7,17 @@
  */
 import { seoFor } from '../data/seo'
 import BaseLayout from '../layouts/BaseLayout.astro'
-import Breadcrumbs from '../components/Breadcrumbs.astro'
 import PageHero from '../components/PageHero.astro'
 import FaqBlock from '../components/FaqBlock.astro'
+import { pageFaqsFor } from '../data/page-faqs'
 import CtaBand from '../components/CtaBand.astro'
 import { thicknesses } from '../data/build-ups'
 import { materials, credentials } from '../data/accreditation'
 import { HOUSE_OPTIONS, AVAILABLE_UPGRADES } from '../data/pricing'
 import { routes } from '../lib/routes'
-import { pageCrumbs } from '../lib/breadcrumbs'
 import { lastUpdated, lastUpdatedIso } from '../lib/updated'
 
 const meta = seoFor(routes.buildingRegs, 'Building Regulations for Modular Homes', '')
-const crumbs = pageCrumbs(routes.buildingRegs)!
 
 const turnkey = HOUSE_OPTIONS[2]
 const basalt = materials.find((m) => m.title === 'Basalt wool insulation')!
@@ -47,12 +45,6 @@ const parts = [
   { part: 'Part P', title: 'Electrical safety', body: 'Basic electrics under Turnkey base are installed, tested and certified by a registered electrician.' },
 ]
 
-const faqQuestions = [
-  'Are your buildings energy efficient?',
-  'What insulation values do your buildings achieve?',
-  'Do I need planning permission for a garden room?',
-  'Are your buildings suitable for year-round use?',
-]
 
 const sources = [
   { label: 'GOV.UK: Approved Document L, Volume 1: Dwellings (2021 edition)', href: 'https://www.gov.uk/government/publications/conservation-of-fuel-and-power-approved-document-l' },
@@ -63,7 +55,6 @@ const sources = [
 ---
 
 <BaseLayout title={meta.title} description={meta.description}>
-  <Breadcrumbs crumbs={crumbs} />
   <PageHero
     eyebrow="Buyer guide"
     title="Building Regulations and Part L for Modular Homes"
@@ -171,12 +162,12 @@ const sources = [
       <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
         <h2 class="font-display font-bold text-navy text-lg mb-3">Official sources</h2>
         <ul class="space-y-1.5">
-          {sources.map((s) => <li class="text-sm"><a href={s.href} rel="noopener" target="_blank" class="text-navy underline underline-offset-2 hover:text-gold">{s.label}</a></li>)}
+          {sources.map((s) => <li class="text-sm"><a href={s.href} rel="nofollow noopener" target="_blank" class="text-navy underline underline-offset-2 hover:text-gold">{s.label}</a></li>)}
         </ul>
       </div>
     </section>
 
-    <FaqBlock title="Regulations and performance: common questions" questions={faqQuestions} />
+    <FaqBlock title="Regulations and performance: common questions" items={pageFaqsFor(routes.buildingRegs)} />
 
     <CtaBand
       title="Need the technical pack for an application?"

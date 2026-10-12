@@ -236,7 +236,7 @@ export function contactPageSchema(title: string, description: string) {
   }
 }
 
-export function faqSchema(faqs: Faq[]) {
+export function faqSchema(faqs: Pick<Faq, 'q' | 'a'>[]) {
   return {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',

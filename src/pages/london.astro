@@ -10,6 +10,7 @@ import { seoFor } from '../data/seo'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import PageHero from '../components/PageHero.astro'
 import FaqBlock from '../components/FaqBlock.astro'
+import { pageFaqsFor } from '../data/page-faqs'
 import CtaBand from '../components/CtaBand.astro'
 import { projects } from '../data/projects'
 import { modelDetails } from '../data/model-details'
@@ -25,13 +26,6 @@ const londonProjects = projects.filter((p) => /London/.test(p.location))
 const gardenBuildings = ['base-model', 'premium-model', 'garden-studio'].map((slug) => ({ slug, home: homeBySlug(slug)!, detail: modelDetails[slug] }))
 const siteItems = STANDARD_EXCLUSIONS.find((g) => g.title === 'Site and groundworks')!.items
 
-const faqQuestions = [
-  'Do I need planning permission for a garden room?',
-  'How far do you deliver?',
-  'How long does installation take?',
-  'Do I need to prepare a foundation before you deliver?',
-  'How do I get a price?',
-]
 ---
 
 <BaseLayout title={meta.title} description={meta.description}>
@@ -107,7 +101,7 @@ const faqQuestions = [
       </div>
     </section>
 
-    <FaqBlock title="Common questions" questions={faqQuestions} />
+    <FaqBlock title="Common questions" items={pageFaqsFor(routes.london)} />
 
     <CtaBand
       title="Planning a project in the capital?"

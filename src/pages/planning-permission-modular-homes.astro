@@ -10,30 +10,22 @@
  */
 import { seoFor } from '../data/seo'
 import BaseLayout from '../layouts/BaseLayout.astro'
-import Breadcrumbs from '../components/Breadcrumbs.astro'
 import PageHero from '../components/PageHero.astro'
 import FaqBlock from '../components/FaqBlock.astro'
+import { pageFaqsFor } from '../data/page-faqs'
 import CtaBand from '../components/CtaBand.astro'
 import { allHomes } from '../data/homes'
 import { HOUSE_OPTIONS } from '../data/pricing'
 import { routes, productPath, categoryPath } from '../lib/routes'
 import { floorAreaText } from '../lib/area'
-import { pageCrumbs } from '../lib/breadcrumbs'
 import { lastUpdated, lastUpdatedIso } from '../lib/updated'
 
 const meta = seoFor(routes.planning, 'Planning Permission for Modular Homes', '')
-const crumbs = pageCrumbs(routes.planning)!
 
 const gardenRooms = allHomes.filter((h) => h.categories.includes('Garden Rooms')).sort((a, b) => a.price - b.price)
 const houses = allHomes.filter((h) => !h.categories.includes('Garden Rooms') && h.bedrooms).sort((a, b) => a.price - b.price).slice(0, 4)
 const turnkey = HOUSE_OPTIONS[2]
 
-const faqQuestions = [
-  'Do I need planning permission for a garden room?',
-  'Do residential homes require full planning permission?',
-  'Can a Trident building be relocated later?',
-  'Do I need to prepare a foundation before you deliver?',
-]
 
 const sources = [
   { label: 'Planning Portal: outbuildings and permitted development', href: 'https://www.planningportal.co.uk/permission/common-projects/outbuildings/' },
@@ -44,7 +36,6 @@ const sources = [
 ---
 
 <BaseLayout title={meta.title} description={meta.description}>
-  <Breadcrumbs crumbs={crumbs} />
   <PageHero
     eyebrow="Buyer guide"
     title="Planning Permission for Modular Homes and Garden Rooms"
@@ -157,12 +148,12 @@ const sources = [
       <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
         <h2 class="font-display font-bold text-navy text-lg mb-3">Official sources</h2>
         <ul class="space-y-1.5">
-          {sources.map((s) => <li class="text-sm"><a href={s.href} rel="noopener" target="_blank" class="text-navy underline underline-offset-2 hover:text-gold">{s.label}</a></li>)}
+          {sources.map((s) => <li class="text-sm"><a href={s.href} rel="nofollow noopener" target="_blank" class="text-navy underline underline-offset-2 hover:text-gold">{s.label}</a></li>)}
         </ul>
       </div>
     </section>
 
-    <FaqBlock title="Planning: common questions" questions={faqQuestions} />
+    <FaqBlock title="Planning: common questions" items={pageFaqsFor(routes.planning)} />
 
     <CtaBand
       title="Not sure which route your plot needs?"

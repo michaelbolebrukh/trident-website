@@ -8,6 +8,7 @@ import { seoFor } from '../data/seo'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import PageHero from '../components/PageHero.astro'
 import FaqBlock from '../components/FaqBlock.astro'
+import { pageFaqsFor } from '../data/page-faqs'
 import CtaBand from '../components/CtaBand.astro'
 import { allHomes, PRIMARY_CATEGORIES, houseImage } from '../data/homes'
 import { categoryTerms } from '../data/categories'
@@ -31,13 +32,6 @@ const groups = Object.entries(categoryTerms)
 
 const turnkey = HOUSE_OPTIONS[2]
 
-const faqQuestions = [
-  'How do I get a price?',
-  'Do the prices shown on the website include VAT?',
-  'Is finance available?',
-  'How long does delivery take after I place an order?',
-  'Do I need to prepare a foundation before you deliver?',
-]
 ---
 
 <BaseLayout title={meta.title} description={meta.description}>
@@ -133,7 +127,7 @@ const faqQuestions = [
       </div>
     </section>
 
-    <FaqBlock title="Buying and ordering: common questions" questions={faqQuestions} />
+    <FaqBlock title="Buying and ordering: common questions" items={pageFaqsFor(routes.forSale)} />
 
     <CtaBand
       title="Ready to buy?"

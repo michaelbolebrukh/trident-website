@@ -8,6 +8,7 @@ import montserratLatin from '@fontsource-variable/montserrat/files/montserrat-la
 import interLatin from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url'
 import { organizationSchema, webSiteSchema, breadcrumbSchema } from '../lib/schema'
 import { pageCrumbs } from '../lib/breadcrumbs'
+import Breadcrumbs from '../components/Breadcrumbs.astro'
 
 interface Props {
   title: string
@@ -123,6 +124,9 @@ const jsonLd = [
           after the first paint so the React bundle never delays it. */}
       <Header currentPath={Astro.url.pathname} client:afterpaint />
       <main id="main" class="flex-1">
+        {/* Visible trail for every page below the homepage; pages with a
+            deeper trail (model, category, post) render their own. */}
+        {defaultCrumbs && <Breadcrumbs crumbs={defaultCrumbs} />}
         <slot />
       </main>
       {/* Static markup, ships no JavaScript. */}

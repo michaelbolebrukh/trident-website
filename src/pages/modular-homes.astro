@@ -11,6 +11,7 @@ import { seoFor } from '../data/seo'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import PageHero from '../components/PageHero.astro'
 import FaqBlock from '../components/FaqBlock.astro'
+import { pageFaqsFor } from '../data/page-faqs'
 import CtaBand from '../components/CtaBand.astro'
 import { allHomes, PRIMARY_CATEGORIES, houseImage } from '../data/homes'
 import { categoryTerms } from '../data/categories'
@@ -44,14 +45,6 @@ const categories = Object.entries(categoryTerms)
 const inFrame = thicknesses.filter((t) => t.mm <= 200).map((t) => t.mm)
 const insulationRange = `${Math.min(...inFrame)} mm to ${Math.max(...inFrame)} mm`
 
-const faqQuestions = [
-  'What is the difference between a modular home and a frame-built home?',
-  'Can I adapt a standard design to suit my site?',
-  'Do residential homes require full planning permission?',
-  'How far do you deliver?',
-  'Are your buildings suitable for year-round use?',
-  'Do the prices shown on the website include VAT?',
-]
 ---
 
 <BaseLayout title={meta.title} description={meta.description}>
@@ -199,7 +192,7 @@ const faqQuestions = [
       </div>
     </section>
 
-    <FaqBlock title="Common questions" questions={faqQuestions} />
+    <FaqBlock title="Common questions" items={pageFaqsFor(routes.modularHomes)} />
 
     <CtaBand
       title="Find the right model"

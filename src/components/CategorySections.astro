@@ -5,6 +5,7 @@
  * with an entry in category-content.ts render these.
  */
 import { categoryContent } from '../data/category-content'
+import { pageFaqsFor } from '../data/page-faqs'
 import FaqBlock from './FaqBlock.astro'
 import { routes, productPath } from '../lib/routes'
 import { floorAreaText } from '../lib/area'
@@ -105,6 +106,6 @@ const rows = [...homes]
       </div>
     </section>
 
-    <FaqBlock title={content.faqTitle} questions={content.faq} />
+    <FaqBlock title={content.faqTitle} items={pageFaqsFor(`/houses-type/${slug}/`)} />
   </div>
 )}
