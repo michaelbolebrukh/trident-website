@@ -14,6 +14,7 @@ import type { Crumb } from './breadcrumbs'
 import type { Faq } from '../data/faq'
 import { floorAreaMin } from './area'
 import { projects } from '../data/projects'
+import { socialProfiles } from '../data/social'
 
 export const SITE_URL = 'https://tridentmodular.com'
 export const ORG_NAME = 'Trident Modular Housing'
@@ -65,7 +66,8 @@ export function organizationSchema(logoUrl: string) {
         closes: CONTACT.hours.closes,
       },
     },
-    // No sameAs: the footer's social icons do not yet link anywhere.
+    // The same profiles the footer links to.
+    sameAs: socialProfiles.map((p) => p.href),
   }
 }
 
