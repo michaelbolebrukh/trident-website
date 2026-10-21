@@ -182,7 +182,7 @@ export const seo: Record<string, SeoEntry> = {
       'Bespoke modular design for homes, workspaces and commercial buildings across the UK. Tell us the site and the brief and we develop a tailored building.',
   },
   '/gallery/': {
-    title: 'Modular Home Project Gallery | Trident Modular',
+    title: 'Our Projects: Completed Modular Buildings | Trident Modular',
     description:
       'Photographs of completed Trident installations across the UK, from bare frames on site through to finished modular homes and garden rooms.',
   },

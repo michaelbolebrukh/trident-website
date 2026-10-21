@@ -41,7 +41,7 @@ const infoLinks = [
   { label: 'Warranty & Guarantees', href: routes.warranty },
   { label: 'Case Studies', href: routes.caseStudies },
   { label: 'Modular Building Company', href: routes.companies },
-  { label: 'Project Gallery', href: routes.gallery },
+  { label: 'Our Projects', href: routes.gallery },
   { label: 'Blog & Insights', href: routes.blog },
   { label: 'FAQ', href: routes.faq },
   { label: 'Contact Us', href: routes.contact },

@@ -62,7 +62,7 @@ export const GET: APIRoute = ({ site }) => {
     '## Optional',
     '',
     `- [Blog](${url(routes.blog)})`,
-    `- [Project gallery](${url(routes.gallery)})`,
+    `- [Our projects](${url(routes.gallery)}): every photograph from the completed installations`,
     `- [About](${url(routes.about)})`,
     '',
   ]

@@ -26,8 +26,8 @@ export default function GalleryPage() {
       <div className="bg-light border-b border-border py-12">
         <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
           <p className="text-xs font-semibold font-display uppercase tracking-[0.2em] text-gold mb-3">Projects</p>
-          <h1 className="font-display font-bold text-navy text-4xl lg:text-5xl">Project gallery</h1>
-          <p className="text-muted text-base mt-3 max-w-xl">Buildings we have delivered across London and the South East, photographed from the frame going up through to the finished room.</p>
+          <h1 className="font-display font-bold text-navy text-4xl lg:text-5xl">Our projects</h1>
+          <p className="text-muted text-base mt-3 max-w-xl">Buildings we have delivered across London and the South East. Each project has a case study with the brief, the site and how the build went, and every photograph, from the frame going up to the finished garden, is below.</p>
         </div>
       </div>
 
@@ -64,7 +64,7 @@ export default function GalleryPage() {
             </button>
             {caseStudyFor(p.slug) && (
               <a href={caseStudyPath(p.slug)} className="block -mt-3 px-6 pb-5 text-sm font-semibold font-display text-navy hover:text-gold">
-                Read the {p.name} case study →
+                Read the case study →
               </a>
             )}
           </div>

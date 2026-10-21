@@ -58,7 +58,7 @@ const schema = [itemList, webPageSchema(routes.caseStudies, meta.title, meta.des
           </a>
         ))}
       </div>
-      <p class="text-sm text-muted mt-8">All photographs, including the build stages, are in the <a href={routes.gallery} class="text-navy underline underline-offset-2 hover:text-gold">project gallery</a>. The models used: <a href={productPath('garden-studio')} class="text-navy underline underline-offset-2 hover:text-gold">Garden Studio</a> and <a href={productPath('premium-model')} class="text-navy underline underline-offset-2 hover:text-gold">Garden Premium</a>.</p>
+      <p class="text-sm text-muted mt-8">All photographs, including the build stages, are on the <a href={routes.gallery} class="text-navy underline underline-offset-2 hover:text-gold">projects page</a>. The models used: <a href={productPath('garden-studio')} class="text-navy underline underline-offset-2 hover:text-gold">Garden Studio</a> and <a href={productPath('premium-model')} class="text-navy underline underline-offset-2 hover:text-gold">Garden Premium</a>.</p>
       {lastUpdated('caseStudies') && <p class="text-xs text-muted mt-2">Case studies last updated: <time datetime={lastUpdatedIso('caseStudies')}>{lastUpdated('caseStudies')}</time>.</p>}
     </div>
   </section>
