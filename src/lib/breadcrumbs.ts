@@ -35,7 +35,7 @@ export const PAGE_LABELS: Record<string, string> = {
   [routes.catalogue]: 'All Homes',
   [routes.installation]: 'Delivery & Installation',
   [routes.bespoke]: 'Bespoke & Commercial',
-  [routes.gallery]: 'Project Gallery',
+  [routes.gallery]: 'Our Projects',
   [routes.about]: 'About Trident',
   [routes.technology]: 'Technology',
   [routes.bopas]: 'BOPAS & Certificates',
