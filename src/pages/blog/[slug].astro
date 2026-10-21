@@ -3,6 +3,7 @@ import { seoFor, SITE_NAME, TITLE_SEP } from '../../data/seo'
 import { heroFor } from '../../data/post-heroes'
 import { responsive, SIZES } from '../../lib/images'
 import { nofollowExternal } from '../../lib/external-links'
+import revisions from '../../data/post-revisions.json'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import Breadcrumbs from '../../components/Breadcrumbs.astro'
 import posts from '../../data/posts.json'
@@ -24,6 +25,15 @@ const formatted = published.toLocaleDateString('en-GB', {
 })
 const readMinutes = Math.max(1, Math.round(post.words / 200))
 
+// The last substantive edit, tracked by scripts/track-post-revisions.mjs.
+// Shown, and carried as dateModified, only when it falls on a later day
+// than publication.
+const modifiedIso = (revisions as Record<string, { modified: string }>)[post.slug]?.modified
+const modified = modifiedIso ? new Date(modifiedIso) : undefined
+const modifiedShown = modified && modified.toDateString() !== published.toDateString()
+  ? modified.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/London' })
+  : undefined
+
 // Where this post sits in the run, so we can offer the next one to read.
 const index = posts.findIndex((p) => p.slug === post.slug)
 const more = posts.filter((_, i) => i !== index).slice(0, 3)
@@ -42,7 +52,7 @@ const meta = {
 const crumbs = postCrumbs(post.title, post.slug)
 const schema = [
   articleSchema(
-    { slug: post.slug, title: post.title, date: post.date, dateModified: (post as { dateModified?: string }).dateModified, description: meta.description, image: heroImage },
+    { slug: post.slug, title: post.title, date: post.date, dateModified: modifiedIso, description: meta.description, image: heroImage },
     logo.src,
   ),
   breadcrumbSchema(crumbs),
@@ -68,6 +78,12 @@ const schema = [
       </h1>
       <div class="flex items-center gap-3 text-sm text-muted">
         <time datetime={post.date}>{formatted}</time>
+        {modifiedShown && (
+          <>
+            <span>·</span>
+            <span>Updated <time datetime={modifiedIso}>{modifiedShown}</time></span>
+          </>
+        )}
         <span>·</span>
         <span>{readMinutes} min read</span>
       </div>

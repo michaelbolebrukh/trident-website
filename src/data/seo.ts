@@ -126,6 +126,16 @@ export const seo: Record<string, SeoEntry> = {
     description:
       'Commercial modular buildings from Trident: café and changing-room models, plus the bespoke route for offices, hospitality and multi-unit schemes.',
   },
+  '/warranty/': {
+    title: 'Warranty, Guarantees & Terms | Trident Modular',
+    description:
+      'The 10-year structural guarantee and 12-month finishes warranty on every Trident building, what each covers, the conditions, and how quotations, payments and handover work.',
+  },
+  '/case-studies/': {
+    title: 'Modular Garden Room Case Studies | Trident Modular',
+    description:
+      'Completed Trident installations in Chiswick, Earl’s Court, Wimbledon, Kensington, Cambridge and Kent: the brief, the site, the model chosen and how the build went.',
+  },
   '/planning-permission-modular-homes/': {
     title: 'Planning Permission for Modular Homes & Garden Rooms',
     description:

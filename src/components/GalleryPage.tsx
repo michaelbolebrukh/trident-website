@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { projects, allPhotos } from '../data/projects'
 import { responsive, SIZES } from '../lib/images'
+import { caseStudyFor } from '../data/case-studies'
+import { caseStudyPath, routes } from '../lib/routes'
 
 /** "All" plus one entry per project, so the filter reads as places built. */
 const filterOptions = ['All', ...projects.map((p) => p.name)]
@@ -34,13 +36,14 @@ export default function GalleryPage() {
       <div className="max-w-[1280px] mx-auto px-6 lg:px-8 pt-12">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((p) => (
+            <div key={p.slug} className="bg-white border border-border rounded-2xl overflow-hidden card-shadow hover:border-navy/30 transition-colors">
             <button
-              key={p.slug}
+              type="button"
               onClick={() => {
                 setActiveFilter(p.name)
                 document.getElementById('photographs')?.scrollIntoView({ behavior: 'smooth' })
               }}
-              className="text-left bg-white border border-border rounded-2xl overflow-hidden card-shadow hover:border-navy/30 transition-colors"
+              className="text-left w-full"
             >
               <img
                 {...responsive(p.cover, SIZES.card)}
@@ -59,6 +62,12 @@ export default function GalleryPage() {
                 </p>
               </div>
             </button>
+            {caseStudyFor(p.slug) && (
+              <a href={caseStudyPath(p.slug)} className="block -mt-3 px-6 pb-5 text-sm font-semibold font-display text-navy hover:text-gold">
+                Read the {p.name} case study →
+              </a>
+            )}
+          </div>
           ))}
         </div>
       </div>

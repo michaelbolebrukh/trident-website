@@ -1,0 +1,151 @@
+---
+/**
+ * /case-studies/<slug>/ — one completed project: brief, site, delivery,
+ * outcome, the model it was built on, the build stages and the finished
+ * photographs. Links to the model page, the gallery and the London page.
+ */
+import { seoFor, clampDescription } from '../../data/seo'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import Breadcrumbs from '../../components/Breadcrumbs.astro'
+import CtaBand from '../../components/CtaBand.astro'
+import { caseStudiesWithProjects } from '../../data/case-studies'
+import { allHomes } from '../../data/homes'
+import { detailFor } from '../../data/model-details'
+import { routes, caseStudyPath, productPath, categoryPath } from '../../lib/routes'
+import { responsive, SIZES } from '../../lib/images'
+import { breadcrumbSchema, webPageSchema, SITE_URL } from '../../lib/schema'
+import { caseStudyCrumbs } from '../../lib/breadcrumbs'
+import { lastUpdated, lastUpdatedIso } from '../../lib/updated'
+
+export function getStaticPaths() {
+  return caseStudiesWithProjects.map((c) => ({ params: { slug: c.slug }, props: { c } }))
+}
+
+const { c } = Astro.props
+const home = allHomes.find((h) => h.slug === c.model)!
+const variant = detailFor(c.model)?.variants.find((v) => v.name === c.variant)
+const path = caseStudyPath(c.slug)
+const description = clampDescription(`${c.project.name} in ${c.project.location}: a ${home.name} ${c.variant} of ${variant?.area} m², ${c.option}, on site in ${c.programme.daysOnSite.toLowerCase()}. The brief, the site and how the build went.`)
+const meta = { title: `${c.project.name} case study | Trident Modular`, description }
+const crumbs = caseStudyCrumbs(c.project.name, c.slug)
+const process = c.processPhotos.map((i) => c.project.photos[i]).filter(Boolean)
+const finished = c.project.photos.filter((p) => !process.includes(p))
+const inLondon = /London/.test(c.project.location)
+const others = caseStudiesWithProjects.filter((o) => o.slug !== c.slug).slice(0, 3)
+
+const schema = [
+  breadcrumbSchema(crumbs),
+  webPageSchema(path, meta.title, meta.description, lastUpdatedIso('caseStudies')),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ImageGallery',
+    name: `${c.project.name}: photographs`,
+    url: `${SITE_URL}${path}`,
+    image: c.project.photos.map((p) => `${SITE_URL}${p}`),
+  },
+]
+---
+
+<BaseLayout title={meta.title} description={meta.description} image={c.project.cover} schema={schema}>
+  <Breadcrumbs crumbs={crumbs} />
+  <article class="bg-white">
+    <header class="bg-light border-b border-border py-12">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8 grid lg:grid-cols-[minmax(0,1fr)_420px] gap-10 items-start">
+        <div>
+          <p class="text-xs font-semibold font-display uppercase tracking-[0.2em] text-gold mb-3">Case study · {c.project.location}</p>
+          <h1 class="font-display font-bold text-navy text-4xl lg:text-5xl leading-tight mb-5">{c.title}</h1>
+          <p class="text-muted text-base max-w-2xl leading-relaxed">{c.project.blurb}</p>
+        </div>
+        <dl class="bg-white rounded-2xl border border-border p-6 grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
+          <dt class="text-muted">Model</dt><dd class="text-navy font-semibold"><a href={productPath(home.slug)} class="hover:text-gold underline underline-offset-2">{home.name}</a>, {c.variant}</dd>
+          <dt class="text-muted">Floor area</dt><dd class="text-navy font-semibold">{variant?.area} m² ({variant?.dimensions} mm)</dd>
+          <dt class="text-muted">Scope</dt><dd class="text-navy font-semibold">{c.option}</dd>
+          <dt class="text-muted">Lead time</dt><dd class="text-navy font-semibold">{c.programme.leadWeeks} weeks from order</dd>
+          <dt class="text-muted">On site</dt><dd class="text-navy font-semibold">{c.programme.daysOnSite}</dd>
+          <dt class="text-muted">Foundation</dt><dd class="text-navy font-semibold">Helical ground screws</dd>
+        </dl>
+      </div>
+    </header>
+
+    <section class="max-w-[1280px] mx-auto px-6 lg:px-8 py-14">
+      <div class="rounded-2xl overflow-hidden bg-light mb-12">
+        <img {...responsive(c.project.cover, SIZES.full)} alt={`${c.project.name}, ${c.project.location}: the finished building`} fetchpriority="high" class="w-full max-h-[620px] object-cover" />
+      </div>
+      <div class="grid lg:grid-cols-2 gap-10">
+        <div>
+          <h2 class="font-display font-bold text-navy text-2xl mb-3">The brief</h2>
+          <p class="text-body leading-relaxed mb-8">{c.brief}</p>
+          <h2 class="font-display font-bold text-navy text-2xl mb-3">The site</h2>
+          <p class="text-body leading-relaxed">{c.site}</p>
+        </div>
+        <div>
+          <h2 class="font-display font-bold text-navy text-2xl mb-3">What we delivered</h2>
+          <p class="text-body leading-relaxed mb-8">{c.delivery}</p>
+          <h2 class="font-display font-bold text-navy text-2xl mb-3">The result</h2>
+          <p class="text-body leading-relaxed">{c.outcome}</p>
+        </div>
+      </div>
+      <ul class="grid sm:grid-cols-2 lg:grid-cols-5 gap-3 mt-10">
+        {c.features.map((f) => <li class="rounded-xl border border-border px-4 py-3 text-sm text-body">{f}</li>)}
+      </ul>
+    </section>
+
+    {process.length > 0 && (
+      <section class="border-t border-border bg-light py-14">
+        <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+          <h2 class="font-display font-bold text-navy text-2xl mb-2">The build</h2>
+          <p class="text-muted text-sm mb-6 max-w-2xl">From our own site records: the shell going up and the fit-out before handover.</p>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {process.map((p, i) => (
+              <img {...responsive(p, SIZES.card)} alt={`${c.project.name}: build stage ${i + 1}`} loading="lazy" decoding="async" class="w-full h-64 object-cover rounded-xl" />
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <section class="border-t border-border py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <h2 class="font-display font-bold text-navy text-2xl mb-6">Finished</h2>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {finished.map((p, i) => (
+            <img {...responsive(p, SIZES.card)} alt={`${c.project.name}, ${c.project.location}: photograph ${i + 1} of ${finished.length}`} loading="lazy" decoding="async" class="w-full h-64 object-cover rounded-xl" />
+          ))}
+        </div>
+        <p class="text-sm text-muted mt-6">Every photograph of this project is also in the <a href={routes.gallery} class="text-navy underline underline-offset-2 hover:text-gold">project gallery</a>.</p>
+      </div>
+    </section>
+
+    <section class="border-t border-border bg-light py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-10">
+        <div>
+          <h2 class="font-display font-bold text-navy text-2xl mb-3">The model: {home.name}</h2>
+          <p class="text-body leading-relaxed mb-4">{home.desc}</p>
+          <p class="text-sm text-muted">Sizes, prices for the Kit, Shell Assembled and Turnkey packages, and the floor plans are on the <a href={productPath(home.slug)} class="text-navy underline underline-offset-2 hover:text-gold">{home.name} page</a>; the whole range of <a href={categoryPath('Garden Rooms')} class="text-navy underline underline-offset-2 hover:text-gold">garden rooms</a> is one page up.{inLondon && <> Delivery to Greater London is included; see <a href={routes.london} class="text-navy underline underline-offset-2 hover:text-gold">garden rooms in London</a>.</>}</p>
+        </div>
+        <div>
+          <h2 class="font-display font-bold text-navy text-2xl mb-3">Planning and guarantee</h2>
+          <p class="text-sm text-body leading-relaxed mb-3">A garden room used as an office, studio or gym and kept within the height and position limits is usually permitted development; the <a href={routes.planning} class="text-navy underline underline-offset-2 hover:text-gold">planning permission guide</a> sets out the rules. Every building carries a 10-year structural guarantee and a 12-month finishes warranty; see <a href={routes.warranty} class="text-navy underline underline-offset-2 hover:text-gold">warranty and guarantees</a>.</p>
+          {lastUpdated('caseStudies') && <p class="text-xs text-muted">Case study last updated: <time datetime={lastUpdatedIso('caseStudies')}>{lastUpdated('caseStudies')}</time>.</p>}
+        </div>
+      </div>
+    </section>
+
+    <section class="border-t border-border py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <h2 class="font-display font-bold text-navy text-2xl mb-6">More case studies</h2>
+        <div class="grid sm:grid-cols-3 gap-6">
+          {others.map((o) => (
+            <a href={caseStudyPath(o.slug)} class="group bg-white rounded-2xl overflow-hidden border border-border card-shadow card-shadow-hover transition-all duration-300 hover:-translate-y-1">
+              <div class="h-40 overflow-hidden bg-light"><img {...responsive(o.project.cover, SIZES.card)} alt={`${o.project.name}, ${o.project.location}`} loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" /></div>
+              <div class="p-5"><p class="text-xs font-semibold font-display uppercase tracking-[0.14em] text-gold mb-1">{o.project.location}</p><h3 class="font-display font-bold text-navy text-sm leading-snug">{o.title}</h3></div>
+            </a>
+          ))}
+        </div>
+        <p class="text-sm text-muted mt-6"><a href={routes.caseStudies} class="text-navy underline underline-offset-2 hover:text-gold">All case studies</a></p>
+      </div>
+    </section>
+
+    <CtaBand title={`Want a ${home.name} on your plot?`} body="Send us the address and a photo of the spot. We will confirm the size that fits, the planning route and the installed price." />
+  </article>
+</BaseLayout>

@@ -8,7 +8,7 @@ export interface Faq {
   cat: string
 }
 
-export const faqCategories = ['All', 'Choosing a Home', 'Pricing & Quotes', 'Design & Customisation', 'Planning & Permissions', 'Installation', 'Base & Turnkey', 'Technical', 'Delivery', 'Sustainability']
+export const faqCategories = ['All', 'Choosing a Home', 'Pricing & Quotes', 'Design & Customisation', 'Planning & Permissions', 'Installation', 'Base & Turnkey', 'Technical', 'Delivery', 'Sustainability', 'Warranty & Aftercare']
 
 export const faqs: Faq[] = [
   { q: 'What is the difference between a modular home and a frame-built home?', a: 'Modular homes are manufactured in sections in a factory and assembled on site. However, frame-built homes have a structural timber frame constructed or assembled on site. Both offer excellent insulation and can be customised.', cat: 'Choosing a Home' },
@@ -33,4 +33,6 @@ export const faqs: Faq[] = [
   { q: 'How far do you deliver?', a: 'We deliver nationwide. Delivery logistics are assessed at the quotation stage alongside confirmation of crane requirements, vehicle access and any restrictions specific to your site.', cat: 'Delivery' },
   { q: 'How long does delivery take after I place an order?', a: 'Lead times vary depending on current production schedule and specification. Typical lead times from order to delivery are 12–20 weeks. Production schedules are confirmed at the quotation stage.', cat: 'Delivery' },
   { q: 'Are your buildings energy efficient?', a: 'Yes. All buildings are designed to meet or exceed current Part L requirements. We offer a range of sustainable upgrades including air-source heat pumps, solar panels, green roofs, MVHR ventilation and underfloor heating.', cat: 'Sustainability' },
+  { q: 'What warranty comes with a Trident building?', a: 'Every Trident building carries a 10-year structural guarantee on the timber frame panel system, and a 12-month warranty on finishes and workmanship, both from practical completion. Windows, doors, roofing, sanitaryware, kitchens, heating and electrical items carry their manufacturers’ warranties, passed on in full at handover. For residential houses the structural guarantee can be extended beyond 10 years, subject to periodic inspections. Full terms are on the warranty page.', cat: 'Warranty & Aftercare' },
+  { q: 'What happens after handover?', a: 'You receive a Home User Guide with as-built information, the maintenance schedule, warranty documents and test certificates. We review the building after the first heating season, at around six months, and carry out a final defects inspection at twelve months. Reports of a problem are acknowledged within two working days.', cat: 'Warranty & Aftercare' },
 ]

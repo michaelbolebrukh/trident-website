@@ -140,7 +140,6 @@
   RewriteRule ^about-us/?$ /about_us/ [R=301,L]
   RewriteRule ^interiors/?$ /customise-your-build/ [R=301,L]
   RewriteRule ^materials/?$ /technology/ [R=301,L]
-  RewriteRule ^case-studies/?$ /gallery/ [R=301,L]
   RewriteRule ^sertyfikaty/?$ /bopas-and-certificates/ [R=301,L]
   RewriteRule ^locations(\.kml|/.*)?$ / [R=301,L]
   RewriteRule ^author(/.*)?$ / [R=301,L]
@@ -156,9 +155,9 @@
   RewriteRule ^tag(/.*)?$ /blog/ [R=301,L]
   RewriteRule ^vyrobnycztvo/?$ /technology/ [R=301,L]
 
-  # 10 case studies are not carried over individually;
-  # the gallery replaces them.
-  RewriteRule ^case-study/(.*)$ /gallery/ [R=301,L]
+  # The old per-project case study URLs had different slugs; the new
+  # case studies section is the nearest page.
+  RewriteRule ^case-study/(.*)$ /case-studies/ [R=301,L]
 
   # The old tag archive under /houses-tag/ has no equivalent.
   RewriteRule ^houses-tag(/.*)?$ /houses/ [R=301,L]

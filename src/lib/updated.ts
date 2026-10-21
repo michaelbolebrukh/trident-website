@@ -20,6 +20,8 @@ export const UPDATE_SOURCES = {
   faq: ['src/data/faq.ts'],
   planning: ['src/pages/planning-permission-modular-homes.astro'],
   buildingRegs: ['src/pages/building-regulations-modular-homes.astro'],
+  warranty: ['src/pages/warranty.astro', 'src/data/accreditation.ts'],
+  caseStudies: ['src/data/case-studies.ts', 'src/data/projects.ts'],
 } as const
 
 const cache = new Map<string, string | undefined>()

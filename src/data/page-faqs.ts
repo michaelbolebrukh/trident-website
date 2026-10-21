@@ -113,6 +113,13 @@ export const pageFaqs: Record<string, PageFaq[]> = {
     { q: 'Does the electrical work come with a certificate?', a: `Yes. Under ${turnkey.label} the basic electrics are installed, tested and certified by a registered electrician, which satisfies Part P and is what building control asks to see.` },
   ],
 
+  [routes.warranty]: [
+    { q: 'When does the 10-year structural guarantee start?', a: 'On the date of practical completion, the day we hand the building over, and it runs for ten years from there. The 12-month finishes and workmanship warranty starts on the same day.' },
+    { q: 'Is the structural guarantee the same as a new-home warranty?', a: 'No. The structural guarantee is Trident’s own promise to repair or replace defective panels and connections. Lenders usually also want a 10-year insurance-backed new-home warranty on a dwelling, which is a separate policy from a warranty provider; the BOPAS accreditation is what makes the system acceptable to them.' },
+    { q: 'What voids the guarantee?', a: 'Alterations to the structure or envelope by anyone other than Trident or a Trident-certified specialist, use outside our written instructions, missing or unrecorded maintenance, and defects not reported promptly. Fair wear, shrinkage, misuse and storm or flood damage were never covered.' },
+    { q: 'How is a defect reported and how fast do you respond?', a: 'In writing, with photographs, to contact@tridentmodular.com. We acknowledge every report within two working days and agree the next steps within ten working days. Agreed snagging items from the handover inspection are put right at no cost.' },
+  ],
+
   // Category pages, keyed by their path
   '/houses-type/garden-rooms/': [
     { q: 'What base does a garden room sit on?', a: 'Helical ground screws, installed in a day without excavation or concrete, so the building can be removed later and the garden reinstated. A level slab is an alternative where one already exists.' },

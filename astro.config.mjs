@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config'
 import react from '@astrojs/react'
 import sitemap from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
-import { lastmodFor } from './scripts/lastmod.mjs'
+import { lastmodFor, londonStamp } from './scripts/lastmod.mjs'
 
 /**
  * Outbound links in the Markdown pages (privacy, cookies, terms) get
@@ -47,7 +47,7 @@ export default defineConfig({
       // can tell changed pages from unchanged ones. See scripts/lastmod.mjs.
       serialize(item) {
         const d = lastmodFor(item.url)
-        if (d) item.lastmod = d.toISOString()
+        if (d) item.lastmod = londonStamp(d)
         return item
       },
     }),

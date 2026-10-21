@@ -19,8 +19,10 @@ import { HOUSE_OPTIONS } from '../data/pricing'
 import { routes, productPath, categoryPath } from '../lib/routes'
 import { floorAreaText } from '../lib/area'
 import { lastUpdated, lastUpdatedIso } from '../lib/updated'
+import { webPageSchema } from '../lib/schema'
 
 const meta = seoFor(routes.planning, 'Planning Permission for Modular Homes', '')
+const schema = [webPageSchema(routes.planning, meta.title, meta.description, lastUpdatedIso('planning'))]
 
 const gardenRooms = allHomes.filter((h) => h.categories.includes('Garden Rooms')).sort((a, b) => a.price - b.price)
 const houses = allHomes.filter((h) => !h.categories.includes('Garden Rooms') && h.bedrooms).sort((a, b) => a.price - b.price).slice(0, 4)
@@ -35,7 +37,7 @@ const sources = [
 ]
 ---
 
-<BaseLayout title={meta.title} description={meta.description}>
+<BaseLayout title={meta.title} description={meta.description} schema={schema}>
   <PageHero
     eyebrow="Buyer guide"
     title="Planning Permission for Modular Homes and Garden Rooms"

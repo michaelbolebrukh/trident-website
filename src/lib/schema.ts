@@ -24,6 +24,9 @@ const SITE_ID = `${SITE_URL}/#website`
 export const abs = (path: string): string => new URL(path, SITE_URL).toString()
 
 /** Contact details as shown in the header, footer and contact page. */
+/** Trident Modular Housing Ltd, from the warranty and terms page. */
+export const COMPANY_NUMBER = '14450077'
+
 export const CONTACT = {
   telephone: '+44 7443 285068',
   email: 'contact@tridentmodular.com',
@@ -68,6 +71,7 @@ export function organizationSchema(logoUrl: string) {
     },
     // The same profiles the footer links to.
     sameAs: socialProfiles.map((p) => p.href),
+    identifier: { '@type': 'PropertyValue', propertyID: 'Companies House', value: COMPANY_NUMBER },
   }
 }
 
@@ -224,6 +228,28 @@ export function itemListSchema(name: string, homes: Home[]) {
       url: abs(`/houses/${h.slug}/`),
     })),
   }
+}
+
+/**
+ * The page itself, with the date its content last changed. Used where the
+ * page shows a "last updated" line, so the visible date and the machine
+ * readable one are the same value.
+ */
+export function webPageSchema(path: string, name: string, description: string, dateModified?: string, datePublished?: string) {
+  const schema: Record<string, unknown> = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': `${abs(path)}#webpage`,
+    url: abs(path),
+    name,
+    description,
+    isPartOf: { '@id': SITE_ID },
+    publisher: { '@id': ORG_ID },
+    inLanguage: 'en-GB',
+  }
+  if (datePublished) schema.datePublished = datePublished
+  if (dateModified) schema.dateModified = dateModified
+  return schema
 }
 
 export function contactPageSchema(title: string, description: string) {
