@@ -49,15 +49,29 @@ const pageFile = (pathname) => {
   if (stem.startsWith('houses/')) return 'src/pages/houses/[slug].astro'
   if (stem.startsWith('houses-type/')) return 'src/pages/houses-type/[category].astro'
   if (stem.startsWith('blog/')) return 'src/pages/blog/[slug].astro'
+  if (stem.startsWith('case-studies/')) return 'src/pages/case-studies/[slug].astro'
   return undefined
 }
 
-let posts
+let posts, revisions
 const postDate = (pathname) => {
   posts ??= JSON.parse(readFileSync(path.join(ROOT, 'src/data/posts.json'), 'utf8'))
+  revisions ??= JSON.parse(readFileSync(path.join(ROOT, 'src/data/post-revisions.json'), 'utf8'))
   const slug = pathname.replace(/^\/blog\/|\/$/g, '')
   const post = posts.find((p) => p.slug === slug)
-  return post ? new Date(londonIso(post.dateModified ?? post.date)) : undefined
+  if (!post) return undefined
+  // The last substantive edit (title, heading or body), tracked by
+  // scripts/track-post-revisions.mjs, else the publication date.
+  const modified = revisions[slug]?.modified
+  return new Date(modified ?? londonIso(post.date))
+}
+
+/** ISO 8601 with the Europe/London offset, e.g. 2026-09-07T13:54:50+01:00. */
+export function londonStamp(d) {
+  const parts = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false, timeZoneName: 'longOffset' }).formatToParts(d)
+  const get = (t) => parts.find((p) => p.type === t)?.value
+  const off = get('timeZoneName') === 'GMT' ? '+00:00' : get('timeZoneName').replace('GMT', '')
+  return `${get('year')}-${get('month')}-${get('day')}T${get('hour').replace('24', '00')}:${get('minute')}:${get('second')}${off}`
 }
 
 export function londonIso(local) {

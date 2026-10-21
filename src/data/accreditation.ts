@@ -35,6 +35,28 @@ export const explainers: Card[] = [
   },
 ]
 
+/**
+ * Certificate details, from the Terms, Warranties and Guarantees document
+ * Trident supplied in October 2026. The ISO certificate number and
+ * certification body are still to be confirmed.
+ */
+export const certificates = {
+  bopas: {
+    number: 'PRJ11100404661-2',
+    scheme: 'BOPAS, the Buildoffsite Property Assurance Scheme',
+    developedBy: 'Buildoffsite, RICS, Lloyd’s Register and BLP Insurance, in consultation with UK mortgage lenders and building societies',
+    durability: 'Independent durability and maintenance assessment based on a minimum 60-year life',
+    surveillance: 'Regular surveillance visits to the factory and to sites, with full reassessment every three years',
+    copies: 'A copy of the current certificate is available on request.',
+  },
+  iso: {
+    standard: 'ISO 9001:2015',
+    scope: 'Quality management system across design, manufacture and site delivery',
+    copies: 'Certificate available on request.',
+  },
+  companyNumber: '14450077',
+}
+
 export const credentials = [
   { label: 'BOPAS', detail: 'Accredited system, continuously evaluated' },
   { label: '60 years', detail: 'Durability assessment' },

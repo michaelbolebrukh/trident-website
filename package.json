@@ -4,11 +4,12 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "prebuild": "node scripts/build-responsive-images.mjs",
+    "prebuild": "node scripts/build-responsive-images.mjs && node scripts/track-post-revisions.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "images:responsive": "node scripts/build-responsive-images.mjs"
+    "images:responsive": "node scripts/build-responsive-images.mjs",
+    "postbuild": "node scripts/fix-sitemap-index.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^4.2.0",

@@ -1,0 +1,272 @@
+---
+/**
+ * /warranty/ — Terms, warranties and guarantees, from the document Trident
+ * supplied in October 2026. Where that document and the published price
+ * guide describe the same thing in different words (option names, scopes,
+ * programme), the figures on this page come from pricing.ts so the site
+ * never contradicts itself; the differences are listed in the pull request.
+ */
+import { seoFor } from '../data/seo'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import PageHero from '../components/PageHero.astro'
+import FaqBlock from '../components/FaqBlock.astro'
+import CtaBand from '../components/CtaBand.astro'
+import { HOUSE_OPTIONS, PROGRAMME, PAYMENT_SCHEDULE } from '../data/pricing'
+import { certificates } from '../data/accreditation'
+import { pageFaqsFor } from '../data/page-faqs'
+import { CONTACT, webPageSchema } from '../lib/schema'
+import { routes, categoryPath } from '../lib/routes'
+import { lastUpdated, lastUpdatedIso } from '../lib/updated'
+
+const meta = seoFor(routes.warranty, 'Warranty, Guarantees and Terms', '')
+const [shell, assembly, turnkey] = HOUSE_OPTIONS
+const programme = (title: string) => PROGRAMME.find(([t]) => t === title)?.[1] ?? ''
+const faqItems = pageFaqsFor(routes.warranty)
+
+const warrantyTable = [
+  { type: 'Garden houses, garden rooms and studios', structural: '10 years', finishes: '12 months' },
+  { type: 'Residential houses: bungalows, 1.5 storey and 2 storey homes', structural: '10 years, extendable', finishes: '12 months' },
+]
+
+const notCovered = [
+  'Fair wear and tear, and normal shrinkage or settlement of timber and finishes',
+  'Damage from misuse, neglect, accidents or wilful damage',
+  'Works or alterations by anyone other than Trident or a Trident-certified specialist',
+  'Foundations, groundworks or existing structures not designed or approved by Trident',
+  'Storm, flood, fire or other events outside our reasonable control',
+  'Consequential losses, such as loss of rent or alternative accommodation, except where required by law',
+]
+
+const conditions = [
+  'The building is maintained in line with the Trident Home User Guide and maintenance schedule, and the maintenance is recorded',
+  'Inspections, servicing, repairs and alterations to the structure and envelope are carried out by Trident or a Trident-certified specialist',
+  'The building is used, extended and altered strictly in line with Trident’s technology and written instructions',
+  'Any defect is reported to us in writing promptly after it is noticed, and further damage is reasonably prevented',
+]
+
+const responsibilities = [
+  'Planning permission or confirmation of permitted development, and any other statutory consents',
+  'The Building Control application, unless we have agreed to manage it for you',
+  'Party Wall agreements where needed',
+  'Safe, clear access for delivery vehicles and cranes, including any road or parking permits',
+  'Foundations ready, level and to the tolerances on our drawings, where these are outside your scope of supply',
+  'Utility connections and any surveys your site requires',
+  'Approving drawings and making decisions on time, so the programme is not held up',
+]
+
+const otherTerms = [
+  { title: 'Insurance', body: 'Trident holds public liability, employer’s liability and contract works insurance during our works on site, and our subcontractors hold equivalent cover. Certificates are available on request. Tell your own home insurer before works begin.' },
+  { title: 'Ownership and risk', body: 'Panels and materials remain Trident’s property until paid for in full. Risk passes to you on delivery to site, unless we are carrying out the assembly.' },
+  { title: 'Variations', body: 'Any change to the agreed scope is confirmed in writing, with its effect on price and programme, before we proceed.' },
+  { title: 'Drawings and designs', body: 'Trident’s drawings, designs and technical documents remain our intellectual property. Once paid in full, you have a licence to use them to occupy, maintain and alter your home.' },
+  { title: 'Cancellation', body: 'If you are a consumer and sign a contract away from our premises or online, you have a 14-day cancellation period. Design work, materials ordered or production started at your request before cancellation may be charged.' },
+  { title: 'Liability', body: 'Our liability is limited as set out in your contract. Nothing limits liability for death or personal injury caused by negligence, for fraud, or your statutory rights.' },
+  { title: 'Complaints and disputes', body: 'Raise any concern with us first and we will respond promptly. If we cannot resolve it together, we use mediation before any formal process. Contracts are governed by the law of England and Wales.' },
+]
+
+const updated = lastUpdated('warranty')
+const schema = [webPageSchema(routes.warranty, meta.title, meta.description, lastUpdatedIso('warranty'))]
+---
+
+<BaseLayout title={meta.title} description={meta.description} schema={schema}>
+  <PageHero
+    eyebrow="Terms, warranties and guarantees"
+    title="Warranty and Guarantees"
+    intro="Every Trident building comes with a 10-year structural guarantee on the timber frame panel system and a 12-month warranty on finishes and workmanship, built on a system independently assessed by BOPAS for a minimum 60-year life. This page sets out what we guarantee, what each scope of supply includes, how pricing, payment and programme work, and what happens after handover."
+  />
+
+  <article class="bg-white">
+    {/* Commitment */}
+    <section class="max-w-[1280px] mx-auto px-6 lg:px-8 py-14 grid lg:grid-cols-[minmax(0,1fr)_380px] gap-10">
+      <div>
+        <h2 class="font-display font-bold text-navy text-2xl mb-4">Our commitment to you</h2>
+        <p class="text-body leading-relaxed mb-4">Every Trident home is designed, manufactured and installed under an independently audited quality system, and backed by clear written warranties. Trident Modular Housing Ltd (company number {certificates.companyNumber}) is a UK modular construction company with over ten years of experience, delivering timber frame panel homes across the UK. Our building system is BOPAS accredited and our business is certified to {certificates.iso.standard}.</p>
+        <p class="text-body leading-relaxed">The terms below are a summary. The binding terms for your project are those in your signed contract, which always takes precedence over this page.</p>
+        {updated && <p class="text-xs text-muted mt-4">Terms last updated: <time datetime={lastUpdatedIso('warranty')}>{updated}</time>.</p>}
+      </div>
+      <aside class="rounded-2xl bg-light border border-border p-6 self-start">
+        <h2 class="font-display font-bold text-navy text-lg mb-3">Accreditations</h2>
+        <p class="text-sm text-body leading-relaxed mb-2"><span class="font-semibold text-navy">BOPAS</span> certificate {certificates.bopas.number}. {certificates.bopas.durability}. {certificates.bopas.surveillance}.</p>
+        <p class="text-sm text-body leading-relaxed mb-3"><span class="font-semibold text-navy">{certificates.iso.standard}</span>: {certificates.iso.scope.toLowerCase()}.</p>
+        <p class="text-xs text-muted">BOPAS is a durability and mortgageability assurance, not an insurance policy or a structural warranty. Those are covered below. <a href={routes.bopas} class="text-navy underline underline-offset-2 hover:text-gold">About BOPAS and our certificates</a>.</p>
+      </aside>
+    </section>
+
+    {/* Warranties */}
+    <section class="border-t border-border bg-light py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <h2 class="font-display font-bold text-navy text-2xl mb-6">Warranties and guarantees</h2>
+        <div class="overflow-x-auto rounded-2xl border border-border bg-white mb-8">
+          <table class="w-full text-sm">
+            <caption class="sr-only">Guarantee periods by building type, from practical completion</caption>
+            <thead>
+              <tr class="bg-navy text-white text-left">
+                <th scope="col" class="px-4 py-3 font-display font-semibold">Building type</th>
+                <th scope="col" class="px-4 py-3 font-display font-semibold">Structural guarantee</th>
+                <th scope="col" class="px-4 py-3 font-display font-semibold">Finishes and workmanship</th>
+              </tr>
+            </thead>
+            <tbody>
+              {warrantyTable.map((r) => (
+                <tr class="border-t border-border">
+                  <th scope="row" class="px-4 py-3 text-left font-display font-semibold text-navy">{r.type}</th>
+                  <td class="px-4 py-3 text-body">{r.structural}</td>
+                  <td class="px-4 py-3 text-body">{r.finishes}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p class="text-xs text-muted px-4 py-3">All periods run from the date of practical completion.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-5">
+          <div class="bg-white rounded-2xl border border-border p-6">
+            <h3 class="font-display font-bold text-navy mb-2">Structural guarantee</h3>
+            <p class="text-sm text-body leading-relaxed">Covers the Trident timber frame panel system: the wall, floor and roof panels and their structural connections. If a structural defect appears during the guarantee period, we investigate and repair or replace the affected elements at no cost to you.</p>
+          </div>
+          <div class="bg-white rounded-2xl border border-border p-6">
+            <h3 class="font-display font-bold text-navy mb-2">Extended structural guarantee</h3>
+            <p class="text-sm text-body leading-relaxed">For residential houses the structural guarantee can be extended beyond 10 years, subject to periodic structural inspections by Trident. The length of the extension and the inspection schedule are agreed in writing for each project. It is listed as a priced upgrade on every house page.</p>
+          </div>
+          <div class="bg-white rounded-2xl border border-border p-6">
+            <h3 class="font-display font-bold text-navy mb-2">Finishes and workmanship</h3>
+            <p class="text-sm text-body leading-relaxed">For 12 months after practical completion we put right any defect in finishes and workmanship caused by faulty materials or installation in the works we delivered. Windows, doors, roofing, sanitaryware, kitchens, heating and electrical items also carry their manufacturers’ own warranties, passed on to you in full at handover.</p>
+          </div>
+          <div class="bg-white rounded-2xl border border-border p-6">
+            <h3 class="font-display font-bold text-navy mb-2">Mortgage lenders and new homes</h3>
+            <p class="text-sm text-body leading-relaxed">Lenders usually ask for a 10-year insurance-backed structural warranty on a new dwelling. This is separate from Trident’s guarantee. Because the system is BOPAS accredited it is accepted by recognised warranty providers, and we supply the technical information and records they need. Nothing in our guarantees affects your statutory rights.</p>
+          </div>
+        </div>
+        <div class="grid md:grid-cols-2 gap-5 mt-5">
+          <div class="bg-white rounded-2xl border border-border p-6">
+            <h3 class="font-display font-bold text-navy mb-3">Conditions of the guarantee</h3>
+            <ul class="space-y-2">{conditions.map((c) => <li class="text-sm text-body leading-snug">{c}</li>)}</ul>
+          </div>
+          <div class="bg-white rounded-2xl border border-border p-6">
+            <h3 class="font-display font-bold text-navy mb-3">What the guarantees do not cover</h3>
+            <ul class="space-y-2">{notCovered.map((c) => <li class="text-sm text-body leading-snug">{c}</li>)}</ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* Scope of supply */}
+    <section class="border-t border-border py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <h2 class="font-display font-bold text-navy text-2xl mb-2">What each scope of supply includes</h2>
+        <p class="text-muted text-sm mb-6 max-w-2xl">We always state which scope you are being quoted for, so you can compare like with like. These are the three purchase options as they appear on every house page and in the price guide.</p>
+        <div class="overflow-x-auto rounded-2xl border border-border">
+          <table class="w-full text-sm">
+            <caption class="sr-only">The three purchase options and what each includes</caption>
+            <thead>
+              <tr class="bg-navy text-white text-left">
+                <th scope="col" class="px-4 py-3 font-display font-semibold">Scope</th>
+                <th scope="col" class="px-4 py-3 font-display font-semibold">What is included</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[shell, assembly, turnkey].map((o) => (
+                <tr class="border-t border-border align-top">
+                  <th scope="row" class="px-4 py-3 text-left font-display font-semibold text-navy whitespace-nowrap">{o.label}</th>
+                  <td class="px-4 py-3 text-body leading-relaxed">{o.desc}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p class="text-sm text-muted mt-4">Prices on the website are indicative and identify the scope they relate to. Plasterboard is always fixed on site after services are installed, never in the factory. Your proposal lists every inclusion and exclusion for your project; the standard exclusions are on the <a href={routes.prices} class="text-navy underline underline-offset-2 hover:text-gold">price guide</a>. Garden buildings use their own three-step ladder, shown on each <a href={categoryPath('Garden Rooms')} class="text-navy underline underline-offset-2 hover:text-gold">garden room</a> page.</p>
+      </div>
+    </section>
+
+    {/* Pricing and payment */}
+    <section class="border-t border-border bg-light py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-10">
+        <div>
+          <h2 class="font-display font-bold text-navy text-2xl mb-4">Quotations and pricing</h2>
+          <dl class="space-y-3">
+            <div><dt class="font-semibold text-navy text-sm">Indicative prices</dt><dd class="text-sm text-body leading-relaxed">Prices on the website and in early budget estimates are indicative. They depend on size, design, specification and site conditions.</dd></div>
+            <div><dt class="font-semibold text-navy text-sm">Fixed proposals</dt><dd class="text-sm text-body leading-relaxed">Once we have your drawings and site information, we issue a detailed proposal with a fixed price for the defined scope.</dd></div>
+            <div><dt class="font-semibold text-navy text-sm">Validity</dt><dd class="text-sm text-body leading-relaxed">Proposals are valid for 30 days unless stated otherwise, as material and transport costs can change.</dd></div>
+            <div><dt class="font-semibold text-navy text-sm">VAT</dt><dd class="text-sm text-body leading-relaxed">Prices are shown excluding VAT unless stated. VAT is charged at the applicable rate; zero-rating may apply to some new dwellings. See the <a href={routes.selfBuild} class="text-navy underline underline-offset-2 hover:text-gold">self-build page</a>.</dd></div>
+            <div><dt class="font-semibold text-navy text-sm">Provisional sums</dt><dd class="text-sm text-body leading-relaxed">Where full design detail is not yet available, for example foundations or utility connections, we include clearly marked provisional sums, adjusted to actual cost once the detail is confirmed.</dd></div>
+            <div><dt class="font-semibold text-navy text-sm">Design fees</dt><dd class="text-sm text-body leading-relaxed">Concept drawings and engineering for bespoke projects may be charged separately and credited against the order where agreed.</dd></div>
+          </dl>
+        </div>
+        <div>
+          <h2 class="font-display font-bold text-navy text-2xl mb-4">Payment terms</h2>
+          <p class="text-sm text-body leading-relaxed mb-4">Payments are staged against milestones, so you pay as your home progresses.</p>
+          <div class="overflow-x-auto rounded-2xl border border-border bg-white">
+            <table class="w-full text-sm">
+              <caption class="sr-only">Typical payment schedule</caption>
+              <thead><tr class="bg-navy text-white text-left"><th scope="col" class="px-4 py-3 font-display font-semibold">Share</th><th scope="col" class="px-4 py-3 font-display font-semibold">Milestone</th></tr></thead>
+              <tbody>{PAYMENT_SCHEDULE.map(([share, when]) => <tr class="border-t border-border"><td class="px-4 py-3 font-display font-semibold text-navy">{share}</td><td class="px-4 py-3 text-body">{when}</td></tr>)}</tbody>
+            </table>
+          </div>
+          <p class="text-xs text-muted mt-4">The exact schedule is agreed in your contract and can be adapted for larger or phased projects, including lender drawdowns. Invoices are payable within 14 days. Factory production starts once the relevant stage payment has cleared. Late payments may incur statutory interest under the Late Payment of Commercial Debts (Interest) Act 1998, where it applies.</p>
+        </div>
+      </div>
+    </section>
+
+    {/* Programme and responsibilities */}
+    <section class="border-t border-border py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-10">
+        <div>
+          <h2 class="font-display font-bold text-navy text-2xl mb-4">Programme and delivery</h2>
+          <p class="text-sm text-body leading-relaxed mb-4">We give you an honest programme from the start. On the typical house programme, contract to handover is {programme('Contract to handover')}.</p>
+          <ul class="space-y-2">{PROGRAMME.filter(([t]) => t !== 'Contract to handover').map(([t, d]) => <li class="text-sm text-body flex justify-between gap-4 border-b border-border pb-2"><span>{t}</span><span class="font-semibold text-navy whitespace-nowrap">{d}</span></li>)}</ul>
+          <p class="text-xs text-muted mt-4">Delivery dates are confirmed once drawings are approved and the production payment has cleared. We tell you promptly about anything that could affect the programme. We are not responsible for delays caused by late approvals, client changes, site access restrictions, exceptional weather or events beyond our reasonable control.</p>
+        </div>
+        <div>
+          <h2 class="font-display font-bold text-navy text-2xl mb-4">Your responsibilities</h2>
+          <p class="text-sm text-body leading-relaxed mb-3">Unless your contract says otherwise, you are responsible for:</p>
+          <ul class="space-y-2">{responsibilities.map((r) => <li class="text-sm text-body leading-snug">{r}</li>)}</ul>
+          <p class="text-xs text-muted mt-4">We are happy to help with any of these through our design team and trusted local partners. See the <a href={routes.planning} class="text-navy underline underline-offset-2 hover:text-gold">planning permission</a> and <a href={routes.buildingRegs} class="text-navy underline underline-offset-2 hover:text-gold">Building Regulations</a> guides.</p>
+        </div>
+      </div>
+    </section>
+
+    {/* Handover and aftercare */}
+    <section class="border-t border-border bg-light py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <h2 class="font-display font-bold text-navy text-2xl mb-6">Handover and aftercare</h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-5 gap-5">
+          {[
+            ['Pre-handover inspection', 'We walk the home with you and agree a snagging list. Agreed items are put right at no extra cost.'],
+            ['Handover pack', 'A Home User Guide with as-built information, the BOPAS maintenance schedule, warranty documents, test certificates and manufacturers’ product guarantees.'],
+            ['6-month review', 'After the first heating season we check for settlement, minor cracking and how the services are performing.'],
+            ['12-month review', 'A final defects inspection at the end of the defects liability period.'],
+            ['Maintenance', 'Following the maintenance schedule keeps your warranties valid and protects the 60-year design life: sealants, gutters, roof coverings, ventilation and external finishes.'],
+          ].map(([t, b]) => (
+            <div class="bg-white rounded-2xl border border-border p-5">
+              <h3 class="font-display font-bold text-navy text-sm mb-2">{t}</h3>
+              <p class="text-xs text-muted leading-relaxed">{b}</p>
+            </div>
+          ))}
+        </div>
+        <p class="text-sm text-body mt-6">If you notice a problem, contact us in writing with photographs at <a href={`mailto:${CONTACT.email}`} class="text-navy underline underline-offset-2 hover:text-gold">{CONTACT.email}</a>. We aim to acknowledge every report within 2 working days and agree next steps within 10 working days.</p>
+      </div>
+    </section>
+
+    {/* Other terms */}
+    <section class="border-t border-border py-14">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <h2 class="font-display font-bold text-navy text-2xl mb-6">Insurance, liability and other terms</h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {otherTerms.map((t) => (
+            <div class="rounded-2xl border border-border p-5">
+              <h3 class="font-display font-bold text-navy text-sm mb-2">{t.title}</h3>
+              <p class="text-xs text-muted leading-relaxed">{t.body}</p>
+            </div>
+          ))}
+        </div>
+        <p class="text-xs text-muted mt-6">Trident Modular Housing Ltd, {CONTACT.address.streetAddress}, {CONTACT.address.addressLocality} {CONTACT.address.postalCode}. {CONTACT.telephone} · {CONTACT.email}. This page is a summary for information and does not form a contract. Your signed contract and proposal set out the full terms that apply to your project.</p>
+      </div>
+    </section>
+
+    <FaqBlock title="Warranty and aftercare: common questions" items={faqItems} />
+
+    <CtaBand
+      title="Want the warranty terms for a specific model?"
+      body="Tell us the model and the scope you are considering and we will send the proposal with the guarantee, inclusions and exclusions set out for your project."
+    />
+  </article>
+</BaseLayout>

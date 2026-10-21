@@ -48,7 +48,7 @@ for (const dir of DIRS) {
         skipped++
         continue
       }
-      await sharp(src).resize({ width: w }).webp({ quality: 78 }).toFile(dest)
+      await sharp(src).resize({ width: w }).webp({ quality: 70, effort: 6 }).toFile(dest)
       written++
     }
     manifest[`/${dir}/${file}`] = { w: width, h: height, v: variants }

@@ -1,0 +1,70 @@
+---
+/**
+ * /case-studies/ — hub for the completed projects, one card per case study.
+ * The ItemList schema lists the case study pages in the order shown.
+ */
+import { seoFor } from '../../data/seo'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import PageHero from '../../components/PageHero.astro'
+import CtaBand from '../../components/CtaBand.astro'
+import { caseStudiesWithProjects } from '../../data/case-studies'
+import { allHomes } from '../../data/homes'
+import { detailFor } from '../../data/model-details'
+import { routes, caseStudyPath, productPath } from '../../lib/routes'
+import { responsive, SIZES } from '../../lib/images'
+import { SITE_URL, webPageSchema } from '../../lib/schema'
+import { lastUpdated, lastUpdatedIso } from '../../lib/updated'
+
+const meta = seoFor(routes.caseStudies, 'Case Studies', '')
+const modelName = (slug: string) => allHomes.find((h) => h.slug === slug)?.name ?? slug
+const variantArea = (model: string, variant: string) => detailFor(model)?.variants.find((v) => v.name === variant)?.area
+
+const itemList = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Trident Modular case studies',
+  numberOfItems: caseStudiesWithProjects.length,
+  itemListElement: caseStudiesWithProjects.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.title, url: `${SITE_URL}${caseStudyPath(c.slug)}` })),
+}
+const schema = [itemList, webPageSchema(routes.caseStudies, meta.title, meta.description, lastUpdatedIso('caseStudies'))]
+---
+
+<BaseLayout title={meta.title} description={meta.description} schema={schema}>
+  <PageHero
+    eyebrow="Completed projects"
+    title="Case Studies"
+    intro="Six Trident installations, from a narrow terrace garden in Chiswick to open ground in Kent: what each client needed, what the plot imposed, which model and size was chosen, and how the install went. Every photograph is from our own site records or commissioned photography of the finished building."
+  />
+
+  <section class="bg-white">
+    <div class="max-w-[1280px] mx-auto px-6 lg:px-8 py-14">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {caseStudiesWithProjects.map((c) => (
+          <a href={caseStudyPath(c.slug)} class="group bg-white rounded-2xl overflow-hidden border border-border card-shadow card-shadow-hover transition-all duration-300 hover:-translate-y-1">
+            <div class="h-56 overflow-hidden bg-light">
+              <img {...responsive(c.project.cover, SIZES.card)} alt={`${c.project.name}, ${c.project.location}: finished building`} loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+            </div>
+            <div class="p-6">
+              <p class="text-xs font-semibold font-display uppercase tracking-[0.14em] text-gold mb-2">{c.project.location}</p>
+              <h2 class="font-display font-bold text-navy text-lg leading-snug mb-2">{c.title}</h2>
+              <p class="text-sm text-muted leading-relaxed line-clamp-3">{c.brief}</p>
+              <dl class="grid grid-cols-2 gap-x-4 gap-y-1 text-xs mt-4">
+                <dt class="text-muted">Model</dt><dd class="text-navy font-medium">{modelName(c.model)} {c.variant}</dd>
+                <dt class="text-muted">Floor area</dt><dd class="text-navy font-medium">{variantArea(c.model, c.variant)} m²</dd>
+                <dt class="text-muted">Scope</dt><dd class="text-navy font-medium">{c.option}</dd>
+                <dt class="text-muted">On site</dt><dd class="text-navy font-medium">{c.programme.daysOnSite}</dd>
+              </dl>
+            </div>
+          </a>
+        ))}
+      </div>
+      <p class="text-sm text-muted mt-8">All photographs, including the build stages, are in the <a href={routes.gallery} class="text-navy underline underline-offset-2 hover:text-gold">project gallery</a>. The models used: <a href={productPath('garden-studio')} class="text-navy underline underline-offset-2 hover:text-gold">Garden Studio</a> and <a href={productPath('premium-model')} class="text-navy underline underline-offset-2 hover:text-gold">Garden Premium</a>.</p>
+      {lastUpdated('caseStudies') && <p class="text-xs text-muted mt-2">Case studies last updated: <time datetime={lastUpdatedIso('caseStudies')}>{lastUpdated('caseStudies')}</time>.</p>}
+    </div>
+  </section>
+
+  <CtaBand
+    title="Planning something similar?"
+    body="Send us the address and a photo of the spot. We will say which model and size fits, whether it needs an application, and what it costs installed."
+  />
+</BaseLayout>

@@ -38,6 +38,8 @@ const infoLinks = [
   { label: 'About Trident', href: routes.about },
   { label: 'Our Technology', href: routes.technology },
   { label: 'BOPAS & Certificates', href: routes.bopas },
+  { label: 'Warranty & Guarantees', href: routes.warranty },
+  { label: 'Case Studies', href: routes.caseStudies },
   { label: 'Modular Building Company', href: routes.companies },
   { label: 'Project Gallery', href: routes.gallery },
   { label: 'Blog & Insights', href: routes.blog },
@@ -55,6 +57,9 @@ export default function Footer() {
             <Logo height={32} variant="white" />
             <p className="mt-5 text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.65)', maxWidth: '300px' }}>
               Trident Modular designs and delivers modern modular and frame-built homes, garden rooms and commercial spaces across the UK, from first concept to final installation.
+            </p>
+            <p className="mt-4 text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.55)' }}>
+              <a href={routes.bopas} className="hover:text-gold transition-colors">BOPAS accredited building system</a>, 60-year durability assessment · ISO 9001:2015 · <a href={routes.warranty} className="hover:text-gold transition-colors">10-year structural guarantee</a>
             </p>
             <div className="mt-6 flex gap-3">
               {socialProfiles.map((s) => (

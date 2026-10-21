@@ -16,8 +16,10 @@ import { materials, credentials } from '../data/accreditation'
 import { HOUSE_OPTIONS, AVAILABLE_UPGRADES } from '../data/pricing'
 import { routes } from '../lib/routes'
 import { lastUpdated, lastUpdatedIso } from '../lib/updated'
+import { webPageSchema } from '../lib/schema'
 
 const meta = seoFor(routes.buildingRegs, 'Building Regulations for Modular Homes', '')
+const schema = [webPageSchema(routes.buildingRegs, meta.title, meta.description, lastUpdatedIso('buildingRegs'))]
 
 const turnkey = HOUSE_OPTIONS[2]
 const basalt = materials.find((m) => m.title === 'Basalt wool insulation')!
@@ -54,7 +56,7 @@ const sources = [
 ]
 ---
 
-<BaseLayout title={meta.title} description={meta.description}>
+<BaseLayout title={meta.title} description={meta.description} schema={schema}>
   <PageHero
     eyebrow="Buyer guide"
     title="Building Regulations and Part L for Modular Homes"

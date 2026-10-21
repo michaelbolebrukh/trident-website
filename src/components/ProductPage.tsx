@@ -10,6 +10,8 @@ import { plansFor } from '../data/floor-plans'
 import { responsive, SIZES } from '../lib/images'
 import { floorAreaText } from '../lib/area'
 import { modelFaqs } from '../lib/model-faq'
+import { caseStudiesForModel } from '../data/case-studies'
+import { caseStudyPath } from '../lib/routes'
 import QuoteDialog from './QuoteDialog'
 
 const IMGS = {
@@ -98,9 +100,11 @@ export default function ProductPage({ home, updated }: Props) {
     { id: 'features', label: 'Extras' },
     { id: 'completion', label: 'Completion' },
     { id: 'specifications', label: 'Specifications' },
+    ...(caseStudiesForModel(home.slug).length ? [{ id: 'case-studies', label: 'Projects' }] : []),
     { id: 'faq', label: 'FAQ' },
   ]
   const faqs = modelFaqs(home)
+  const studies = caseStudiesForModel(home.slug)
   const [activeSection, setActiveSection] = useState('overview')
 
   useEffect(() => {
@@ -290,7 +294,10 @@ export default function ProductPage({ home, updated }: Props) {
               these as the honest floor of today&rsquo;s cost.
               {pricing.fromSmallestOf && ` Prices shown are for the smallest of ${pricing.fromSmallestOf} sizes.`}
             </p>
-            {updated && <p className="text-xs text-muted mb-8">Prices and specifications last updated: {updated}.</p>}
+            {updated && <p className="text-xs text-muted mb-4">Prices and specifications last updated: {updated}.</p>}
+            <p className="text-xs text-muted mb-8">
+              Every building carries a <a href={routes.warranty} className="text-navy underline underline-offset-2 hover:text-gold">10-year structural guarantee and a 12-month finishes warranty</a>, on a <a href={routes.bopas} className="text-navy underline underline-offset-2 hover:text-gold">BOPAS-accredited system</a> assessed for a 60-year life.
+            </p>
 
             <table className="hidden md:table w-full text-sm bg-white rounded-2xl border border-border overflow-hidden mb-8">
               <caption className="sr-only">Purchase options and from-prices for the {home.name}, excluding VAT</caption>
@@ -403,7 +410,7 @@ export default function ProductPage({ home, updated }: Props) {
                         {group.items.map((item) => (
                           <li key={item} className="flex gap-2.5 text-sm text-body leading-relaxed">
                             <span aria-hidden="true" className="text-gold shrink-0 font-bold">+</span>
-                            <span>{item}</span>
+                            <span>{item === 'Extended warranty' ? <a href={routes.warranty} className="text-navy underline underline-offset-2 hover:text-gold">Extended structural guarantee</a> : item}</span>
                           </li>
                         ))}
                       </ul>
@@ -722,6 +729,30 @@ export default function ProductPage({ home, updated }: Props) {
           </div>
         </div>
       </div>
+
+      {/* ─── Case studies built on this model ─── */}
+      {studies.length > 0 && (
+        <div id="case-studies" className="scroll-mt-32 border-t border-border bg-light py-14">
+          <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
+            <h2 className="font-display font-bold text-navy text-2xl mb-2">{home.name} projects we have delivered</h2>
+            <p className="text-muted text-sm mb-8 max-w-2xl">Completed installations of this model, with the brief, the site and how the build went.</p>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {studies.map((s) => (
+                <a key={s.slug} href={caseStudyPath(s.slug)} className="group bg-white rounded-2xl overflow-hidden border border-border card-shadow card-shadow-hover transition-all duration-300 hover:-translate-y-1">
+                  <div className="h-44 overflow-hidden bg-light">
+                    <img {...responsive(s.project.cover, SIZES.card)} alt={`${s.project.name}, ${s.project.location}`} loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  </div>
+                  <div className="p-5">
+                    <p className="text-xs font-semibold font-display uppercase tracking-[0.14em] text-gold mb-1">{s.project.location}</p>
+                    <h3 className="font-display font-bold text-navy text-sm leading-snug">{s.title}</h3>
+                    <p className="text-xs text-muted mt-2">{s.variant} · {s.option} · {s.programme.daysOnSite}</p>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ─── FAQ: five answers from this model's own data ─── */}
       <div id="faq" className="scroll-mt-32 border-t border-border py-14">

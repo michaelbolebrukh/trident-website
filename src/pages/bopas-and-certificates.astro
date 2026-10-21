@@ -1,18 +1,18 @@
 ---
 import { seoFor } from '../data/seo'
 import BaseLayout from '../layouts/BaseLayout.astro'
-import { intro, explainers, credentials, materials } from '../data/accreditation'
+import { intro, explainers, credentials, materials, certificates } from '../data/accreditation'
+import { responsive, SIZES } from '../lib/images'
+import { webPageSchema } from '../lib/schema'
 import { factoryPhoto } from '../data/build-ups'
 import { routes } from '../lib/routes'
 import { lastUpdated, lastUpdatedIso } from '../lib/updated'
 
 const meta = seoFor('/bopas-and-certificates/', 'BOPAS and Certificates', 'Trident Modular is BOPAS accredited and ISO 9001:2015 certified, with a 60-year durability assessment — the assurances lenders and warranty providers look for.')
+const schema = [webPageSchema(routes.bopas, meta.title, meta.description, lastUpdatedIso('bopas'))]
 ---
 
-<BaseLayout
-  title={meta.title}
-  description={meta.description}
->
+<BaseLayout title={meta.title} description={meta.description} schema={schema}>
   <div class="bg-white">
     {/* Hero */}
     <section class="bg-navy text-white">
@@ -44,10 +44,9 @@ const meta = seoFor('/bopas-and-certificates/', 'BOPAS and Certificates', 'Tride
         </div>
         <div class="rounded-2xl overflow-hidden h-72 lg:h-[420px] bg-navy-mid">
           <img
-            src="/images/projects/chiswick-01.webp"
+            {...responsive('/images/projects/chiswick-01.webp', SIZES.half)}
             alt="A completed Trident building in Chiswick, London"
-            width="1600"
-            height="1067"
+            fetchpriority="high"
             class="w-full h-full object-cover"
           />
         </div>
@@ -139,6 +138,35 @@ const meta = seoFor('/bopas-and-certificates/', 'BOPAS and Certificates', 'Tride
             not on a wet site.
           </figcaption>
         </figure>
+      </div>
+    </section>
+
+    {/* Certificates */}
+    <section class="bg-light border-t border-border py-20 lg:py-24">
+      <div class="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <p class="text-xs font-semibold font-display uppercase tracking-[0.2em] text-gold mb-3">The certificates</p>
+        <h2 class="font-display font-bold text-navy text-3xl lg:text-4xl mb-8">Accreditation and certificate details</h2>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="bg-white rounded-2xl border border-border p-7">
+            <h3 class="font-display font-bold text-navy text-lg mb-3">BOPAS accreditation</h3>
+            <dl class="text-sm space-y-2">
+              <div class="flex gap-3"><dt class="text-muted w-32 shrink-0">Certificate</dt><dd class="text-navy font-semibold">{certificates.bopas.number}</dd></div>
+              <div class="flex gap-3"><dt class="text-muted w-32 shrink-0">Scheme</dt><dd class="text-body">{certificates.bopas.scheme}, developed by {certificates.bopas.developedBy}</dd></div>
+              <div class="flex gap-3"><dt class="text-muted w-32 shrink-0">Assessment</dt><dd class="text-body">{certificates.bopas.durability}</dd></div>
+              <div class="flex gap-3"><dt class="text-muted w-32 shrink-0">Surveillance</dt><dd class="text-body">{certificates.bopas.surveillance}</dd></div>
+              <div class="flex gap-3"><dt class="text-muted w-32 shrink-0">Copy</dt><dd class="text-body">{certificates.bopas.copies} Ask us at <a href={routes.contact} class="text-navy underline underline-offset-2 hover:text-gold">contact</a>.</dd></div>
+            </dl>
+          </div>
+          <div class="bg-white rounded-2xl border border-border p-7">
+            <h3 class="font-display font-bold text-navy text-lg mb-3">{certificates.iso.standard}</h3>
+            <dl class="text-sm space-y-2">
+              <div class="flex gap-3"><dt class="text-muted w-32 shrink-0">Scope</dt><dd class="text-body">{certificates.iso.scope}</dd></div>
+              <div class="flex gap-3"><dt class="text-muted w-32 shrink-0">Copy</dt><dd class="text-body">{certificates.iso.copies}</dd></div>
+              <div class="flex gap-3"><dt class="text-muted w-32 shrink-0">Company</dt><dd class="text-body">Trident Modular Housing Ltd, company number {certificates.companyNumber}</dd></div>
+            </dl>
+            <p class="text-sm text-muted mt-4">What the guarantees cover, and for how long, is on the <a href={routes.warranty} class="text-navy underline underline-offset-2 hover:text-gold">warranty and guarantees page</a>.</p>
+          </div>
+        </div>
       </div>
     </section>
 
