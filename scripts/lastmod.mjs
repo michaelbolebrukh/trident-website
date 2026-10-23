@@ -49,7 +49,7 @@ const pageFile = (pathname) => {
   if (stem.startsWith('houses/')) return 'src/pages/houses/[slug].astro'
   if (stem.startsWith('houses-type/')) return 'src/pages/houses-type/[category].astro'
   if (stem.startsWith('blog/')) return 'src/pages/blog/[slug].astro'
-  if (stem.startsWith('case-studies/')) return 'src/pages/case-studies/[slug].astro'
+  if (stem.startsWith('gallery/')) return 'src/pages/gallery/[slug].astro'
   return undefined
 }
 

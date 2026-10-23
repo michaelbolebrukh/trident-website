@@ -36,11 +36,10 @@ export const routes = {
   buildingRegs: '/building-regulations-modular-homes/',
   /** Trust pages, October 2026. */
   warranty: '/warranty/',
-  caseStudies: '/case-studies/',
 } as const
 
-/** Case study pages are generated per project from src/data/case-studies.ts. */
-export const caseStudyPath = (slug: string) => `/case-studies/${slug}/`
+/** Project pages under Our Projects, generated from src/data/case-studies.ts. */
+export const projectPath = (slug: string) => `/gallery/${slug}/`
 
 export type Page = keyof typeof routes
 

@@ -2,7 +2,12 @@ import { useState } from 'react'
 import { projects, allPhotos } from '../data/projects'
 import { responsive, SIZES } from '../lib/images'
 import { caseStudyFor } from '../data/case-studies'
-import { caseStudyPath, routes } from '../lib/routes'
+import { allHomes } from '../data/homes'
+import { detailFor } from '../data/model-details'
+import { projectPath } from '../lib/routes'
+
+const modelName = (slug: string) => allHomes.find((h) => h.slug === slug)?.name ?? slug
+const variantArea = (model: string, variant: string) => detailFor(model)?.variants.find((v) => v.name === variant)?.area
 
 /** "All" plus one entry per project, so the filter reads as places built. */
 const filterOptions = ['All', ...projects.map((p) => p.name)]
@@ -27,48 +32,58 @@ export default function GalleryPage() {
         <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
           <p className="text-xs font-semibold font-display uppercase tracking-[0.2em] text-gold mb-3">Projects</p>
           <h1 className="font-display font-bold text-navy text-4xl lg:text-5xl">Our projects</h1>
-          <p className="text-muted text-base mt-3 max-w-xl">Buildings we have delivered across London and the South East. Each project has a case study with the brief, the site and how the build went, and every photograph, from the frame going up to the finished garden, is below.</p>
+          <p className="text-muted text-base mt-3 max-w-xl">Buildings we have delivered across London and the South East: what each client needed, what the plot imposed, which model and size was chosen and how the build went. Every photograph, from the frame going up to the finished garden, is further down.</p>
         </div>
       </div>
 
-      {/* The projects themselves, before the wall of photographs. Clicking one
-          filters the grid below rather than opening a page of its own. */}
+      {/* One card per project: the brief and the key facts, linking to the
+          project page. The small button filters the photographs below. */}
       <div className="max-w-[1280px] mx-auto px-6 lg:px-8 pt-12">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((p) => (
-            <div key={p.slug} className="bg-white border border-border rounded-2xl overflow-hidden card-shadow hover:border-navy/30 transition-colors">
-            <button
-              type="button"
-              onClick={() => {
-                setActiveFilter(p.name)
-                document.getElementById('photographs')?.scrollIntoView({ behavior: 'smooth' })
-              }}
-              className="text-left w-full"
-            >
-              <img
-                {...responsive(p.cover, SIZES.card)}
-                alt={`${p.name} — ${p.location}`}
-                loading="lazy"
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-6">
-                <h2 className="font-display font-bold text-navy text-lg">{p.name}</h2>
-                <p className="text-xs font-semibold font-display uppercase tracking-[0.14em] text-gold mt-1 mb-3">
-                  {p.location}
-                </p>
-                <p className="text-sm text-muted leading-relaxed">{p.blurb}</p>
-                <p className="text-xs text-muted mt-4">
-                  {p.photos.length} photograph{p.photos.length === 1 ? '' : 's'}
-                </p>
+          {projects.map((p) => {
+            const c = caseStudyFor(p.slug)
+            return (
+              <div key={p.slug} className="bg-white border border-border rounded-2xl overflow-hidden card-shadow hover:border-navy/30 transition-colors flex flex-col">
+                <a href={c ? projectPath(p.slug) : '#photographs'} className="block">
+                  <img
+                    {...responsive(p.cover, SIZES.card)}
+                    alt={`${p.name}, ${p.location}: finished building`}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-52 object-cover"
+                  />
+                </a>
+                <div className="p-6 flex flex-col flex-1">
+                  <p className="text-xs font-semibold font-display uppercase tracking-[0.14em] text-gold mb-2">{p.location}</p>
+                  <h2 className="font-display font-bold text-navy text-lg leading-snug">
+                    {c ? <a href={projectPath(p.slug)} className="hover:text-gold">{c.title}</a> : p.name}
+                  </h2>
+                  <p className="text-sm text-muted leading-relaxed mt-2 line-clamp-3">{c ? c.brief : p.blurb}</p>
+                  {c && (
+                    <dl className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs mt-4">
+                      <dt className="text-muted">Model</dt><dd className="text-navy font-medium">{modelName(c.model)} {c.variant}</dd>
+                      <dt className="text-muted">Floor area</dt><dd className="text-navy font-medium">{variantArea(c.model, c.variant)} m²</dd>
+                      <dt className="text-muted">Scope</dt><dd className="text-navy font-medium">{c.option}</dd>
+                      <dt className="text-muted">On site</dt><dd className="text-navy font-medium">{c.programme.daysOnSite}</dd>
+                    </dl>
+                  )}
+                  <div className="mt-5 pt-4 border-t border-border flex items-center justify-between gap-3">
+                    {c && <a href={projectPath(p.slug)} className="text-sm font-semibold font-display text-navy hover:text-gold">Read the full project →</a>}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setActiveFilter(p.name)
+                        document.getElementById('photographs')?.scrollIntoView({ behavior: 'smooth' })
+                      }}
+                      className="text-xs text-muted hover:text-navy"
+                    >
+                      {p.photos.length} photo{p.photos.length === 1 ? '' : 's'} ↓
+                    </button>
+                  </div>
+                </div>
               </div>
-            </button>
-            {caseStudyFor(p.slug) && (
-              <a href={caseStudyPath(p.slug)} className="block -mt-3 px-6 pb-5 text-sm font-semibold font-display text-navy hover:text-gold">
-                Read the case study →
-              </a>
-            )}
-          </div>
-          ))}
+            )
+          })}
         </div>
       </div>
 

@@ -1029,9 +1029,9 @@ export default function HomePage() {
                 Recent work
               </h2>
             </div>
-            <a href={routes.caseStudies}
+            <a href={routes.gallery}
               className="shrink-0 text-sm font-semibold font-display text-navy border border-border rounded-xl px-5 py-2.5 hover:border-navy transition-colors">
-              Read the case studies →
+              See our projects →
             </a>
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">

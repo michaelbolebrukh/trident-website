@@ -131,11 +131,6 @@ export const seo: Record<string, SeoEntry> = {
     description:
       'The 10-year structural guarantee and 12-month finishes warranty on every Trident building, what each covers, the conditions, and how quotations, payments and handover work.',
   },
-  '/case-studies/': {
-    title: 'Modular Garden Room Case Studies | Trident Modular',
-    description:
-      'Completed Trident installations in Chiswick, Earl’s Court, Wimbledon, Kensington, Cambridge and Kent: the brief, the site, the model chosen and how the build went.',
-  },
   '/planning-permission-modular-homes/': {
     title: 'Planning Permission for Modular Homes & Garden Rooms',
     description:
@@ -184,7 +179,7 @@ export const seo: Record<string, SeoEntry> = {
   '/gallery/': {
     title: 'Our Projects: Completed Modular Buildings | Trident Modular',
     description:
-      'Photographs of completed Trident installations across the UK, from bare frames on site through to finished modular homes and garden rooms.',
+      'Completed Trident installations in London, Cambridge and Kent: the brief, the site, the model and size chosen, how the build went, and every photograph.',
   },
   '/blog/': {
     title: 'Modular Construction Blog & Insights | Trident Modular',

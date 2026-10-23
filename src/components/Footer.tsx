@@ -39,7 +39,6 @@ const infoLinks = [
   { label: 'Our Technology', href: routes.technology },
   { label: 'BOPAS & Certificates', href: routes.bopas },
   { label: 'Warranty & Guarantees', href: routes.warranty },
-  { label: 'Case Studies', href: routes.caseStudies },
   { label: 'Modular Building Company', href: routes.companies },
   { label: 'Our Projects', href: routes.gallery },
   { label: 'Blog & Insights', href: routes.blog },

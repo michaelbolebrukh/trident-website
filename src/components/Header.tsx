@@ -45,7 +45,6 @@ const aboutDropdown = [
   { label: 'Planning permission', href: routes.planning },
   { label: 'Building Regulations', href: routes.buildingRegs },
   { label: 'Warranty & guarantees', href: routes.warranty },
-  { label: 'Case studies', href: routes.caseStudies },
   { label: 'Our projects', href: routes.gallery },
   { label: 'Blog & insights', href: routes.blog },
   { label: 'FAQ', href: routes.faq },
