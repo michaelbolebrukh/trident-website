@@ -1,14 +1,32 @@
 ---
+/**
+ * /gallery/ — Our Projects. Keeps the URL the old site ranked on. One card
+ * per completed project with the brief and the key facts, linking to the
+ * project page, then every photograph with a filter and a lightbox.
+ */
 import { seoFor } from '../data/seo'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import GalleryPage from '../components/GalleryPage'
+import { caseStudiesWithProjects } from '../data/case-studies'
+import { routes, projectPath } from '../lib/routes'
+import { SITE_URL, webPageSchema } from '../lib/schema'
+import { lastUpdatedIso } from '../lib/updated'
 
-const meta = seoFor('/gallery/', 'Our Projects', 'Photographs of completed Trident installations across the UK.')
+const meta = seoFor(routes.gallery, 'Our Projects', 'Completed Trident installations across the UK, with the brief, the site and how each build went.')
+
+const itemList = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Trident Modular projects',
+  numberOfItems: caseStudiesWithProjects.length,
+  itemListElement: caseStudiesWithProjects.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.project.name, url: `${SITE_URL}${projectPath(c.slug)}` })),
+}
 ---
 
 <BaseLayout
   title={meta.title}
   description={meta.description}
+  schema={[itemList, webPageSchema(routes.gallery, meta.title, meta.description, lastUpdatedIso('projects'))]}
 >
   <GalleryPage client:afterpaint />
 </BaseLayout>

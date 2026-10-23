@@ -38,7 +38,7 @@ export const pageFaqs: Record<string, PageFaq[]> = {
     { q: 'What does Trident mean by a modular home?', a: 'A house manufactured as closed timber-frame panels in the factory, with insulation, membranes, sheathing and cladding already fitted, then assembled on your foundation. It is a permanent dwelling built to the same Building Regulations as a site-built house, not a mobile or temporary structure.' },
     { q: 'Which sizes does the modular home range cover?', a: `From ${Math.min(...areas)} m² to ${Math.max(...areas)} m² of internal floor area across ${allHomes.length} models in six categories: garden rooms and tiny homes, bungalows, 1.5 storey and two-storey houses, and the log-style models.` },
     { q: 'How do the three purchase options differ?', a: `${shell.label} brings the factory-made shell to your site for your own team to erect. ${assembly.label} adds unloading, crane and erection to weathertight by our crew. ${turnkey.label} adds the helical ground screw foundation, internal finishes, one bathroom, basic services and handover.` },
-    { q: 'Where can I see what a finished Trident building looks like?', a: `The case studies and the projects page show completed installations in ${list(projects.map((p) => p.location.split(',')[0]))}, and every model page publishes floor plans, the catalogue room schedule and photographs, so the range can be compared before you enquire.` },
+    { q: 'Where can I see what a finished Trident building looks like?', a: `Our Projects shows completed installations in ${list(projects.map((p) => p.location.split(',')[0]))} with the brief, the site and how each build went, and every model page publishes floor plans, the catalogue room schedule and photographs.` },
   ],
   [routes.kitHomes]: [
     { q: 'What exactly arrives with a Trident kit home?', a: shell.desc },
@@ -72,7 +72,7 @@ export const pageFaqs: Record<string, PageFaq[]> = {
   ],
   [routes.london]: [
     { q: 'Is delivery to London included in the price?', a: `Yes. Delivery to Greater London is included in every ${shell.label} price, and the same applies to the shell within ${assembly.label} and ${turnkey.label}.` },
-    { q: 'Where in London has Trident installed buildings?', a: `${list(london.map((p) => p.location))}. Photographs of each are on the projects page and in the case studies.` },
+    { q: 'Where in London has Trident installed buildings?', a: `${list(london.map((p) => p.location))}. Each has its own page under Our Projects with the brief, the site and the photographs.` },
     { q: 'How do you get a crane into a London garden?', a: 'Access, crane position and any parking suspension are assessed at quotation. Because the buildings arrive as panels rather than whole modules, the crane needed is smaller than for volumetric construction, and in many gardens the lift is made from the street.' },
     { q: 'Do London boroughs allow a garden room without planning permission?', a: 'The permitted development limits apply in London as elsewhere, but conservation areas and Article 4 directions are common in the inner boroughs and can remove them. Check your borough’s planning pages first; the planning permission guide sets out the limits.' },
   ],

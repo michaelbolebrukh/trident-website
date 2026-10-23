@@ -36,7 +36,6 @@ export const GET: APIRoute = ({ site }) => {
     `- [Planning permission](${url(routes.planning)}): garden rooms under permitted development, when a home needs full permission`,
     `- [Building Regulations](${url(routes.buildingRegs)}): Part L fabric limits, fire and ventilation, garden-room exemptions`,
     `- [Warranty and guarantees](${url(routes.warranty)}): 10-year structural guarantee, 12-month finishes warranty, terms of supply`,
-    `- [Case studies](${url(routes.caseStudies)}): completed garden room projects in London, Cambridge and Kent`,
     `- [FAQ](${url(routes.faq)})`,
     `- [Contact](${url(routes.contact)})`,
     '',
@@ -62,7 +61,7 @@ export const GET: APIRoute = ({ site }) => {
     '## Optional',
     '',
     `- [Blog](${url(routes.blog)})`,
-    `- [Our projects](${url(routes.gallery)}): every photograph from the completed installations`,
+    `- [Our projects](${url(routes.gallery)}): completed installations in London, Cambridge and Kent, each with its own page: brief, site, model, programme and photographs`,
     `- [About](${url(routes.about)})`,
     '',
   ]

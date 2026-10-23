@@ -11,7 +11,7 @@ import { responsive, SIZES } from '../lib/images'
 import { floorAreaText } from '../lib/area'
 import { modelFaqs } from '../lib/model-faq'
 import { caseStudiesForModel } from '../data/case-studies'
-import { caseStudyPath } from '../lib/routes'
+import { projectPath } from '../lib/routes'
 import QuoteDialog from './QuoteDialog'
 
 const IMGS = {
@@ -730,15 +730,15 @@ export default function ProductPage({ home, updated }: Props) {
         </div>
       </div>
 
-      {/* ─── Case studies built on this model ─── */}
+      {/* ─── Projects built on this model ─── */}
       {studies.length > 0 && (
         <div id="case-studies" className="scroll-mt-32 border-t border-border bg-light py-14">
           <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
             <h2 className="font-display font-bold text-navy text-2xl mb-2">{home.name} projects we have delivered</h2>
-            <p className="text-muted text-sm mb-8 max-w-2xl">Completed installations of this model, with the brief, the site and how the build went.</p>
+            <p className="text-muted text-sm mb-8 max-w-2xl">Completed installations of this model under Our Projects, with the brief, the site and how the build went.</p>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {studies.map((s) => (
-                <a key={s.slug} href={caseStudyPath(s.slug)} className="group bg-white rounded-2xl overflow-hidden border border-border card-shadow card-shadow-hover transition-all duration-300 hover:-translate-y-1">
+                <a key={s.slug} href={projectPath(s.slug)} className="group bg-white rounded-2xl overflow-hidden border border-border card-shadow card-shadow-hover transition-all duration-300 hover:-translate-y-1">
                   <div className="h-44 overflow-hidden bg-light">
                     <img {...responsive(s.project.cover, SIZES.card)} alt={`${s.project.name}, ${s.project.location}`} loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                   </div>

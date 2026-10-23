@@ -3,7 +3,7 @@
  * and the BreadcrumbList schema (schema.ts), so the two always agree.
  */
 import type { Home } from '../data/homes'
-import { categoryPath, productPath, caseStudyPath, routes } from './routes'
+import { categoryPath, productPath, projectPath, routes } from './routes'
 
 export interface Crumb {
   name: string
@@ -56,7 +56,6 @@ export const PAGE_LABELS: Record<string, string> = {
   [routes.planning]: 'Planning Permission',
   [routes.buildingRegs]: 'Building Regulations',
   [routes.warranty]: 'Warranty & Guarantees',
-  [routes.caseStudies]: 'Case Studies',
   '/privacy-policy/': 'Privacy Policy',
   '/cookie-policy/': 'Cookie Policy',
   '/terms-and-conditions/': 'Terms & Conditions',
@@ -67,11 +66,11 @@ export const pageCrumbs = (pathname: string): Crumb[] | undefined => {
   return label ? [HOME, { name: label, href: pathname }] : undefined
 }
 
-/** Home › Case Studies › Project */
-export const caseStudyCrumbs = (name: string, slug: string): Crumb[] => [
+/** Home › Our Projects › Project */
+export const projectCrumbs = (name: string, slug: string): Crumb[] => [
   HOME,
-  { name: 'Case Studies', href: routes.caseStudies },
-  { name, href: caseStudyPath(slug) },
+  { name: 'Our Projects', href: routes.gallery },
+  { name, href: projectPath(slug) },
 ]
 
 /** Home › Blog › Post */

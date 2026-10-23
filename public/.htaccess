@@ -155,9 +155,12 @@
   RewriteRule ^tag(/.*)?$ /blog/ [R=301,L]
   RewriteRule ^vyrobnycztvo/?$ /technology/ [R=301,L]
 
-  # The old per-project case study URLs had different slugs; the new
-  # case studies section is the nearest page.
-  RewriteRule ^case-study/(.*)$ /case-studies/ [R=301,L]
+  # Case studies live under Our Projects at /gallery/<project>/. The
+  # /case-studies/ URLs were live for two days in October 2026; the old
+  # per-project case study URLs had different slugs.
+  RewriteRule ^case-studies/?$ /gallery/ [R=301,L]
+  RewriteRule ^case-studies/([^/]+)/?$ /gallery/$1/ [R=301,L]
+  RewriteRule ^case-study/(.*)$ /gallery/ [R=301,L]
 
   # The old tag archive under /houses-tag/ has no equivalent.
   RewriteRule ^houses-tag(/.*)?$ /houses/ [R=301,L]
